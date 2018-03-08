@@ -143,8 +143,6 @@ class CSale extends CI_Controller {
 
                 } else {
 
-                    /*Envia datos al modelo para el registro del Cliente por Default*/
-                    $this->MSale->add_user('999999',$this->session->userdata('idSale'));
                     $this->module($info);
 
                 }
