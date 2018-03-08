@@ -1,0 +1,44 @@
+{"sede1": {
+    "lunes": {
+        "entrada": "08:00:00",
+        "salida": "18:00:00",
+        "inicioAlmuerzo": "12:00:00",
+        "finAlmuerzo": "13:00:00"
+    },
+    "martes": {
+        "entrada": "08:00:00",
+        "salida": "18:00:00",
+        "inicioAlmuerzo": "12:00:00",
+        "finAlmuerzo": "13:00:00"
+    },
+    "miercoles": {
+        "entrada": "08:00:00",
+        "salida": "18:00:00",
+        "inicioAlmuerzo": "12:00:00",
+        "finAlmuerzo": "13:00:00"
+    },
+    "jueves": {
+        "entrada": "08:00:00",
+        "salida": "18:00:00",
+        "inicioAlmuerzo": "12:00:00",
+        "finAlmuerzo": "13:00:00"
+    },
+    "viernes": {
+        "entrada": "08:00:00",
+        "salida": "18:00:00",
+        "inicioAlmuerzo": "12:00:00",
+        "finAlmuerzo": "13:00:00"
+    },
+    "sabado": {
+        "entrada": "08:00:00",
+        "salida": "18:00:00",
+        "inicioAlmuerzo": "12:00:00",
+        "finAlmuerzo": "13:00:00"
+    },
+    "domingo": {
+        "entrada": "08:00:00",
+        "salida": "18:00:00",
+        "inicioAlmuerzo": "12:00:00",
+        "finAlmuerzo": "13:00:00"
+    }
+}}

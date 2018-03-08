@@ -1,0 +1,42 @@
+Licencia de Uso de Software FREYA TRUCKS
+
+AUTOR:
+John Alexander Sanchez Rengifo
+Leidy Johana Mendoza Yara
+
+Copyright (c) 2018, Freya Trucks
+
+EL USO DEL SOFTWARE INDICA SU ACEPTACIÓN DE LOS TÉRMINOS DE ESTE ACUERDO,
+SI NO ESTÁ DE ACUERDO CON TODOS ESTOS TÉRMINOS, NO INSTALE NI USE EL SOFTWARE,
+Y DEVUELVA EL SOFTWARE A LA UBICACIÓN DE LA COMPRA PARA OBTENER UN REEMBOLSO.
+
+Licencia. 
+El AUTOR otorga al Licenciatario un derecho no exclusivo para instalar el SOFTWARE y para
+utilizar o autorizar el uso del SOFTWARE bajo una licencia de nodo bloqueado, entonces un
+"Nodo" se refiere a una máquina específica, y el SOFTWARE puede instalarse solo en la cantidad de
+"Nodos" o máquinas autorizadas, deben usarse solo en las máquinas en las que está instalado, y solo 
+podrán acceder los usuarios que estén físicamente presentes en ese nodo o máquina.
+
+Restricciones de copia.
+Este SOFTWARE está protegido por disposiciones de tratados internacionales y el licenciatario
+puede copiar el SOFTWARE solo de la siguiente manera: (i) para respaldar directamente el uso autorizado bajo la licencia,
+y (ii) para hacer una copia del SOFTWARE con fines de respaldo. Las copias deben incluir todos los derechos de autor
+y avisos de marca registrada.
+
+Restricciones de uso.
+Este SOFTWARE tiene licencia para el licenciatario solo para uso interno. El licenciatario no podrá
+(y no permitirá que ningún tercero): (i) descompile, desarme, realice ingeniería inversa o intente
+reconstruir, identificar o descubrir cualquier código fuente, ideas subyacentes, interfaz de usuario subyacente
+técnicas o algoritmos del SOFTWARE por cualquier medio, o divulgar cualquiera de los anteriores;
+(ii) proporcionar, arrendar, prestar o usar el SOFTWARE coo o sin fines de lucro (iii) modificar,
+incorporar en o con otro software, o crear un trabajo derivado de cualquier parte del SOFTWARE; (iv)
+divulgar los resultados de cualquier evaluación comparativa del SOFTWARE, o usar tales resultados para su propio
+competir en actividades de desarrollo de software, sin el permiso previo por escrito al AUTOR; o
+(v) intentar eludir cualquier límite de usuario, u otra licencia, tiempo o restricciones de uso que estén incorporadas
+El software.
+
+Terminación. 
+El AUTOR puede rescindir este Acuerdo de inmediato si el Licenciado incumple cualquier
+provisión. Tras el aviso de terminación por parte del AUTOR, todos los derechos otorgados al licenciatario en virtud 
+de este acuerdo terminará inmediatamente, y el licenciatario deberá dejar de usar el SOFTWARE y regresar o
+destruir todas las copias (y copias parciales) del SOFTWARE y la documentación.
