@@ -127,6 +127,9 @@ class CSale extends CI_Controller {
 
                     /*Consulta Modelo para crear el id de venta*/
                     $createSale = $this->MSale->create_sale($this->session->userdata('userid'));
+                    
+                    /*Envia datos al modelo para el registro del Cliente por Default*/
+                    $this->MSale->add_user('999999',$this->session->userdata('idSale'));
 
                     if ($createSale == TRUE){
 
@@ -140,6 +143,8 @@ class CSale extends CI_Controller {
 
                 } else {
 
+                    /*Envia datos al modelo para el registro del Cliente por Default*/
+                    $this->MSale->add_user('999999',$this->session->userdata('idSale'));
                     $this->module($info);
 
                 }
