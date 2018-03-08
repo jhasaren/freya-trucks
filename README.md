@@ -21,7 +21,7 @@ Improvements:
 * 	En el Ticket de la venta se debe mostrar la informacion de 'Pago Con' y el 'Cambio'.
 
 Fix Issues:
-* 	Imagen del logotipo no se imprime en el ticket. Se imprimen caracteres extra�os.
+* 	Imagen del logotipo no se imprime en el ticket. Se imprimen caracteres extraños.
 * 	En el formulario de creacion de Proveedores cambiar nombre y apellido, por razon social y nombre comercial.
 * 	En el campo 'descripcion' del formulario para registro de Gastos no esta recordando lo que ha escrito.
 * 	En el formulario de Registro de Ventas en el item servicios no muestra el valor del servicio en la lista
