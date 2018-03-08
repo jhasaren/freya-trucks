@@ -1166,7 +1166,7 @@ class MSale extends CI_Model {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 19/02/2018, Ultima modificacion: 
      **************************************************************************/
-    public function consecutivo_turno_sale($action) {
+    public function consecutivo_turno_sale($action,$idSale) {
         
         if ($action == 1) { /*obtiene turno*/
         
@@ -1200,6 +1200,12 @@ class MSale extends CI_Model {
                     $this->db->trans_off();
 
                 }
+                
+                /*Actualiza nro de turno en la venta*/
+                $this->db->query("UPDATE
+                                venta_maestro
+                                SET nroTurno = ".$result->seqTurno."
+                                WHERE idVenta = ".$idSale."");
 
                 return $result->seqTurno;
 
