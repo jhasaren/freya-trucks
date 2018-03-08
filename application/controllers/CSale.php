@@ -212,7 +212,7 @@ class CSale extends CI_Controller {
                     $liquidacion = $this->MSale->liquida_sale();
 
                     $totalServicios = $liquidacion[0]->totalServicios;
-                    $porcenDescuento = $liquidacion[0]->porcenDescuento;
+                    //$porcenDescuento = $liquidacion[0]->porcenDescuento;
                     $totalDescuento = $liquidacion[0]->totalDescuento;
                     $totalProductos = $liquidacion[1]->totalProductos;
                     $totalAdicional = $liquidacion[2]->totalAdicional;
@@ -249,15 +249,30 @@ class CSale extends CI_Controller {
 
                                 if ($maestroventa == TRUE){
 
+                                    /*Obtiene detalle del recibo*/
+                                    $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
+                                    
+                                    /*Asignacion de Turno*/
+                                    if ($detailRecibo['general']->nroTurno == NULL){
+
+                                        $turno = $this->MSale->consecutivo_turno_sale(1,$this->session->userdata('idSale'));
+
+                                    } else {
+
+                                       $turno = $detailRecibo['general']->nroTurno; 
+
+                                    }
+                                    
                                     $info['list_forma_pago'] = $this->MSale->list_forma_pago(); /*lista formas de pago*/
                                     $info['idmessage'] = 1;
                                     $info['message'] = "Total a Pagar: $".number_format($valorLiquidaVenta,0,',','.');
-                                    $info['servicios'] = $totalServicios;
                                     $info['descuento'] = $totalDescuento;
                                     $info['totalservicios'] = $valorPagoServicios;
                                     $info['totalproductos'] = $totalProductos;
                                     $info['totaladicional'] = $totalAdicional;
+                                    $info['detalleRecibo'] = $detailRecibo;
                                     $info['nrorecibo'] = $nroRecibo;
+                                    $info['turno'] = $turno;
 
                                     $this->load->view('sale/sale_liquida',$info);
 
@@ -503,7 +518,17 @@ class CSale extends CI_Controller {
 
                                 /*Obtiene detalle del recibo*/
                                 $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
-                                $turno = $this->MSale->consecutivo_turno_sale(1);
+                                
+                                /*Asignacion de Turno*/
+                                if ($detailRecibo['general']->nroTurno == NULL){
+                                    
+                                    $turno = $this->MSale->consecutivo_turno_sale(1,$this->session->userdata('idSale'));
+                                    
+                                } else {
+                                    
+                                   $turno = $detailRecibo['general']->nroTurno; 
+                                    
+                                }
                                 
                                 /*Crea PDF del Recibo*/
                                 $reciboPDF = $this->detallerecibopdf($this->session->userdata('idSale'),$recibo,$detailRecibo);
@@ -1284,7 +1309,7 @@ class CSale extends CI_Controller {
                 if ($this->MRecurso->validaRecurso(9)){
                     
                     /*Invoca el modelo para reiniciar consecutivo Turno*/
-                    $resetData = $this->MSale->consecutivo_turno_sale(2);
+                    $resetData = $this->MSale->consecutivo_turno_sale(2,NULL);
 
                     if ($resetData == 200){
 

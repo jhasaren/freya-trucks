@@ -124,7 +124,8 @@ class MReport extends CI_Model {
                                 vm.valorLiquida,
                                 vm.motivoAnula,
                                 vm.usuarioAnula,
-                                vm.fechaAnula
+                                vm.fechaAnula,
+                                vm.nroTurno
                                 FROM
                                 venta_maestro vm
                                 JOIN tipo_estado_recibo t ON t.idEstadoRecibo = vm.idEstadoRecibo

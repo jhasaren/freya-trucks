@@ -121,7 +121,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <center>
                                         <p class="center-block download-buttons">
                                             <a href="<?php echo base_url().'index.php/CSale/waitdatasale'; ?>" class="btn btn-primary btn-lg">
-                                                <i class="glyphicon glyphicon-time glyphicon-white"></i> Espera
+                                                <i class="glyphicon glyphicon-time glyphicon-white"></i> 
+                                                Espera
                                             </a>
                                             <button type="submit" class="btn btn-success btn-lg">
                                                 <i class="glyphicon glyphicon-check glyphicon-white"></i>
@@ -138,91 +139,89 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </ul>
                                             <div class="clearfix"></div>
                                         </div>
-                                        <div class="x_content">
-                                            <ul class="list-unstyled timeline">
-                                                <li>
-                                                    <div class="block" style="background-color: #81a4ba; color: white;">
-                                                        <div class="tags" >
-                                                            <div class="tag">
-                                                                <span>Cliente</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="block_content">
-                                                            <h2 class="title">
-                                                                Nro. Identificación: <?php echo $this->session->userdata('sclient'); ?>
-                                                            </h2>
-                                                            <p class="excerpt">
-                                                                Nombre: ---
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="block" style="background-color: #5bdeaf; color: white;">
-                                                        <div class="tags">
-                                                            <div class="tag">
-                                                                <span>Plato</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="block_content">
-                                                            <h2 class="title">
-                                                                <?php
-                                                                echo "Subtotal: $".number_format($servicios,0,',','.')." <br /> ";
-                                                                echo "Descuento: $".number_format($descuento,0,',','.')." <br /> ";
-                                                                echo "Total: $".number_format($totalservicios,0,',','.')."<br />";
-                                                                ?>
-                                                            </h2>
-                                                            <p class="excerpt">
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="block" style="background-color: #5ec0ff; color: white;">
-                                                        <div class="tags">
-                                                            <div class="tag">
-                                                                <span>Productos</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="block_content">
-                                                            <h2 class="title">
-                                                                <?php
-                                                                echo "Subtotal: $".number_format($totalproductos,0,',','.')."<br />";
-                                                                echo "Descuento: N/A <br /> ";
-                                                                echo "Total: $".number_format($totalproductos,0,',','.')."<br />";
-                                                                ?>
-                                                            </h2>
-                                                            <div class="byline">
-                                                            </div>
-                                                            <p class="excerpt">
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="block" style="background-color: #ef777f; color: white;">
-                                                        <div class="tags">
-                                                            <div class="tag">
-                                                                <span>Adicional</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="block_content">
-                                                            <h2 class="title">
-                                                                <?php
-                                                                echo "Subtotal: $".number_format($totaladicional,0,',','.')."<br />";
-                                                                echo "Descuento: N/A <br /> ";
-                                                                echo "Total: $".number_format($totaladicional,0,',','.')."<br />";
-                                                                ?>
-                                                            </h2>
-                                                            <div class="byline">
-                                                            </div>
-                                                            <p class="excerpt">
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                        
+                                        <!--Ticket informacion-->
+                                        <div id="ticketPrint" class="x_content">
+                                            <center style="font-size: 12px;">
+                                            <img src="<?php echo base_url().'public/img/logo.png'; ?>" style="width: 86px; height: 64px" /><br />
+                                            <?php echo $this->session->userdata('nombre_sede'); ?><br />
+                                            <?php echo $this->session->userdata('dir_sede'); ?><br />
+                                            <?php echo "Nro. Factura ".$detalleRecibo['general']->nroRecibo; ?>
+                                            </center>
+                                            <br />
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td align="center" style="font-size: 20px; font-weight:bold;">
+                                                        TURNO <?php echo $turno; ?>
+                                                    </td>
+                                                </tr>                               
+                                            </table>
+                                            <table style="width: 100%">
+                                                <?php
+                                                /*Servicios*/
+                                                if ($detalleRecibo['servicios'] != NULL){
+                                                    foreach ($detalleRecibo['servicios']  as $valueServ){
+                                                        ?>
+                                                        <tr style="font-size: 12px;">
+                                                            <td align="left"><?php echo "(".$valueServ['cantidad'].") ".$valueServ['descServicio']; ?></td>
+                                                            <td align="right">$<?php echo number_format($valueServ['valor'],0,',','.'); ?></td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                /*Productos*/
+                                                if ($detalleRecibo['productos'] != NULL){
+                                                    foreach ($detalleRecibo['productos']  as $valueProd){
+                                                        ?>
+                                                        <tr style="font-size: 12px;">
+                                                            <td align="left"><?php echo "(".$valueProd['cantidad'].") ".$valueProd['descProducto']; ?></td>
+                                                            <td align="right">$<?php echo number_format($valueProd['valor'],0,',','.'); ?></td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                /*Adicionales*/
+                                                if ($detalleRecibo['adicional'] != NULL){
+                                                    foreach ($detalleRecibo['adicional']  as $valueAdc){
+                                                        ?>
+                                                        <tr style="font-size: 12px;">
+                                                            <td align="left"><?php echo $valueAdc['cargoEspecial']; ?></td>
+                                                            <td align="right">$<?php echo number_format($valueAdc['valor'],0,',','.'); ?></td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                                <tr style="font-size: 12px; font-weight:bold;">
+                                                    <td align="left">Subtotal:</td>
+                                                    <td align="right">$<?php echo number_format($detalleRecibo['general']->valorTotalVenta,0,',','.'); ?></td>
+                                                </tr>   
+                                                <tr style="font-size: 12px;">
+                                                    <td align="left">Descuento(<?php echo ($detalleRecibo['general']->porcenDescuento*100); ?>%):</td>
+                                                    <td align="right">$<?php echo number_format(($detalleRecibo['general']->valorTotalVenta-$detalleRecibo['general']->valorLiquida),0,',','.'); ?></td>
+                                                </tr>
+                                                <tr style="font-size: 18px; font-weight:bold;">
+                                                    <td align="left">Total a Pagar:</td>
+                                                    <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida,0,',','.'); ?></td>
+                                                </tr>
+                                                <tr style="font-size: 12px;">
+                                                    <td align="left">Paga con:</td>
+                                                    <td align="right">$<?php echo number_format($pagacon,0,',','.'); ?></td>
+                                                </tr>
+                                                <tr style="font-size: 12px;">
+                                                    <td align="left">Cambio:</td>
+                                                    <td align="right">$<?php echo number_format($cambio,0,',','.'); ?></td>
+                                                </tr>                           
+                                            </table>
+                                            <center style="font-size: 12px;">
+                                            <br /><br />
+                                            Burger Republic agradece su compra!<br />
+                                            <?php echo date("Y-m-d h:i:s"); ?>
+                                            </center>
                                         </div>
+                                        <!--Fin Ticket informacion-->
+                                        
+                                        <input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#ticketPrint')" />
                                         </center>
                                         </form>
                                     </div>
@@ -246,6 +245,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <!-- jQuery -->
     <script src="<?php echo base_url().'public/gentelella/vendors/jquery/dist/jquery.min.js'; ?>"></script>
+    <!--impresion Ticket-->
+    <script type="text/javascript">
+    function PrintElem(elem) {
+        Popup($(elem).html());
+    }
+
+    function Popup(data) {
+        var myWindow = window.open('', 'Ticket', 'height=400,width=600');
+        myWindow.document.write('<html><head><title>Ticket de Venta</title>');
+        myWindow.document.write('</head><body >');
+        myWindow.document.write(data);
+        myWindow.document.write('</body></html>');
+        myWindow.document.close(); //necessary for IE >= 10
+        
+        myWindow.focus(); //necessary for IE >= 10
+        myWindow.print();
+        myWindow.close();
+        
+        /*myWindow.onload=function(){ //necessary if the div contain images
+            console.log("Imprime");
+            myWindow.focus(); //necessary for IE >= 10
+            myWindow.print();
+            myWindow.close();
+        };*/
+    }
+    </script>
     <!-- Bootstrap -->
     <script src="<?php echo base_url().'public/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js'; ?>"></script>
     <!-- FastClick -->
