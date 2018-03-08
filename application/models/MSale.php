@@ -196,7 +196,7 @@ class MSale extends CI_Model {
                                     JOIN grupo_servicio g ON g.idGrupoServicio = s.idGrupoServicio
                                     WHERE
                                     s.activo = 'S'
-                                    ORDER BY 2,3");
+                                    ORDER BY 3");
             
             $this->cache->memcached->save('mListServiceSale', $query->result_array(), 28800); /*8 horas en Memoria*/
             $this->cache->memcached->save('memcached12', 'real', 30);
