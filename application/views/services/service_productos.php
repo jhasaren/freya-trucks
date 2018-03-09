@@ -134,7 +134,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <div class="checkbox">
                                                 <label>
                                                   <input type="checkbox" class="flat" name="<?php echo $producto['idProducto']; ?>" <?php echo $check; ?> >
-                                                  <?php echo $producto['descProducto']; ?>
+                                                  <?php echo $producto['descProducto']." [Stock: ".$producto['disponibles']." ".$producto['aliasUnidad']."]"; ?>
                                                 </label>
                                             </div>
                                             <input type="hidden" name="idServicio" value="<?php echo $dataServicio->idServicio; ?>" >
