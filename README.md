@@ -1,6 +1,7 @@
 # Freya-Trucks
 Autor:
 John Alexander Sanchez R.
+
 Leidy J. Mendoza Yara
 
 Freya Trucks es un software para la gestión de Restaurantes, se caracteriza por ser ágil y rápido para el registro de ventas, garantiza control y organización para el negocio. Accesibilidad y seguridad.
