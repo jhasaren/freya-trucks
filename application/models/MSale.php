@@ -406,15 +406,16 @@ class MSale extends CI_Model {
     public function list_product_sale() {
         
         $dataCache = $this->cache->memcached->get('mListProductSale');
+        $dataFilter = $this->cache->memcached->get('mSedeProduct');
 
-        if ($dataCache){
+        if (($dataCache) && ($dataFilter == $this->session->userdata('sede'))){
 
             $this->cache->memcached->save('memcached16', 'cache', 30);
             return $dataCache;
 
         } else {
         
-            /*Recupera los usuarios creados*/
+            /*Recupera los productos creados*/
             $query = $this->db->query("SELECT
                                     p.idProducto,
                                     p.descProducto,
@@ -424,9 +425,11 @@ class MSale extends CI_Model {
                                     WHERE
                                     activo = 'S'
                                     AND idTipoProducto = 2
+                                    AND idSede = ".$this->session->userdata('sede')."
                                     ORDER BY 2");
             
             $this->cache->memcached->save('mListProductSale', $query->result_array(), 28800); /*8 horas en Memoria*/
+            $this->cache->memcached->save('mSedeProduct', $this->session->userdata('sede'), 28800);
             $this->cache->memcached->save('memcached16', 'real', 30);
 
             if ($query->num_rows() == 0) {
@@ -443,21 +446,26 @@ class MSale extends CI_Model {
     
     /**************************************************************************
      * Nombre del Metodo: list_product_int
-     * Descripcion: Obtiene lista de Productos de consumo interno
-     * la venta.
+     * Descripcion: Obtiene lista de Productos de consumo interno y para
+     * la venta en la sede.
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 29/03/2017, Ultima modificacion: 
      **************************************************************************/
     public function list_product_int() {
         
-        /*Recupera los usuarios creados*/
+        /*Recupera los productos creados*/
         $query = $this->db->query("SELECT
                                 p.idProducto,
-                                p.descProducto
+                                p.descProducto,
+                                s.disponibles,
+                                u.aliasUnidad
                                 FROM productos p
+                                JOIN stock_productos s ON s.idProducto = p.idProducto
+                                JOIN unidad_medida u ON u.idUnidadMedida = p.idUnidadMedida
                                 WHERE
-                                activo = 'S'
-                                AND idTipoProducto IN (1,2)
+                                p.activo = 'S'
+                                AND p.idTipoProducto IN (1,2)
+                                AND p.idSede = ".$this->session->userdata('sede')."
                                 ORDER BY 2");
         
         if ($query->num_rows() == 0) {
