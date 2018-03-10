@@ -214,7 +214,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 </tr>                           
                                             </table>
                                             <center style="font-size: 12px;">
-                                            <br /><br />
+                                            <br />
                                             Burger Republic agradece su compra!<br />
                                             <?php echo date("Y-m-d h:i:s"); ?>
                                             </center>
