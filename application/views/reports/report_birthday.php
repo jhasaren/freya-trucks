@@ -66,6 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="input-group">
                                 <div></div>
                                 <span class="input-group-btn">
+                                    <a class="btn btn-info" href="<?php echo base_url().'index.php/CReport/module/reportFide'; ?>"><i class="glyphicon glyphicon-screenshot"></i> Comportamiento Clientes</a>
                                 </span>
                             </div>
                         </div>

@@ -35,7 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
-        <div class="col-md-3 left_col menu_fixed">
+        <div class="col-md-3 left_col menu_fixed"> <!--menu_fixed-->
             <?php 
             /*include*/
             $this->load->view('includes/menu');

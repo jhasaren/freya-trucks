@@ -225,71 +225,81 @@ class CSale extends CI_Controller {
 
                     } else {
 
-                        if ($this->session->userdata('sclient') != NULL){
+                        if (($this->session->userdata('sclient') != NULL) && ($this->session->userdata('sempleado') != NULL)){
 
-                            $valorPagoServicios = $totalServicios-$totalDescuento;
-                            $valorTotalVenta = $totalServicios+$totalProductos+$totalAdicional;
-                            $valorLiquidaVenta = $valorPagoServicios+$totalProductos+$totalAdicional;
+                            if (($this->session->userdata('sservicio') != NULL)){
+                            
+                                $valorPagoServicios = $totalServicios-$totalDescuento;
+                                $valorTotalVenta = $totalServicios+$totalProductos+$totalAdicional;
+                                $valorLiquidaVenta = $valorPagoServicios+$totalProductos+$totalAdicional;
 
-                            /*Consulta Modelo para generar recibo*/
-                            $numeracion = $this->MSale->genera_recibo();
+                                /*Consulta Modelo para generar recibo*/
+                                $numeracion = $this->MSale->genera_recibo();
 
-                            if ($numeracion == FALSE){
+                                if ($numeracion == FALSE){
 
-                                $info['idmessage'] = 2;
-                                $info['message'] = "No se puede liquidar. No hay numeros de recibo disponibles.";
-                                $this->module($info);
-
-                            } else {
-
-                                $nroRecibo = $numeracion->nroRecibo;
-
-                                /*Consulta Modelo para actualizar la venta maestro*/
-                                $maestroventa = $this->MSale->update_salemaster($valorTotalVenta,$valorLiquidaVenta,$nroRecibo);
-
-                                if ($maestroventa == TRUE){
-
-                                    /*Obtiene detalle del recibo*/
-                                    $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
-                                    
-                                    /*Asignacion de Turno*/
-                                    if ($detailRecibo['general']->nroTurno == NULL){
-
-                                        $turno = $this->MSale->consecutivo_turno_sale(1,$this->session->userdata('idSale'));
-
-                                    } else {
-
-                                       $turno = $detailRecibo['general']->nroTurno; 
-
-                                    }
-                                    
-                                    $info['list_forma_pago'] = $this->MSale->list_forma_pago(); /*lista formas de pago*/
-                                    $info['idmessage'] = 1;
-                                    $info['message'] = "Total a Pagar: $".number_format($valorLiquidaVenta+($valorLiquidaVenta*$this->session->userdata('sservicio'))/100,0,',','.');
-                                    $info['descuento'] = $totalDescuento;
-                                    $info['totalservicios'] = $valorPagoServicios;
-                                    $info['totalproductos'] = $totalProductos;
-                                    $info['totaladicional'] = $totalAdicional;
-                                    $info['detalleRecibo'] = $detailRecibo;
-                                    $info['nrorecibo'] = $nroRecibo;
-                                    $info['turno'] = $turno;
-
-                                    $this->load->view('sale/sale_liquida',$info);
+                                    $info['idmessage'] = 2;
+                                    $info['message'] = "No se puede liquidar. No hay numeros de recibo disponibles.";
+                                    $this->module($info);
 
                                 } else {
 
-                                    $info['idmessage'] = 2;
-                                    $info['message'] = "No se puede generar la liquidacion. Contacte al administrador";
-                                    $this->module($info);
+                                    $nroRecibo = $numeracion->nroRecibo;
+
+                                    /*Consulta Modelo para actualizar la venta maestro*/
+                                    $maestroventa = $this->MSale->update_salemaster($valorTotalVenta,$valorLiquidaVenta,$nroRecibo);
+
+                                    if ($maestroventa == TRUE){
+
+                                        /*Obtiene detalle del recibo*/
+                                        $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
+
+                                        /*Asignacion de Turno*/
+                                        if ($detailRecibo['general']->nroTurno == NULL){
+
+                                            $turno = $this->MSale->consecutivo_turno_sale(1,$this->session->userdata('idSale'));
+
+                                        } else {
+
+                                           $turno = $detailRecibo['general']->nroTurno; 
+
+                                        }
+
+                                        $info['list_forma_pago'] = $this->MSale->list_forma_pago(); /*lista formas de pago*/
+                                        $info['idmessage'] = 1;
+                                        $info['message'] = "Total a Pagar: $".number_format($valorLiquidaVenta+($valorLiquidaVenta*$this->session->userdata('sservicio'))/100,0,',','.');
+                                        $info['descuento'] = $totalDescuento;
+                                        $info['totalservicios'] = $valorPagoServicios;
+                                        $info['totalproductos'] = $totalProductos;
+                                        $info['totaladicional'] = $totalAdicional;
+                                        $info['detalleRecibo'] = $detailRecibo;
+                                        $info['nrorecibo'] = $nroRecibo;
+                                        $info['turno'] = $turno;
+
+                                        $this->load->view('sale/sale_liquida',$info);
+
+                                    } else {
+
+                                        $info['idmessage'] = 2;
+                                        $info['message'] = "No se puede generar la liquidacion. Contacte al administrador";
+                                        $this->module($info);
+
+                                    }
 
                                 }
-
+                            
+                            } else {
+                                
+                                $info['idmessage'] = 2;
+                                $info['message'] = "No se puede liquidar. Por favor registre el % del servicio.";
+                                $this->module($info);
+                                
                             }
 
                         } else {
 
                             $info['idmessage'] = 2;
-                            $info['message'] = "No se puede liquidar. Por favor seleccione un cliente.";
+                            $info['message'] = "No se puede liquidar. Por favor verifique que haya seleccionado un cliente y un empleado.";
                             $this->module($info);
 
                         }
@@ -446,6 +456,7 @@ class CSale extends CI_Controller {
                 if ($deldata == TRUE){
 
                     $this->session->unset_userdata('sclient'); 
+                    $this->session->unset_userdata('sempleado');
                     $this->session->unset_userdata('idSale'); 
                     $this->session->unset_userdata('sdescuento');
 
@@ -555,6 +566,7 @@ class CSale extends CI_Controller {
 
                                 /*elimina variables de sesion de la venta*/
                                 $this->session->unset_userdata('sclient'); 
+                                $this->session->unset_userdata('sempleado');
                                 $this->session->unset_userdata('idSale'); 
                                 $this->session->unset_userdata('sdescuento');
                                 $this->session->unset_userdata('sservicio');
@@ -650,6 +662,76 @@ class CSale extends CI_Controller {
                     } else {
 
                         $info['message'] = 'El Cliente no existe, por favor digite y seleccione de la lista.';
+                        $info['alert'] = 2;
+                        $this->module($info);
+
+                    }
+                
+                } else {
+                    
+                    show_404();
+                    
+                }
+                
+            }
+        
+        } else {
+            
+            $this->index();
+            
+        }
+        
+    }
+    
+    /**************************************************************************
+     * Nombre del Metodo: addempleadosale
+     * Descripcion: Agregar Empleado a la venta
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 19/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function addempleadosale(){
+        
+        if ($this->session->userdata('validated')) {
+        
+            /*valida que la peticion http sea POST*/
+            if (!$this->input->post()){
+
+                $this->module($info);
+
+            } else {
+
+                if ($this->MRecurso->validaRecurso(9)){
+                
+                    /*Captura Variables*/
+                    $dataUsuario = explode('|', $this->input->post('idempleadoventa'));
+                    $idusuario = $dataUsuario[0];
+                    $idventa = $this->session->userdata('idSale'); 
+
+                    /*Valida si el empleado existe*/
+                    $validateClient = $this->MUser->verify_user($idusuario);
+
+                    if ($validateClient != FALSE){
+
+                        /*Envia datos al modelo para el registro*/
+                        $registerData = $this->MSale->add_empleado_sale($idusuario,$idventa);
+
+                        if ($registerData == TRUE){
+
+                            $info['idmessage'] = 1;
+                            $info['message'] = "Empleado Agregado Exitosamente a la venta";
+                            $this->module($info);
+
+                        } else {
+
+                            $info['idmessage'] = 2;
+                            $info['message'] = "No fue posible agregar el empleado a esta venta";
+                            $this->module($info);
+
+                        }
+
+                    } else {
+
+                        $info['message'] = 'El Empleado no existe, por favor seleccione de la lista.';
                         $info['alert'] = 2;
                         $this->module($info);
 
@@ -1113,7 +1195,7 @@ class CSale extends CI_Controller {
                                         if ($tipo === 'cliente'){
 
                                             /*Envia datos al modelo para el registro*/
-                                            $registerData = $this->MUser->create_user($name,$lastname,$identificacion,$direccion,$celular,$email,2,$diacumple,$mescumple,'12345',3,$this->session->userdata('sede'),0);
+                                            $registerData = $this->MUser->create_user($name,$lastname,$identificacion,$direccion,$celular,$email,2,$diacumple,$mescumple,'12345',3,$this->session->userdata('sede'),0,NULL);
                                             if ($registerData == TRUE){
 
                                                 /*aagrega usuario a la venta*/

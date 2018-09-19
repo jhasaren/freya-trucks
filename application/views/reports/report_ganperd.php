@@ -78,6 +78,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                             <div class="input-group">
                                 <div></div>
+                                <span class="input-group-btn">
+                                    <a class="btn btn-info" href="<?php echo base_url().'index.php/CReport/module/reportSedes'; ?>"><i class="glyphicon glyphicon-signal"></i> Ingresos General</a>
+                                </span>
+                                <span class="input-group-btn">
+                                    <a class="btn btn-info" href="<?php echo base_url().'index.php/CReport/module/reportGastos'; ?>"><i class="glyphicon glyphicon-arrow-up"></i> Gastos</a>
+                                </span>
                             </div>
                         </div>
                     </div>

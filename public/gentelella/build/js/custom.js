@@ -231,6 +231,20 @@ $(document).ready(function () {
         //to open the modal when document is ready
         $("#myModal-c").modal('show');
     });
+    /*Modal - Agregar Empleado Venta*/
+    $('.btn-saleempleado').click(function (e) {
+        e.preventDefault();
+        //$('#idcliente').focus();
+        //$('#myModal-c').modal('show');
+        
+        //to have your input focused every your modal open
+        $('#myModal-em').on("shown.bs.modal", function() {
+            $('#idempleadoventa').focus();
+        });
+
+        //to open the modal when document is ready
+        $("#myModal-em").modal('show');
+    });
     /*Modal - Agregar Cliente Proveedor*/
     $('.btn-proveedor').click(function (e) {
         e.preventDefault();

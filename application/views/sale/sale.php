@@ -28,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
-        <div class="col-md-3 left_col menu_fixed">
+        <div class="col-md-3 left_col menu_fixed"> <!--menu_fixed-->
             <?php 
             /*include*/
             $this->load->view('includes/menu');
@@ -217,6 +217,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </a>
                                     </div>
                                     <div class="animated flipInY col-lg-2 col-md-2 col-sm-2 col-xs-6">
+                                        <a class="btn-saleempleado" href="#">
+                                            <div class="bs-glyphicons">
+                                                <ul class="bs-glyphicons-list">
+                                                    <li>
+                                                        <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                                                        <span class="glyphicon-class" style="font-size: 14px;">
+                                                            Empleado
+                                                            <div>-<?php echo $this->session->userdata('sempleado').'-'; ?></div>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <?php if ($this->session->userdata('sclient') != NULL) { ?>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <div class="x_panel" style="background-color: #81a4ba;">
+                                            <div class="x_title" style="color: white;">
+                                                <h2>Info. Cliente</h2>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="x_content" style="color: white;">
+                                                Nombre: <?php echo $clientInList->nombre_usuario; ?><br />
+                                                Dirección: <?php echo $clientInList->direccion; ?> | 
+                                                Telefono: <?php echo $clientInList->numCelular; ?> |
+                                                Email: <?php echo $clientInList->email; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="animated flipInY col-lg-2 col-md-2 col-sm-2 col-xs-6">
                                         <a class="btn-saleinterno" href="#">
                                             <div class="">
                                                 <ul class="bs-glyphicons-list">
@@ -234,8 +266,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </div>
                                         </a>
                                     </div>
-                                </div>
-                                <div class="row">
+                                    <?php } ?>
                                     <?php if ($serviceInList != NULL){ ?>
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="x_panel">
@@ -384,22 +415,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </div>
                                     </div>
                                     <?php } ?>
-                                    <?php if ($this->session->userdata('sclient') != NULL) { ?>
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <div class="x_panel" style="background-color: #81a4ba;">
-                                            <div class="x_title" style="color: white;">
-                                                <h2>Info. Cliente</h2>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                            <div class="x_content" style="color: white;">
-                                                Nombre: <?php echo $clientInList->nombre_usuario; ?><br />
-                                                Dirección: <?php echo $clientInList->direccion; ?> | 
-                                                Telefono: <?php echo $clientInList->numCelular; ?> |
-                                                Email: <?php echo $clientInList->email; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
@@ -444,7 +459,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="controls">
                                 <input class="select2_single form-control" type="text" name="idcliente" id="idcliente" required="" />
                             </div>
-                            <br />    
+                            <br />
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
+                            <button type="submit" class="btn btn-primary">Agregar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!--Modal - empleado-->
+        <div class="modal fade" id="myModal-em" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-em" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form role="form" name="form_empleado_sale" action="<?php echo base_url() . 'index.php/CSale/addempleadosale'; ?>" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h3>Empleado</h3>
+                        </div>
+                        <div class="modal-body">
+                            <?php if ($this->session->userdata('sempleado') != NULL) { ?>
+                                <div class="alert alert-info">
+                                    Esta venta tiene asociado el Empleado Nro. Identificación: <?php echo $this->session->userdata('sempleado'); ?>
+                                </div>
+                            <?php } ?>
+                            <label class="control-label" for="select">Seleccione el Empleado</label>
+                            <div class="controls">
+                                <select class="select2_single form-control" id="idempleadoventa" name="idempleadoventa" data-rel="chosen">
+                                    <?php
+                                    foreach ($list_empleado as $row_empleado) {
+                                        ?>
+                                        <option value="<?php echo $row_empleado['idUsuario']; ?>" <?php if ($row_empleado['idUsuario'] == $this->session->userdata('sempleado')){ echo "selected"; }  ?>><?php echo $row_empleado['idUsuario'] . ' | ' . $row_empleado['nombre_usuario']; ?></option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <br />
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>

@@ -28,8 +28,6 @@
                     </a>
                 </li>
                 
-                
-                
                 <?php if ($this->MRecurso->validaRecurso(9)){ /*Registro de Venta*/ ?>
                 <li>
                     <a href="<?php echo base_url().'index.php/CSale/createsale'; ?>">
@@ -101,17 +99,22 @@
                 <?php } ?>
                 
                 <?php if ($this->MRecurso->validaRecurso(10)){ /*Reportes*/ ?>
-                <li><a><i class="fa fa-bar-chart-o"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                <li>
+                    <a href="<?php echo base_url().'index.php/CReport/module/reportSedes'; ?>">
+                        <i class="fa fa-bar-chart-o"></i> Reportes
+                    </a>
+                </li>
+<!--                <li><a><i class="fa fa-bar-chart-o"></i> Reportes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        <?php if ($this->MRecurso->validaRecurso(13)){ /*Ingresos por Sede*/ ?>
-                        <li><a href="<?php echo base_url().'index.php/CReport/module/reportSedes'; ?>">Ingresos General</a></li>
-                        <li><a href="<?php echo base_url().'index.php/CReport/module/reportGastos'; ?>">Registro de Gastos</a></li>
-                        <li><a href="<?php echo base_url().'index.php/CReport/module/reportGYP'; ?>">Estado G&P</a></li>
-                        <!--<li><a href="<?php // echo base_url().'index.php/CReport/module/reportNomina'; ?>">Liquidar Nómina</a></li>-->
+                        <?php // if ($this->MRecurso->validaRecurso(13)){ /*Ingresos por Sede*/ ?>
+                        <li><a href="<?php // echo base_url().'index.php/CReport/module/reportSedes'; ?>">Ingresos General</a></li>
+                        <li><a href="<?php // echo base_url().'index.php/CReport/module/reportGastos'; ?>">Registro de Gastos</a></li>
+                        <li><a href="<?php // echo base_url().'index.php/CReport/module/reportGYP'; ?>">Estado G&P</a></li>
+                        <li><a href="<?php // echo base_url().'index.php/CReport/module/reportNomina'; ?>">Liquidar Nómina</a></li>
                         <?php } ?>
                     </ul>
-                </li>
-                <?php } ?>
+                </li>-->
+                <?php // } ?>
                 
                 <?php if ($this->MRecurso->validaRecurso(12)){ /*Agendas*/ ?>
                 <li><a><i class="fa fa-calendar-check-o"></i> Agendas <span class="fa fa-chevron-down"></span></a>
@@ -128,14 +131,19 @@
                 <?php } ?>
                 
                 <?php if ($this->MRecurso->validaRecurso(10)){ /*Fidelizacion*/ ?>
-                <li><a><i class="fa fa-heart"></i> Fidelizacion <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <?php if ($this->MRecurso->validaRecurso(5)){ /*Fidelizacion*/ ?>
-                        <li><a href="<?php echo base_url().'index.php/CReport/module/reportFide'; ?>">Comportamiento de Clientes</a></li>
-                        <li><a href="<?php echo base_url().'index.php/CReport/module/reportBirthday'; ?>">Cumpleaños del Mes</a></li>
-                        <?php } ?>
-                    </ul>
+                <li>
+                    <a href="<?php echo base_url().'index.php/CReport/module/reportFide'; ?>">
+                        <i class="fa fa-heart"></i> Fidelizacion
+                    </a>
                 </li>
+<!--                <li><a><i class="fa fa-heart"></i> Fidelizacion <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <?php // if ($this->MRecurso->validaRecurso(5)){ /*Fidelizacion*/ ?>
+                        <li><a href="<?php // echo base_url().'index.php/CReport/module/reportFide'; ?>">Comportamiento de Clientes</a></li>
+                        <li><a href="<?php // echo base_url().'index.php/CReport/module/reportBirthday'; ?>">Cumpleaños del Mes</a></li>
+                        <?php // } ?>
+                    </ul>
+                </li>-->
                 <?php } ?>
             </ul>
         </div>
@@ -159,7 +167,7 @@
         <a data-toggle="tooltip" data-placement="top" title="Copyright Amadeus Soluciones" href="#">
             <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span>
         </a>
-        <a data-toggle="tooltip" data-placement="top" title="Version 1.0.5" href="#">
+        <a data-toggle="tooltip" data-placement="top" title="Version 1.2.0" href="#">
             <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
         </a>
         <a data-toggle="tooltip" data-placement="top" title="Salir" href="<?php echo base_url().'index.php/CPrincipal/logout'; ?>">

@@ -708,6 +708,42 @@ class MSale extends CI_Model {
     }
     
     /**************************************************************************
+     * Nombre del Metodo: add_empleado_sale
+     * Descripcion: Registra empleado en la venta
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 19/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function add_empleado_sale($idusuario,$idventa) {
+        
+        $this->db->trans_start();
+        $query = $this->db->query("UPDATE
+                                venta_maestro SET
+                                idEmpleadoAtiende = ".$idusuario."
+                                WHERE
+                                idVenta = ".$idventa."");
+
+        $this->db->trans_complete();
+        $this->db->trans_off();
+        
+        if ($this->db->trans_status() === FALSE){
+
+            return false;
+
+        } else {
+            
+            /*Setea el usuario como variable de sesion*/
+            $datos_session = array(
+                'sempleado' => $idusuario
+            );
+            
+            $this->session->set_userdata($datos_session);
+            return true;
+
+        }
+        
+    }
+    
+    /**************************************************************************
      * Nombre del Metodo: add_service
      * Descripcion: Registra servicio a la venta
      * Autor: jhonalexander90@gmail.com
