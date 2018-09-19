@@ -56,6 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 echo "Fecha Registro: ".$general->fechaLiquida."<br />"; 
                                 echo "Liquida: ".$general->personaLiquida." [".$general->idUsuarioLiquida."]<br />";
                                 echo "Cliente: ".$general->personaCliente." [CC. ".$general->idUsuarioCliente."]<br />";
+                                echo "Atiende: ".$general->personaAtiende." [CC. ".$general->idEmpleadoAtiende."]<br />";
                                 ?>
                                 <hr />
                                 <?php
@@ -65,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     echo "--";
                                 } else {
                                     foreach ($servicios as $valueServ) {
-                                        echo $valueServ['descServicio']." -> Cantidad: ".$valueServ['cantidad']." -> $".number_format($valueServ['valor'],0,',','.')."<br />[Profesional: ".$valueServ['nombreEmpleado']."]<br /><br />";
+                                        echo $valueServ['descServicio']." -> Cantidad: ".$valueServ['cantidad']." -> $".number_format($valueServ['valor'],0,',','.')."<br />";
                                     }
                                 }
 
@@ -75,7 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     echo "--";
                                 } else {
                                     foreach ($productos as $valueProd) {
-                                        echo $valueProd['descProducto']." -> Cantidad: ".$valueProd['cantidad']." -> $".number_format($valueProd['valor'],0,',','.')."<br />[Profesional: ".$valueServ['nombreEmpleado']."]<br /><br />";
+                                        echo $valueProd['descProducto']." -> Cantidad: ".$valueProd['cantidad']." -> $".number_format($valueProd['valor'],0,',','.')."<br />";
                                     }
                                 }
 
@@ -85,16 +86,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     echo "--";
                                 } else {
                                     foreach ($adicional as $valueAdic) {
-                                        echo $valueAdic['cargoEspecial']." -> $".number_format($valueAdic['valor'],0,',','.')."<br />[Profesional: ".$valueServ['nombreEmpleado']."]<br /><br />";
+                                        echo $valueAdic['cargoEspecial']." -> $".number_format($valueAdic['valor'],0,',','.')."<br />";
                                     }
                                 }
                                 ?>
                                 <hr />
                                 <?php
                                 echo "<h3>";
-                                echo "Descuento: ".($general->porcenDescuento*100)."% *Solo aplica a servicios<br />";
-                                echo "Valor Total: $".number_format($general->valorTotalVenta,0,',','.')."<br />";
-                                echo "Valor Pagado: $".number_format($general->valorLiquida,0,',','.')."<br />";
+                                echo "<B>Subtotal 1: $".number_format($general->valorTotalVenta,0,',','.')."</B><br />";
+                                echo "Descuento: $".number_format($general->valorTotalVenta-($general->valorLiquida),0,',','.')." *Solo aplica a servicios<br />";
+                                echo "<B>Subtotal 2: $".number_format($general->valorLiquida,0,',','.')."</B><br />";
+                                echo "Atención: $".number_format($general->valorLiquida*$general->porcenServicio,0,',','.')."<br />";
+                                echo "<B>Valor Pagado: $".number_format($general->valorLiquida+($general->valorLiquida*$general->porcenServicio),0,',','.')."</B><br />";
                                 echo "</h3>";
                                 ?>
                             </div>

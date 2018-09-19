@@ -135,6 +135,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="x_panel">
                         <div class="x_title">
                             <h2>Detalle</h2>
+                            <br /><br />
+                            <B>Venta:</B> valor antes de aplicar descuento y propina |
+                            <B>Liquidado:</B> valor con descuento a servicios |
+                            <B>Ingreso en Caja:</B> Liquidado + Propina
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                 </li>
@@ -149,7 +153,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <th>Fecha</th>
                                         <th>Recibo</th>
                                         <th>Venta</th>
-                                        <th>Liquida</th>
+                                        <th>Liquidado</th>
+                                        <th>Propina</th>
                                         <th>Estado</th>
                                         <th>Forma de Pago</th>
                                         <th>Acción</th>
@@ -165,6 +170,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td class="center red"><?php echo $row_pay['nroRecibo']; ?></td>
                                             <td class="center red">$<?php echo number_format($row_pay['valorVenta'],0,',','.'); ?></td>
                                             <td class="center red">$<?php echo number_format($row_pay['valorLiquida'],0,',','.'); ?></td>
+                                            <td class="center red">$<?php echo number_format($row_pay['popina_servicio'],0,',','.'); ?></td>
                                             <td class="center blue"><small><?php echo $row_pay['descEstadoRecibo']; ?></small></td>
                                             <td class="center blue"><small><?php echo $row_pay['descFormaPago']; ?></small></td>
                                             <td class="center">

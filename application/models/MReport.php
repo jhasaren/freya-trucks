@@ -35,6 +35,7 @@ class MReport extends CI_Model {
                                 f.descFormaPago,
                                 f.distribucionPago as distribucionEntidadPago,
                                 (m.valorLiquida*f.distribucionPago) as valorDistribucionEntidadPago,
+                                (m.valorLiquida*m.porcenServicio) as popina_servicio,
                                 t.descEstadoRecibo
                                 FROM venta_maestro m
                                 JOIN forma_de_pago f ON f.idFormaPago = m.idFormaPago
@@ -126,12 +127,16 @@ class MReport extends CI_Model {
                                 vm.motivoAnula,
                                 vm.usuarioAnula,
                                 vm.fechaAnula,
-                                vm.nroTurno
+                                vm.nroTurno,
+                                vm.idEmpleadoAtiende,
+                                CONCAT(ae.nombre,' ',ae.apellido) as personaAtiende,
+                                vm.porcenServicio
                                 FROM
                                 venta_maestro vm
                                 JOIN tipo_estado_recibo t ON t.idEstadoRecibo = vm.idEstadoRecibo
                                 JOIN app_usuarios au ON au.idUsuario = vm.idUsuarioLiquida
                                 JOIN app_usuarios ac ON ac.idUsuario = vm.idUsuarioCliente
+                                LEFT JOIN app_usuarios ae ON ae.idUsuario = vm.idEmpleadoAtiende
                                 WHERE
                                 vm.idVenta = ".$idventa."");
         
@@ -160,10 +165,15 @@ class MReport extends CI_Model {
                                 m.valorLiquida,
                                 f.descFormaPago,
                                 m.idSede,
-                                s.nombreSede
+                                s.nombreSede,
+                                m.porcenServicio,
+                                (m.valorLiquida*m.porcenServicio) as popina_servicio,
+                                m.idEmpleadoAtiende,
+                                concat(u.nombre,' ',u.apellido) as empleado
                                 FROM venta_maestro m
                                 JOIN forma_de_pago f ON f.idFormaPago = m.idFormaPago
                                 JOIN sede s ON s.idSede = m.idSede
+                                LEFT JOIN app_usuarios u ON u.idUsuario = m.idEmpleadoAtiende
                                 WHERE
                                 m.idEstadoRecibo = 5
                                 AND m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
@@ -303,7 +313,15 @@ class MReport extends CI_Model {
                                     g.idEstadoGasto = 2
                                     AND g.idSede = m.idSede
                                     AND g.fechaPago BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
-                                ) as valorGastos
+                                ) as valorGastos,
+                                (
+                                    SELECT
+                                    sum(ma.valorLiquida*ma.porcenServicio) as popina_servicio
+                                    FROM venta_maestro ma
+                                    WHERE
+                                    ma.idEstadoRecibo = 5
+                                    AND ma.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                ) as propina_servicio
                                 FROM venta_maestro m
                                 /*JOIN forma_de_pago f ON f.idFormaPago = m.idFormaPago*/
                                 JOIN sede s ON s.idSede = m.idSede
