@@ -104,7 +104,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         
                                         <label class="control-label" for="pagacon">Paga con ($)</label>
                                         <input type="number" class="form-control" id="pagacon" name="pagacon" required="" >
-                                        <input type="hidden" class="form-control" id="totalPago" name="totalPago" value="<?php echo ($totalservicios+$totalproductos+$totaladicional); ?>" >
+                                        <input type="hidden" class="form-control" id="totalPago" name="totalPago" value="<?php echo ($totalservicios+$totalproductos+$totaladicional)+(($totalservicios+$totalproductos+$totaladicional)*$this->session->userdata('sservicio')/100); ?>" >
+                                        <input type="hidden" class="form-control" id="recibo" name="porcServiceVenta" value="<?php echo $this->session->userdata('sservicio'); ?>" >
                                         <input type="hidden" class="form-control" id="recibo" name="recibo" value="<?php echo $nrorecibo; ?>" >
                                         <br />
                                         <label for="formapago">Forma de Pago</label>
@@ -193,16 +194,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 }
                                                 ?>
                                                 <tr style="font-size: 12px; font-weight:bold;">
-                                                    <td align="left">Subtotal:</td>
+                                                    <td align="left">Subtotal 1:</td>
                                                     <td align="right">$<?php echo number_format($detalleRecibo['general']->valorTotalVenta,0,',','.'); ?></td>
                                                 </tr>   
                                                 <tr style="font-size: 12px;">
                                                     <td align="left">Descuento(<?php echo ($detalleRecibo['general']->porcenDescuento*100); ?>%):</td>
-                                                    <td align="right">$<?php echo number_format(($detalleRecibo['general']->valorTotalVenta-$detalleRecibo['general']->valorLiquida),0,',','.'); ?></td>
+                                                    <td align="right">-$<?php echo number_format(($detalleRecibo['general']->valorTotalVenta-$detalleRecibo['general']->valorLiquida),0,',','.'); ?></td>
+                                                </tr>
+                                                <tr style="font-size: 12px; font-weight:bold;">
+                                                    <td align="left">Subtotal 2:</td>
+                                                    <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida,0,',','.'); ?></td>
+                                                </tr>  
+                                                <tr style="font-size: 12px;">
+                                                    <td align="left">Servicio(<?php echo ($this->session->userdata('sservicio')); ?>%):</td>
+                                                    <td align="right">+$<?php echo number_format(($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100),0,',','.'); ?></td>
                                                 </tr>
                                                 <tr style="font-size: 18px; font-weight:bold;">
                                                     <td align="left">Total a Pagar:</td>
-                                                    <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida,0,',','.'); ?></td>
+                                                    <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100),0,',','.'); ?></td>
                                                 </tr>
                                                 <tr style="font-size: 12px;">
                                                     <td align="left">Paga con:</td>

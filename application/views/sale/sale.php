@@ -88,8 +88,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     $valorConceptos = $serviceSubtotal+$productoSubtotal+$adicionalSubtotal;
                                     $subtotal = ($valorConceptos)-($serviceSubtotal*($this->session->userdata('sdescuento')/100));
                                     ?>
-                                    <div style="color: #000000;">Descuento: <?php echo $this->session->userdata('sdescuento')."%"; ?></div>
-                                    <h1 style="color: #000000;">Subtotal: $<?php echo number_format($subtotal,0,',','.'); ?></h1>
+                                    <div style="color: #000000; font-size: 16px">Descuento: <?php echo $this->session->userdata('sdescuento')."%-($".number_format($valorConceptos,0,',','.').")"; ?></div>
+                                    <div style="color: #000000; font-size: 16px">Servicio: <?php echo $this->session->userdata('sservicio')."%+($".number_format($subtotal,0,',','.').")"; ?></div>
+                                    <span style="color: #000000; font-size: 28px">Subtotal: $<?php echo number_format($subtotal+(($subtotal*$this->session->userdata('sservicio'))/100),0,',','.'); ?></span>
                                 </span>
                             </div>
                         </div>
@@ -207,8 +208,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <li>
                                                         <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
                                                         <span class="glyphicon-class" style="font-size: 14px;">
-                                                            Descuento
-                                                            <div><?php echo $this->session->userdata('sdescuento')."%"; ?></div>
+                                                            Servicio/Descuento
+                                                            <div><?php echo $this->session->userdata('sservicio')."% / ".$this->session->userdata('sdescuento')."%"; ?></div>
                                                         </span>
                                                     </li>
                                                 </ul>
@@ -671,11 +672,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <form role="form" name="form_descuento" action="<?php echo base_url() . 'index.php/CSale/addporcentdesc'; ?>" method="post">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
-                            <h3>Descuento</h3>
+                            <h3>Servicio/Descuento</h3>
                         </div>
                         <div class="modal-body">
-                            <label class="control-label" for="Porcentaje">Porcentaje (%) *Solo aplicable a Servicios</label>
-                            <input type="tel" class="form-control" id="procentaje" name="procentaje" required="" autocomplete="off" pattern="\d*">
+                            <label class="control-label" for="Porcentaje">Servicio Voluntario (%)</label>
+                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="Servicio" value="<?php if ($this->session->userdata('sservicio')){ echo $this->session->userdata('sservicio'); } else { echo $this->config->item('procen_servicio'); } ?>" required="" autocomplete="off" pattern="\d*">
+                            <br />
+                            <label class="control-label" for="Porcentaje">Descuento (%) *Solo aplicable a Plato Fuerte</label>
+                            <input type="tel" class="form-control" id="procentaje" name="procentaje" placeholder="Descuento" value="<?php if ($this->session->userdata('sdescuento')){ echo $this->session->userdata('sdescuento'); } else { echo 0; } ?>" required="" autocomplete="off" pattern="\d*">
                             <br />
                         </div>
                         <div class="modal-footer">

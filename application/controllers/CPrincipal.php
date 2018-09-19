@@ -154,6 +154,8 @@ class CPrincipal extends CI_Controller {
                             log_message("DEBUG", "=================================");
                             log_message("DEBUG", $_SERVER['REMOTE_HOST']);
                             log_message("DEBUG", $_SERVER['REMOTE_ADDR']);
+                            log_message("DEBUG", $this->session->userdata('validated'));
+                            log_message("DEBUG", $this->session->userdata('userid'));
                             log_message("DEBUG", "=================================");
 
                             $this->index();

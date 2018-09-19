@@ -34,12 +34,14 @@ class MSale extends CI_Model {
                                     idEstadoRecibo,
                                     idUsuarioLiquida,
                                     porcenDescuento,
+                                    porcenServicio,
                                     idSede
                                     ) VALUES (
                                     NOW(),
                                     0,
                                     4,
                                     ".$idusuario.",
+                                    0,
                                     0,
                                     ".$this->session->userdata('sede')."
                                     )");
@@ -1020,12 +1022,13 @@ class MSale extends CI_Model {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 30/03/2017, Ultima modificacion: 
      **************************************************************************/
-    public function add_porcentaje_desc($porcentaje) {
+    public function add_porcentaje_desc($porcentaje,$porcentajeServ) {
         
         $this->db->trans_start();
         $this->db->query("UPDATE
                         venta_maestro SET
-                        porcenDescuento = ".$porcentaje."
+                        porcenDescuento = ".$porcentaje.",
+                        porcenServicio = ".$porcentajeServ."
                         WHERE
                         idVenta = ".$this->session->userdata('idSale')."
                         ");
@@ -1038,9 +1041,10 @@ class MSale extends CI_Model {
 
         } else {
             
-            /*Setea el usuario como variable de sesion*/
+            /*Setea el descuento y servicio como variable de sesion*/
             $datos_session = array(
-                'sdescuento' => ($porcentaje*100)
+                'sdescuento' => ($porcentaje*100),
+                'sservicio' => ($porcentajeServ*100)
             );
             
             $this->session->set_userdata($datos_session);

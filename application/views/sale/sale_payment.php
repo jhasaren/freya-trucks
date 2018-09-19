@@ -133,16 +133,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     }
                                     ?>
                                     <tr style="font-size: 12px; font-weight:bold;">
-                                        <td align="left">Subtotal:</td>
+                                        <td align="left">Subtotal 1:</td>
                                         <td align="right">$<?php echo number_format($detalleRecibo['general']->valorTotalVenta,0,',','.'); ?></td>
                                     </tr>   
                                     <tr style="font-size: 12px;">
                                         <td align="left">Descuento(<?php echo ($detalleRecibo['general']->porcenDescuento*100); ?>%):</td>
-                                        <td align="right">$<?php echo number_format(($detalleRecibo['general']->valorTotalVenta-$detalleRecibo['general']->valorLiquida),0,',','.'); ?></td>
+                                        <td align="right">-$<?php echo number_format(($detalleRecibo['general']->valorTotalVenta-$detalleRecibo['general']->valorLiquida),0,',','.'); ?></td>
+                                    </tr>
+                                    <tr style="font-size: 12px; font-weight:bold;">
+                                        <td align="left">Subtotal 2:</td>
+                                        <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida,0,',','.'); ?></td>
+                                    </tr>  
+                                    <tr style="font-size: 12px;">
+                                        <td align="left">Servicio(<?php echo ($this->session->userdata('sservicio')); ?>%):</td>
+                                        <td align="right">+$<?php echo number_format(($detalleRecibo['general']->valorLiquida*$porcServiceVenta/100),0,',','.'); ?></td>
                                     </tr>
                                     <tr style="font-size: 18px; font-weight:bold;">
-                                        <td align="left">Total:</td>
-                                        <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida,0,',','.'); ?></td>
+                                        <td align="left">Total a Pagar:</td>
+                                        <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$porcServiceVenta/100),0,',','.'); ?></td>
                                     </tr>
                                     <tr style="font-size: 12px;">
                                         <td align="left">Paga con:</td>
@@ -150,7 +158,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     </tr>
                                     <tr style="font-size: 12px;">
                                         <td align="left">Cambio:</td>
-                                        <td align="right">$<?php echo number_format($cambio,0,',','.'); ?></td>
+                                        <td align="right">$<?php echo number_format($pagacon-($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$porcServiceVenta/100)),0,',','.'); ?></td>
                                     </tr>                                
                                 </table>
                                 <center style="font-size: 12px;">

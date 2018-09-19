@@ -265,7 +265,7 @@ class CSale extends CI_Controller {
                                     
                                     $info['list_forma_pago'] = $this->MSale->list_forma_pago(); /*lista formas de pago*/
                                     $info['idmessage'] = 1;
-                                    $info['message'] = "Total a Pagar: $".number_format($valorLiquidaVenta,0,',','.');
+                                    $info['message'] = "Total a Pagar: $".number_format($valorLiquidaVenta+($valorLiquidaVenta*$this->session->userdata('sservicio'))/100,0,',','.');
                                     $info['descuento'] = $totalDescuento;
                                     $info['totalservicios'] = $valorPagoServicios;
                                     $info['totalproductos'] = $totalProductos;
@@ -495,6 +495,7 @@ class CSale extends CI_Controller {
                         /*captura variables*/
                         $pagacon = $this->input->post('pagacon');
                         $totalPago = $this->input->post('totalPago');
+                        $porcServiceVenta = $this->input->post('porcServiceVenta');
                         $recibo = $this->input->post('recibo');
                         $dataFormaPago = explode("|", $this->input->post('formapago'));
                         $formaPago = $dataFormaPago[0];
@@ -556,10 +557,12 @@ class CSale extends CI_Controller {
                                 $this->session->unset_userdata('sclient'); 
                                 $this->session->unset_userdata('idSale'); 
                                 $this->session->unset_userdata('sdescuento');
+                                $this->session->unset_userdata('sservicio');
 
                                 $info['totalventa'] = $totalPago;
+                                $info['porcServiceVenta'] = $porcServiceVenta;
                                 $info['pagacon'] = $pagacon;
-                                $info['cambio'] = $pagacon-$totalPago;
+                                $info['cambio'] = $pagacon-($totalPago+($totalPago*$porcServiceVenta/100));
                                 $info['detalleRecibo'] = $detailRecibo; 
                                 $info['turno'] = $turno; 
                                 $info['idmessage'] = 1;
@@ -980,11 +983,14 @@ class CSale extends CI_Controller {
                     /*Captura Variables*/
                     $descuento = $this->input->post('procentaje');
                     $porcentaje = $descuento / 100;
+                    
+                    $servicio = $this->input->post('porcen_servicio');
+                    $porcentajeServ = $servicio / 100;
 
-                    if ($this->jasr->validaTipoString($descuento,3)){
+                    if ($this->jasr->validaTipoString($descuento,3) && $this->jasr->validaTipoString($servicio,3)){
 
                         /*Envia datos al modelo para el registro*/
-                        $registerData = $this->MSale->add_porcentaje_desc($porcentaje);
+                        $registerData = $this->MSale->add_porcentaje_desc($porcentaje,$porcentajeServ);
 
                         if ($registerData == TRUE){
 
