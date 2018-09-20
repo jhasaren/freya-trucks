@@ -267,7 +267,7 @@ class CSale extends CI_Controller {
 
                                         $info['list_forma_pago'] = $this->MSale->list_forma_pago(); /*lista formas de pago*/
                                         $info['idmessage'] = 1;
-                                        $info['message'] = "Total a Pagar: $".number_format($valorLiquidaVenta+($valorLiquidaVenta*$this->session->userdata('sservicio'))/100,0,',','.');
+                                        $info['message'] = $valorLiquidaVenta+($valorLiquidaVenta*$this->session->userdata('sservicio'))/100;
                                         $info['descuento'] = $totalDescuento;
                                         $info['totalservicios'] = $valorPagoServicios;
                                         $info['totalproductos'] = $totalProductos;
@@ -375,7 +375,7 @@ class CSale extends CI_Controller {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 06/04/2017, Ultima modificacion: 
      **************************************************************************/
-    public function restoresale($idVenta,$usuario,$porcent) {
+    public function restoresale($idVenta,$usuario,$porcent,$porcentServ,$idEmpleado) {
         
         if ($this->session->userdata('validated')) {
             
@@ -385,7 +385,9 @@ class CSale extends CI_Controller {
                 $datos_session = array(
                     'idSale' => $idVenta,
                     'sclient' => $usuario,
-                    'sdescuento' => ($porcent*100)
+                    'sdescuento' => ($porcent*100),
+                    'sservicio' => ($porcentServ*100),
+                    'sempleado' => $idEmpleado
                 );
 
                 $this->session->set_userdata($datos_session);
@@ -419,9 +421,11 @@ class CSale extends CI_Controller {
             
             if ($this->MRecurso->validaRecurso(9)){
             
-                $this->session->unset_userdata('sclient'); 
+                $this->session->unset_userdata('sclient');
+                $this->session->unset_userdata('sempleado');
                 $this->session->unset_userdata('idSale'); 
                 $this->session->unset_userdata('sdescuento');
+                $this->session->unset_userdata('sservicio');
 
                 $this->createsale();
             
@@ -459,6 +463,7 @@ class CSale extends CI_Controller {
                     $this->session->unset_userdata('sempleado');
                     $this->session->unset_userdata('idSale'); 
                     $this->session->unset_userdata('sdescuento');
+                    $this->session->unset_userdata('sservicio');
 
                     $this->createsale();
 
@@ -504,94 +509,116 @@ class CSale extends CI_Controller {
                     } else {
 
                         /*captura variables*/
-                        $pagacon = $this->input->post('pagacon');
-                        $totalPago = $this->input->post('totalPago');
-                        $porcServiceVenta = $this->input->post('porcServiceVenta');
-                        $recibo = $this->input->post('recibo');
-                        $dataFormaPago = explode("|", $this->input->post('formapago'));
-                        $formaPago = $dataFormaPago[0];
-                        $porcenFormaPago = $dataFormaPago[1];
+                        $pagavalor = $this->input->post('pagavalor'); /*valor que paga*/
+                        $refPago = $this->input->post('ref_pago'); /*referencia del pago*/
+                        $valuePayFormas = $this->input->post('valuepagado'); /*valor ya pagado*/
+                        $totalPago = $this->input->post('totalPago'); /*valor total que debe pagar*/
+                        $porcServiceVenta = $this->input->post('porcServiceVenta'); /*porcentaje del servicio*/
+                        $recibo = $this->input->post('recibo'); /*numero de recibo*/
+                        $formaPago = $this->input->post('formapago'); /*tipo de forma de pago*/
+                        $mixpayment = $this->input->post('mixpayment'); /*si el pago es mixto*/
+                        
+                        if ($mixpayment != 'on'){
+                        
+                            if (($pagavalor+$valuePayFormas) < $totalPago){
 
-                        if ($pagacon < $totalPago){
-
-                            $info['idmessage'] = 2;
-                            $info['message'] = "No es posible registrar pago de la venta. El valor recibido es menor que el total a pagar";
-                            $this->module($info);
-
-                        } else {
-
-                            /*Enviar al modelo para registrar pago*/
-                            $registerPay = $this->MSale->pay_register_sale($formaPago,$porcenFormaPago);
-
-                            if ($registerPay == TRUE){
-
-                                /*Obtiene datos del cliente*/
-                                $datosCliente = $this->MUser->get_user($this->session->userdata('sclient')); 
-
-                                /*Obtiene detalle del recibo*/
-                                $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
-                                
-                                /*Asignacion de Turno*/
-                                if ($detailRecibo['general']->nroTurno == NULL){
-                                    
-                                    $turno = $this->MSale->consecutivo_turno_sale(1,$this->session->userdata('idSale'));
-                                    
-                                } else {
-                                    
-                                   $turno = $detailRecibo['general']->nroTurno; 
-                                    
-                                }
-                                
-                                /*Crea PDF del Recibo*/
-                                $reciboPDF = $this->detallerecibopdf($this->session->userdata('idSale'),$recibo,$detailRecibo);
-                                
-                                /*Envia datos al Modelo para notificar al cliente por correo*/
-                                //$notificaPago = $this->MNotify->notifica_pago_venta($recibo,$datosCliente->nombre." ".$datosCliente->apellido,$datosCliente->idUsuario,$datosCliente->email);
-
-                                if ($reciboPDF == TRUE){
-
-                                    log_message("DEBUG", "-----------------------------------");
-                                    log_message("DEBUG", "PDF Recibo generado correctamente");
-                                    log_message("DEBUG", "-----------------------------------");
-
-                                }
-
-                                if ($notificaPago == TRUE){
-
-                                    log_message("DEBUG", "-----------------------------------");
-                                    log_message("DEBUG", "Email Notificacion enviada exitosamente");
-                                    log_message("DEBUG", "-----------------------------------");
-
-                                }
-
-                                /*elimina variables de sesion de la venta*/
-                                $this->session->unset_userdata('sclient'); 
-                                $this->session->unset_userdata('sempleado');
-                                $this->session->unset_userdata('idSale'); 
-                                $this->session->unset_userdata('sdescuento');
-                                $this->session->unset_userdata('sservicio');
-
-                                $info['totalventa'] = $totalPago;
-                                $info['porcServiceVenta'] = $porcServiceVenta;
-                                $info['pagacon'] = $pagacon;
-                                $info['cambio'] = $pagacon-($totalPago+($totalPago*$porcServiceVenta/100));
-                                $info['detalleRecibo'] = $detailRecibo; 
-                                $info['turno'] = $turno; 
-                                $info['idmessage'] = 1;
-                                $info['message'] = "Pago registrado exitosamente";
-
-                                $this->load->view('sale/sale_payment',$info);
+                                $info['idmessage'] = 2;
+                                $info['message'] = "No es posible registrar pago de la venta. El valor recibido es menor que el total a pagar";
+                                $this->module($info);
 
                             } else {
 
-                                $info['idmessage'] = 2;
-                                $info['message'] = "No es posible registrar pago de la venta. Por favor intente nuevamente";
-                                $this->module($info);
+                                /*Enviar al modelo para registrar pago*/
+                                $registerPay = $this->MSale->pay_register_sale($formaPago,($totalPago-$valuePayFormas),$refPago,$mixpayment);
+
+                                if ($registerPay == TRUE){
+
+                                    /*Obtiene datos del cliente*/
+                                    $datosCliente = $this->MUser->get_user($this->session->userdata('sclient')); 
+
+                                    /*Obtiene detalle del recibo*/
+                                    $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
+
+                                    /*Asignacion de Turno*/
+                                    if ($detailRecibo['general']->nroTurno == NULL){
+
+                                        $turno = $this->MSale->consecutivo_turno_sale(1,$this->session->userdata('idSale'));
+
+                                    } else {
+
+                                       $turno = $detailRecibo['general']->nroTurno; 
+
+                                    }
+
+                                    /*Crea PDF del Recibo*/
+                                    $reciboPDF = $this->detallerecibopdf($this->session->userdata('idSale'),$recibo,$detailRecibo);
+
+                                    /*Envia datos al Modelo para notificar al cliente por correo*/
+                                    //$notificaPago = $this->MNotify->notifica_pago_venta($recibo,$datosCliente->nombre." ".$datosCliente->apellido,$datosCliente->idUsuario,$datosCliente->email);
+
+                                    if ($reciboPDF == TRUE){
+
+                                        log_message("DEBUG", "-----------------------------------");
+                                        log_message("DEBUG", "PDF Recibo generado correctamente");
+                                        log_message("DEBUG", "-----------------------------------");
+
+                                    }
+
+                                    if ($notificaPago == TRUE){
+
+                                        log_message("DEBUG", "-----------------------------------");
+                                        log_message("DEBUG", "Email Notificacion enviada exitosamente");
+                                        log_message("DEBUG", "-----------------------------------");
+
+                                    }
+
+                                    /*elimina variables de sesion de la venta*/
+                                    $this->session->unset_userdata('sclient'); 
+                                    $this->session->unset_userdata('sempleado');
+                                    $this->session->unset_userdata('idSale'); 
+                                    $this->session->unset_userdata('sdescuento');
+                                    $this->session->unset_userdata('sservicio');
+
+                                    $info['totalventa'] = $totalPago;
+                                    $info['porcServiceVenta'] = $porcServiceVenta;
+                                    $info['pagacon'] = $pagavalor;
+                                    $info['cambio'] = (($pagavalor+$valuePayFormas)-$totalPago);
+                                    $info['detalleRecibo'] = $detailRecibo; 
+                                    $info['turno'] = $turno; 
+                                    $info['idmessage'] = 1;
+                                    $info['message'] = "Pago registrado exitosamente";
+
+                                    $this->load->view('sale/sale_payment',$info);
+
+                                } else {
+
+                                    $info['idmessage'] = 2;
+                                    $info['message'] = "No es posible registrar pago de la venta. Por favor intente nuevamente";
+                                    $this->module($info);
+
+                                }
 
                             }
-
+                            
+                        } else {
+                            
+                            /*Enviar al modelo para registrar pago*/
+                            $registerPay = $this->MSale->pay_register_sale($formaPago,$pagavalor,$refPago,$mixpayment);
+                            
+                            if ($registerPay){
+                                
+                                $this->liquidasale();
+                                
+                            } else {
+                                
+                                $info['idmessage'] = 2;
+                                $info['message'] = "No es posible registrar la forma de pago. Por favor intente nuevamente";
+                                $this->module($info);
+                                
+                            }
+                            
                         }
-
+                        
                     }
 
                 } else {
@@ -1320,7 +1347,7 @@ class CSale extends CI_Controller {
                 $pdf->Output("./files/recibos/$output", 'F');
                 
                 /*Consecutivo Turno (1-99)*/
-                //$turno = $this->MSale->consecutivo_turno_sale(1);
+                //$turno = $this->MSale->consecutivo_turno_sale(1,$this->session->userdata('idSale'));
                 
                 /*Imprime Ticket Cliente*/
                 //$this->imprimeticket($reciboDetalle,$turno);

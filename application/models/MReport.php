@@ -32,13 +32,9 @@ class MReport extends CI_Model {
                                 m.nroRecibo,
                                 m.valorTotalVenta as valorVenta,
                                 m.valorLiquida,
-                                f.descFormaPago,
-                                f.distribucionPago as distribucionEntidadPago,
-                                (m.valorLiquida*f.distribucionPago) as valorDistribucionEntidadPago,
                                 (m.valorLiquida*m.porcenServicio) as popina_servicio,
                                 t.descEstadoRecibo
                                 FROM venta_maestro m
-                                JOIN forma_de_pago f ON f.idFormaPago = m.idFormaPago
                                 JOIN tipo_estado_recibo t ON t.idEstadoRecibo = m.idEstadoRecibo
                                 WHERE
                                 m.idEstadoRecibo IN (5,3)
@@ -140,10 +136,20 @@ class MReport extends CI_Model {
                                 WHERE
                                 vm.idVenta = ".$idventa."");
         
+        $queryFormaPago = $this->db->query("SELECT
+                                f.idTipoPago,
+                                t.descTipoPago,
+                                f.valorPago,
+                                f.referenciaPago
+                                FROM forma_de_pago f
+                                JOIN tipo_forma_pago t ON t.idTipoPago = f.idTipoPago
+                                WHERE f.idVenta = ".$idventa."");
+        
         $data['servicios'] = $queryServ->result_array();
         $data['productos'] = $queryProd->result_array();
         $data['adicional'] = $queryAdic->result_array();
         $data['general'] = $queryGeneral->row();
+        $data['formaPago'] = $queryFormaPago->result_array();
         
         return $data;
         
@@ -163,7 +169,6 @@ class MReport extends CI_Model {
                                 m.nroRecibo,
                                 m.valorTotalVenta as valorVenta,
                                 m.valorLiquida,
-                                f.descFormaPago,
                                 m.idSede,
                                 s.nombreSede,
                                 m.porcenServicio,
@@ -171,7 +176,6 @@ class MReport extends CI_Model {
                                 m.idEmpleadoAtiende,
                                 concat(u.nombre,' ',u.apellido) as empleado
                                 FROM venta_maestro m
-                                JOIN forma_de_pago f ON f.idFormaPago = m.idFormaPago
                                 JOIN sede s ON s.idSede = m.idSede
                                 LEFT JOIN app_usuarios u ON u.idUsuario = m.idEmpleadoAtiende
                                 WHERE
@@ -292,7 +296,6 @@ class MReport extends CI_Model {
                                 s.nombreSede,
                                 sum(m.valorTotalVenta) as valorVenta,
                                 sum(m.valorLiquida) as valorLiquida,
-                                sum(m.valorLiquida*m.porcenFormaPago) as valorDistribucionEntidadPago,
                                 (sum(m.valorTotalVenta)-sum(m.valorLiquida)) as valorDesctoServ,
                                 (
                                     SELECT
@@ -323,7 +326,6 @@ class MReport extends CI_Model {
                                     AND ma.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                 ) as propina_servicio
                                 FROM venta_maestro m
-                                /*JOIN forma_de_pago f ON f.idFormaPago = m.idFormaPago*/
                                 JOIN sede s ON s.idSede = m.idSede
                                 WHERE
                                 m.idEstadoRecibo = 5
@@ -692,16 +694,12 @@ class MReport extends CI_Model {
     public function payment_entidades($fechaIni,$fechaFin) {
                     
         $querySede = $this->db->query("SELECT
-                                    v.idFormaPago,
-                                    f.descFormaPago,
                                     sum(v.valorLiquida) AS sumPago
                                     FROM
                                     venta_maestro v
-                                    JOIN forma_de_pago f ON f.idFormaPago = v.idFormaPago
                                     WHERE
                                     v.idEstadoRecibo = 5
-                                    AND v.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
-                                    GROUP BY v.idFormaPago");
+                                    AND v.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
         
         if ($querySede->num_rows() == 0) {
             

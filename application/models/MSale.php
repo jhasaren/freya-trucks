@@ -534,13 +534,11 @@ class MSale extends CI_Model {
         
             /*Recupera los servicios creados*/
             $query = $this->db->query("SELECT
-                                    f.idFormaPago,
-                                    f.descFormaPago,
-                                    f.distribucionPago
-                                    FROM
-                                    forma_de_pago f
-                                    WHERE activo = 'S'
-                                    ORDER BY 1 ASC");
+                                        idTipoPago,
+                                        descTipoPago
+                                        FROM tipo_forma_pago
+                                        WHERE activo = 'S'
+                                        ORDER BY 1 ASC");
 
             $this->cache->memcached->save('mListFormaPago', $query->result_array(), 28800); /*8 horas en Memoria*/
             $this->cache->memcached->save('memcached17', 'real', 30);
@@ -916,19 +914,57 @@ class MSale extends CI_Model {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 02/04/2017, Ultima modificacion: 
      **************************************************************************/
-    public function pay_register_sale($formaPago,$porcenFormaPago) {
+    public function pay_register_sale($formaPago,$pagavalor,$refPago,$mix) {
         
-        $this->db->trans_start();        
-        $this->db->query("UPDATE
-                        venta_maestro SET
-                        idEstadoRecibo = 5,
-                        idFormaPago = ".$formaPago.",
-                        porcenFormaPago = ".$porcenFormaPago."
-                        WHERE
-                        idVenta = ".$this->session->userdata('idSale')."
-                        ");
-        $this->db->trans_complete();
-        $this->db->trans_off();
+        /*Recupera la informacion en forma de pago de la venta*/
+        $dataFormaPago = $this->db->query("SELECT
+                                        *
+                                        FROM
+                                        forma_de_pago
+                                        WHERE
+                                        idVenta = ".$this->session->userdata('idSale')."
+                                        AND idTipoPago = ".$formaPago."
+                                        AND referenciaPago = '".$refPago."'
+                                        ");
+        
+        if ($dataFormaPago->num_rows() > 0){ /*si ya tiene registro con la misma referencia*/
+            
+            /*Actualiza el registro de forma de pago*/
+            $this->db->trans_start();        
+            $this->db->query("UPDATE
+                            forma_de_pago SET
+                            valorPago = ".$pagavalor."
+                            WHERE
+                            idVenta = ".$this->session->userdata('idSale')."
+                            AND idTipoPago = ".$formaPago."
+                            AND referenciaPago = '".$refPago."'
+                            ");
+            $this->db->trans_complete();
+            $this->db->trans_off();
+            
+        } else {
+            
+            if ($refPago == ""){ $refPago = time(); }
+            
+            /*Inserta el registro en forma de pago*/
+            $this->db->trans_start();        
+            $this->db->query("INSERT INTO
+                            forma_de_pago (
+                                idVenta,
+                                idTipoPago,
+                                valorPago,
+                                referenciaPago
+                            ) VALUES (
+                                ".$this->session->userdata('idSale').",
+                                ".$formaPago.",
+                                ".$pagavalor.",
+                                '".$refPago."'
+                            )");
+            $this->db->trans_complete();
+            $this->db->trans_off();
+            
+        }
+        
         
         if ($this->db->trans_status() === FALSE){
 
@@ -936,71 +972,98 @@ class MSale extends CI_Model {
 
         } else {
             
-            /*Recupera los productos en la lista de venta*/
-            $query1 = $this->db->query("SELECT
-                                    v.idProducto,
-                                    v.cantidad
-                                    FROM
-                                    venta_detalle v
-                                    JOIN productos p ON p.idProducto = v.idProducto
-                                    WHERE
-                                    v.idVenta = ".$this->session->userdata('idSale')."");
-            
-            /*Recupera los productos de los servicios en la lista de venta*/
-            $query2 = $this->db->query("SELECT
-                                        ps.idServicio,
-                                        ps.idProducto,
-                                        p.descProducto,
-                                        (SELECT
-                                        sum(v.cantidad)
-                                        FROM venta_detalle v
-                                        WHERE v.idVenta = ".$this->session->userdata('idSale')."
-                                        AND v.idServicio = ps.idServicio) as cantidad
-                                        FROM productos_servicio ps
-                                        JOIN productos p ON p.idProducto = ps.idProducto
-                                        WHERE ps.idServicio IN (
-                                            SELECT
-                                            idServicio
-                                            FROM venta_detalle v
-                                            WHERE idVenta = ".$this->session->userdata('idSale')."
-                                            AND idServicio IS NOT NULL
-                                        )");
-            
-            $this->cache->memcached->delete('mClientInList');
-            
-            if ($query1->num_rows() == 0 && $query2->num_rows() == 0) {
+            if ($mix != "on"){ /*no es pago mixto*/
                 
-                return true;
+                /*actualiza estado del recibo a pagado*/
+                $this->db->trans_start();        
+                $this->db->query("UPDATE
+                                venta_maestro SET
+                                idEstadoRecibo = 5
+                                WHERE
+                                idVenta = ".$this->session->userdata('idSale')."
+                                ");
+                $this->db->trans_complete();
+                $this->db->trans_off();
+                
+                if ($this->db->trans_status() === FALSE){
+
+                    return false;
+
+                } else {
+                
+                    /*Recupera los productos en la lista de venta*/
+                    $query1 = $this->db->query("SELECT
+                                            v.idProducto,
+                                            v.cantidad
+                                            FROM
+                                            venta_detalle v
+                                            JOIN productos p ON p.idProducto = v.idProducto
+                                            WHERE
+                                            v.idVenta = ".$this->session->userdata('idSale')."");
+
+                    /*Recupera los productos de los servicios en la lista de venta*/
+                    $query2 = $this->db->query("SELECT
+                                                ps.idServicio,
+                                                ps.idProducto,
+                                                p.descProducto,
+                                                (SELECT
+                                                sum(v.cantidad)
+                                                FROM venta_detalle v
+                                                WHERE v.idVenta = ".$this->session->userdata('idSale')."
+                                                AND v.idServicio = ps.idServicio) as cantidad
+                                                FROM productos_servicio ps
+                                                JOIN productos p ON p.idProducto = ps.idProducto
+                                                WHERE ps.idServicio IN (
+                                                    SELECT
+                                                    idServicio
+                                                    FROM venta_detalle v
+                                                    WHERE idVenta = ".$this->session->userdata('idSale')."
+                                                    AND idServicio IS NOT NULL
+                                                )");
+
+                    $this->cache->memcached->delete('mClientInList');
+
+                    if ($query1->num_rows() == 0 && $query2->num_rows() == 0) {
+
+                        return true;
+
+                    } else {
+
+                        /*Query1 - Productos en la venta*/
+                        $productsSale = $query1->result_array(); /*devuelve registros de productos en la venta*/
+                        if ($productsSale != FALSE){
+                            foreach ($productsSale as $productCantidad){
+
+                                /*Actualiza el stock de cada producto*/
+                                $this->stock_min($productCantidad['idProducto'], $productCantidad['cantidad']);
+
+                            }
+                        }
+
+                        /*Query2 - Productos en el servicio*/
+                        $productsService = $query2->result_array(); /*devuelve registros de productos del servicio*/
+                        if ($productsService != FALSE){
+                            foreach ($productsService as $productCantidadServ){
+
+                                /*Actualiza el stock de cada producto*/
+                                $this->stock_min($productCantidadServ['idProducto'], $productCantidadServ['cantidad']);
+
+                            }
+                        }
+
+                        $this->cache->memcached->delete('mDetailResol');
+                        return true;
+
+                    }
+                
+                }
                 
             } else {
                 
-                /*Query1 - Productos en la venta*/
-                $productsSale = $query1->result_array(); /*devuelve registros de productos en la venta*/
-                if ($productsSale != FALSE){
-                    foreach ($productsSale as $productCantidad){
-
-                        /*Actualiza el stock de cada producto*/
-                        $this->stock_min($productCantidad['idProducto'], $productCantidad['cantidad']);
-                        
-                    }
-                }
-                
-                /*Query2 - Productos en el servicio*/
-                $productsService = $query2->result_array(); /*devuelve registros de productos del servicio*/
-                if ($productsService != FALSE){
-                    foreach ($productsService as $productCantidadServ){
-
-                        /*Actualiza el stock de cada producto*/
-                        $this->stock_min($productCantidadServ['idProducto'], $productCantidadServ['cantidad']);
-
-                    }
-                }
-                
-                $this->cache->memcached->delete('mDetailResol');
                 return true;
                 
             }
-             
+            
         }
         
     }

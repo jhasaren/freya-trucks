@@ -21,6 +21,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link href="<?php echo base_url().'public/gentelella/vendors/nprogress/nprogress.css'; ?>" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="<?php echo base_url().'public/gentelella/build/css/custom.min.css'; ?>" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="<?php echo base_url().'public/gentelella/vendors/iCheck/skins/flat/green.css'; ?>" rel="stylesheet">
     
     <link rel="shortcut icon" href="<?php echo base_url().'public/img/favicon.ico'; ?>">
   </head>
@@ -58,9 +60,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="title_right">
                         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                             <div class="input-group">
+                                <?php
+                                if ($detalleRecibo['formaPago'] != NULL){
+                                    foreach ($detalleRecibo['formaPago']  as $valueFormPay){
+                                        $pagado = $pagado + $valueFormPay['valorPago'];
+                                    }
+                                }
+                                ?>
                                 <div></div>
                                 <span style="font-size: 18px">
-                                    <h1 style="color: #000000;"><?php echo $message; ?></h1>
+                                    <h1 style="color: #000000; font-size: 28px">Total a Pagar: $<?php echo number_format($message-$pagado,0,',','.'); ?></h1>
                                 </span>
                             </div>
                         </div>
@@ -101,35 +110,77 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="x_panel">
                                         <form role="form" name="form_pago_sale" action="<?php echo base_url().'index.php/CSale/payregistersale'; ?>" method="post">
-                                        
-                                        <label class="control-label" for="pagacon">Paga con ($)</label>
-                                        <input type="number" class="form-control" id="pagacon" name="pagacon" required="" >
-                                        <input type="hidden" class="form-control" id="totalPago" name="totalPago" value="<?php echo ($totalservicios+$totalproductos+$totaladicional)+(($totalservicios+$totalproductos+$totaladicional)*$this->session->userdata('sservicio')/100); ?>" >
-                                        <input type="hidden" class="form-control" id="recibo" name="porcServiceVenta" value="<?php echo $this->session->userdata('sservicio'); ?>" >
-                                        <input type="hidden" class="form-control" id="recibo" name="recibo" value="<?php echo $nrorecibo; ?>" >
-                                        <br />
-                                        <label for="formapago">Forma de Pago</label>
-                                        <select class="form-control" name="formapago">
-                                            <?php
-                                            foreach ($list_forma_pago as $row){
-                                                ?>
-                                                <option value="<?php echo $row['idFormaPago'].'|'.$row['distribucionPago']; ?>"><?php echo $row['descFormaPago']; ?></option>
+                                            <label class="control-label" for="pagavalor">Valor ($)</label>
+                                            <input type="number" class="form-control" id="pagacon" name="pagavalor" required="" placeholder="Valor Pagado" >
+                                            <input type="hidden" class="form-control" id="totalPago" name="totalPago" value="<?php echo ($totalservicios+$totalproductos+$totaladicional)+(($totalservicios+$totalproductos+$totaladicional)*$this->session->userdata('sservicio')/100); ?>" >
+                                            <input type="hidden" class="form-control" id="valuepagado" name="valuepagado" value="<?php echo $pagado; ?>" >
+                                            <input type="hidden" class="form-control" id="porcServiceVenta" name="porcServiceVenta" value="<?php echo $this->session->userdata('sservicio'); ?>" >
+                                            <input type="hidden" class="form-control" id="recibo" name="recibo" value="<?php echo $nrorecibo; ?>" >
+
+                                            <select class="form-control" name="formapago">
                                                 <?php
-                                            }
-                                            ?>
-                                        </select>
-                                        <br />
+                                                foreach ($list_forma_pago as $row){
+                                                    ?>
+                                                    <option value="<?php echo $row['idTipoPago']; ?>"><?php echo $row['descTipoPago']; ?></option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                            
+                                            <input type="number" class="form-control" id="ref_pago" name="ref_pago" placeholder="Referencia del Pago" >
+                                            <br />
+                                            <input type="checkbox" class="flat" name="mixpayment"> Pago mixto
+                                            <br /><br />
+                                            <center>
+                                            <p class="center-block download-buttons">
+                                                <a href="<?php echo base_url().'index.php/CSale/waitdatasale'; ?>" class="btn btn-primary btn-lg">
+                                                    <i class="glyphicon glyphicon-time glyphicon-white"></i> 
+                                                    Espera
+                                                </a>
+                                                <button type="submit" class="btn btn-success btn-lg">
+                                                    <i class="glyphicon glyphicon-check glyphicon-white"></i>
+                                                    Pagar
+                                                </button>
+                                            </p>
+                                            <br />
+                                            </center>
+                                        </form>
+                                    </div>
+                                    <div class="x_panel">
+                                        Forma de Pago:<br />
+                                        <table id="datatable" class="table table-responsive">
+                                            <thead>
+                                                <th>Tipo</th>
+                                                <th>Valor</th>
+                                                <th>Referencia</th>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                if ($detalleRecibo['formaPago'] != NULL){
+                                                    foreach ($detalleRecibo['formaPago'] as $valueFormPay){
+                                                        ?>
+                                                        <tr style="background-color: #FFFFFF;">
+                                                            <td class="small green"><?php echo $valueFormPay['descTipoPago']; ?></td>
+                                                            <td class="small blue">$<?php echo number_format($valueFormPay['valorPago'],0,',','.'); ?></td>
+                                                            <td class="small"><?php echo $valueFormPay['referenciaPago']; ?></td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                                <tr style="background-color: #FFFFFF;">
+                                                    <td class="small green"></td>
+                                                    <td class="small red">$<?php echo number_format($pagado,0,',','.'); ?></td>
+                                                    <td class="small"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="x_panel">
+                                        <form role="form" name="form_pago_sale" action="<?php echo base_url().'index.php/CSale/payregistersale'; ?>" method="post">
                                         <center>
-                                        <p class="center-block download-buttons">
-                                            <a href="<?php echo base_url().'index.php/CSale/waitdatasale'; ?>" class="btn btn-primary btn-lg">
-                                                <i class="glyphicon glyphicon-time glyphicon-white"></i> 
-                                                Espera
-                                            </a>
-                                            <button type="submit" class="btn btn-success btn-lg">
-                                                <i class="glyphicon glyphicon-check glyphicon-white"></i>
-                                                Pagar
-                                            </button>
-                                        </p>
                                         <br />
                                         <div class="x_title">
                                             <h2>Resumen de Venta</h2>
@@ -144,7 +195,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <!--Ticket informacion-->
                                         <div id="ticketPrint" class="x_content">
                                             <center style="font-size: 12px;">
-                                            <img src="<?php echo base_url().'public/img/logo.png'; ?>" style="width: 86px; height: 64px" /><br />
+                                            <!--<img src="<?php // echo base_url().'public/img/logo.png'; ?>" style="width: 86px; height: 64px" /><br />-->
                                             <?php echo $this->session->userdata('nombre_sede'); ?><br />
                                             <?php echo $this->session->userdata('dir_sede'); ?><br />
                                             <?php echo "Nro. Factura ".$detalleRecibo['general']->nroRecibo; ?>
@@ -212,15 +263,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <tr style="font-size: 18px; font-weight:bold;">
                                                     <td align="left">Total a Pagar:</td>
                                                     <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100),0,',','.'); ?></td>
-                                                </tr>
-                                                <tr style="font-size: 12px;">
-                                                    <td align="left">Paga con:</td>
-                                                    <td align="right">$<?php echo number_format($pagacon,0,',','.'); ?></td>
-                                                </tr>
-                                                <tr style="font-size: 12px;">
-                                                    <td align="left">Cambio:</td>
-                                                    <td align="right">$<?php echo number_format($cambio,0,',','.'); ?></td>
-                                                </tr>                           
+                                                </tr>                          
                                             </table>
                                             <center style="font-size: 12px;">
                                             <br />
@@ -288,6 +331,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?php echo base_url().'public/gentelella/vendors/nprogress/nprogress.js'; ?>"></script>
     <!-- Custom Theme Scripts -->
     <script src="<?php echo base_url().'public/gentelella/build/js/custom.js'; ?>"></script><!--Minificar-->  
+    <!-- iCheck -->
+    <script src="<?php echo base_url().'public/gentelella/vendors/iCheck/icheck.min.js'; ?>"></script>
     
   </body>
 </html>

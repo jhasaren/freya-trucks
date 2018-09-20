@@ -38,9 +38,9 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno){
         $printer = new Printer($connector);
 
         /* Impresion de Logo */
-        $logo = EscposImage::load(APPPATH.'third_party/tickets/logo.png', false);
+        /*$logo = EscposImage::load(APPPATH.'third_party/tickets/logo.png', false);
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        $printer -> graphics($logo);
+        $printer -> graphics($logo);*/
 
         /* Nombre del Restaurante (sede) */
         $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);

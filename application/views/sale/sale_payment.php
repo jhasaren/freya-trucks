@@ -65,7 +65,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="clearfix"></div>
 
                 <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <span style="color: #000; font-size: 22px;">
+                            Paga con:
+                            $<?php echo number_format($pagacon,0,',','.'); ?>
+                        </span>
+                        <br />
+                        <span style="color: #000; font-size: 22px;">
+                            Cambio:
+                            $<?php echo number_format($pagacon-($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$porcServiceVenta/100)),0,',','.'); ?>
+                        </span>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
                         <!--Alerta-->
                         <div class="alert alert-info alert-dismissible fade in" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
@@ -83,7 +94,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <!--Ticket informacion-->
                             <div id="myDiv" class="x_content">
                                 <center style="font-size: 12px;">
-                                <img src="<?php echo base_url().'public/img/logo.png'; ?>" style="width: 86px; height: 64px" /><br />
+                                <!--<img src="<?php // echo base_url().'public/img/logo.png'; ?>" style="width: 86px; height: 64px" /><br />-->
                                 <?php echo $this->session->userdata('nombre_sede'); ?><br />
                                 <?php echo $this->session->userdata('dir_sede'); ?><br />
                                 <?php echo "Nro. Factura ".$detalleRecibo['general']->nroRecibo; ?>
@@ -151,14 +162,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <tr style="font-size: 18px; font-weight:bold;">
                                         <td align="left">Total a Pagar:</td>
                                         <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$porcServiceVenta/100),0,',','.'); ?></td>
-                                    </tr>
-                                    <tr style="font-size: 12px;">
-                                        <td align="left">Paga con:</td>
-                                        <td align="right">$<?php echo number_format($pagacon,0,',','.'); ?></td>
-                                    </tr>
-                                    <tr style="font-size: 12px;">
-                                        <td align="left">Cambio:</td>
-                                        <td align="right">$<?php echo number_format($pagacon-($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$porcServiceVenta/100)),0,',','.'); ?></td>
                                     </tr>                                
                                 </table>
                                 <center style="font-size: 12px;">
@@ -170,15 +173,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             
                             <div class="clearfix"></div>
                         </div>
+                        <center>
+                        <p class="center-block download-buttons">
+                            <input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#myDiv')" />
+                            <a href="<?php echo base_url().'index.php/CSale/createsale'; ?>" class="btn btn-success btn-lg">
+                                <i class="glyphicon glyphicon-repeat glyphicon-white"></i> Nueva venta
+                            </a>
+                        </p>
+                        </center>
                     </div>
-                    <center>
-                    <p class="center-block download-buttons">
-                        <input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#myDiv')" />
-                        <a href="<?php echo base_url().'index.php/CSale/createsale'; ?>" class="btn btn-success btn-lg">
-                            <i class="glyphicon glyphicon-repeat glyphicon-white"></i> Nueva venta
-                        </a>
-                    </p>
-                    </center>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        
+                    </div>
                 </div>
             </div>
         </div>

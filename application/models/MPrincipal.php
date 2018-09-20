@@ -397,7 +397,10 @@ class MPrincipal extends CI_Model {
                                 m.idUsuarioCliente,
                                 concat(a.nombre,' ',a.apellido) as nombreCliente,
                                 a.numCelular,
-                                m.porcenDescuento
+                                m.porcenDescuento,
+                                (m.valorLiquida*m.porcenServicio) as popina_servicio,
+                                m.porcenServicio,
+                                m.idEmpleadoAtiende
                                 FROM venta_maestro m
                                 JOIN app_usuarios a ON a.idUsuario = m.idUsuarioCliente
                                 WHERE

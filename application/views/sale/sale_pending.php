@@ -106,7 +106,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <th>Recibo</th>
                                         <th>Fecha Registro</th>
                                         <th>Venta</th>
-                                        <th>Liquida</th>
+                                        <th>Liquidado</th>
+                                        <th>Propina</th>
+                                        <th>Total a Pagar</th>
                                         <th>Cliente</th>
                                         <th>Accion</th>
                                     </thead>
@@ -119,13 +121,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <td class="center red"><?php echo $row_liquidado['idVenta']; ?></td>
                                                     <td class="center red"><?php echo $row_liquidado['nroRecibo']; ?></td>
                                                     <td class="center blue"><?php echo $row_liquidado['fechaLiquida']; ?></td>
-                                                    <td class="center green">$<?php echo number_format($row_liquidado['valorVenta'],0,',','.'); ?></td>
+                                                    <td class="center red">$<?php echo number_format($row_liquidado['valorVenta'],0,',','.'); ?></td>
                                                     <td class="center red">$<?php echo number_format($row_liquidado['valorLiquida'],0,',','.'); ?></td>
+                                                    <td class="center red">$<?php echo number_format($row_liquidado['popina_servicio'],0,',','.'); ?></td>
+                                                    <td class="center blue">$<?php echo number_format($row_liquidado['valorLiquida']+$row_liquidado['popina_servicio'],0,',','.'); ?></td>
                                                     <td class="center"><?php echo $row_liquidado['nombreCliente']."<br />[CC ".$row_liquidado['idUsuarioCliente']."]"."<br />[Tel. ".$row_liquidado['numCelular']."]"; ?></td>
                                                     <td class="center">
-                                                        <a class="btn btn-default btn-sm" href="<?php echo base_url().'index.php/CSale/restoresale/'.$row_liquidado['idVenta'].'/'.$row_liquidado['idUsuarioCliente'].'/'.$row_liquidado['porcenDescuento']; ?>">
+                                                        <a class="btn btn-default btn-sm" href="<?php echo base_url().'index.php/CSale/restoresale/'.$row_liquidado['idVenta'].'/'.$row_liquidado['idUsuarioCliente'].'/'.$row_liquidado['porcenDescuento'].'/'.$row_liquidado['porcenServicio'].'/'.$row_liquidado['idEmpleadoAtiende']; ?>">
                                                             <i class="glyphicon glyphicon-cog"></i>
-                                                            Editar
+                                                            Recuperar
                                                         </a>
                                                     </td>
                                                 </tr>
