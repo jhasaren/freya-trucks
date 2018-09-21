@@ -162,7 +162,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <tr style="font-size: 18px; font-weight:bold;">
                                         <td align="left">Total a Pagar:</td>
                                         <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$porcServiceVenta/100),0,',','.'); ?></td>
-                                    </tr>                                
+                                    </tr>     
+                                    <?php 
+                                    if ($this->config->item('impo_add_factura') == 1){
+                                    ?>
+                                    <tr style="font-size: 12px;">
+                                        <td align="left">Impoconsumo (<?php echo $detalleRecibo['general']->impoconsumo*100; ?>%):</td>
+                                        <td align="right">-$<?php echo number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100))*$detalleRecibo['general']->impoconsumo,0,',','.'); ?></td>
+                                    </tr>
+                                    <?php
+                                    }
+                                    ?>
                                 </table>
                                 <center style="font-size: 12px;">
                                 <br />Burger Republic agradece su compra!<br />

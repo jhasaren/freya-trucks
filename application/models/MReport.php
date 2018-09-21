@@ -166,7 +166,8 @@ class MReport extends CI_Model {
                                 vm.nroTurno,
                                 vm.idEmpleadoAtiende,
                                 CONCAT(ae.nombre,' ',ae.apellido) as personaAtiende,
-                                vm.porcenServicio
+                                vm.porcenServicio,
+                                vm.impoconsumo
                                 FROM
                                 venta_maestro vm
                                 JOIN tipo_estado_recibo t ON t.idEstadoRecibo = vm.idEstadoRecibo
