@@ -189,7 +189,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                             <th class="green">Sede</th>
                                                             <th class="blue">Ingreso Caja (+)</th>
                                                             <th class="red">Propinas (-)</th>
-                                                            <th class="red">Formas de Pago (-)</th>
+                                                            <th class="red">Impoconsumo (-)</th>
                                                             <th class="red">Empleados (-)</th>
                                                             <th class="red">Gastos (-)</th>
                                                             <th>Descuento ($)</th>
@@ -201,13 +201,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                         <?php
                                                         if ($paymentConsolidaSedes != FALSE){
                                                             foreach ($paymentConsolidaSedes as $row_con){
-                                                                $ingreso = (($row_con['valorLiquida']+$row_con['propina_servicio'])-$row_con['valorDistribucionEntidadPago']-$row_con['valorEmpleado']-$row_con['valorGastos']-$row_con['propina_servicio']);
+                                                                $ingreso = (($row_con['valorLiquida']+$row_con['propina_servicio'])-$row_con['valorDistribucionEntidadPago']-$row_con['valorEmpleado']-$row_con['valorGastos']-$row_con['propina_servicio']-($row_con['valorLiquida']*($this->config->item('porcen_consumo')/100)));
                                                                 ?>
                                                                 <tr style="background-color: #2A3F54;">
                                                                     <td class="center"><small><?php echo $row_con['nombreSede']; ?></small></td>
                                                                     <td class="center blue">$<?php echo number_format($row_con['valorLiquida']+$row_con['propina_servicio'],0,',','.'); ?></td>
                                                                     <td class="center red">$<?php echo number_format($row_con['propina_servicio'],0,',','.'); ?></td>
-                                                                    <td class="center red">$<?php echo number_format($row_con['valorDistribucionEntidadPago'],0,',','.'); ?></td>
+                                                                    <td class="center red">$<?php echo number_format($row_con['impoconsumo'],0,',','.'); ?></td>
                                                                     <td class="center red">$<?php echo number_format($row_con['valorEmpleado'],0,',','.'); ?></td>
                                                                     <td class="center red">$<?php echo number_format($row_con['valorGastos'],0,',','.'); ?></td>
                                                                     <td class="center">$<?php echo number_format($row_con['valorDesctoServ'],0,',','.'); ?></td>
@@ -233,7 +233,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <br /><br />
                                                 <B>Venta:</B> valor antes de aplicar descuento y propina |
                                                 <B>Liquidado:</B> valor con descuento a servicios |
-                                                <B>Ingreso en Caja:</B> Liquidado + Propina
+                                                <B>Ingreso en Caja:</B> Liquidado + Propina |
+                                                <B>Impoconsumo:</B> Liquidado * %Impoconsumo
                                                 <ul class="nav navbar-right panel_toolbox">
                                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                                     </li>
@@ -251,7 +252,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                             <th>Descto.</th>
                                                             <th>Liquidado</th>
                                                             <th>Propina</th>
-                                                            <th>Forma de Pago</th>
+                                                            <th>Impoconsumo</th>
                                                             <th>Empleado</th>
                                                             <th>Acción</th>
                                                         </tr>
@@ -259,6 +260,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <tbody>
                                                         <?php
                                                         if ($paymentDataSedes != FALSE){
+                                                            $impoconsumo = $this->config->item('porcen_consumo');
                                                             foreach ($paymentDataSedes as $row_sede){
                                                                 ?>
                                                                 <tr style="background-color: #2A3F54;">
@@ -269,7 +271,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                     <td class="center red"><?php echo number_format(($row_sede['valorVenta']-$row_sede['valorLiquida']),0,',','.'); ?></td>
                                                                     <td class="center green"><?php echo number_format($row_sede['valorLiquida'],0,',','.'); ?></td>
                                                                     <td class="center green"><?php echo number_format($row_sede['popina_servicio'],0,',','.'); ?></td>
-                                                                    <td class="center"><small><?php echo $row_sede['descFormaPago']; ?></small></td>
+                                                                    <td class="center red"><?php echo number_format(($row_sede['valorLiquida']*$row_sede['impoconsumo']),0,',','.'); ?></td>
                                                                     <td class="center"><small><?php echo $row_sede['empleado']; ?></small></td>
                                                                     <td class="center">
                                                                         <a class="label label-primary btn-detail" href="<?php echo base_url().'index.php/CReport/detallerecibo/'.$row_sede['idVenta'].'/'.$row_sede['nroRecibo']; ?>">
@@ -397,8 +399,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 $totalLiquida = 0;
                 if ($paymentConsolidaSedes != FALSE) {
                     foreach ($paymentConsolidaSedes as $row_vsede){
-                        echo "{value:".($row_vsede['valorLiquida']).", name:'".$row_vsede['nombreSede']."'},";
-                        $totalLiquida = $totalLiquida + $row_vsede['valorLiquida'];
+                        echo "{value:".($row_vsede['valorLiquida']+$row_vsede['propina_servicio']).", name:'".$row_vsede['nombreSede']."'},";
+                        $totalLiquida = $totalLiquida + ($row_vsede['valorLiquida']+$row_vsede['propina_servicio']);
                     }
                 }
                 ?>
@@ -492,8 +494,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             data:[
             <?php
             if ($paymenEntidades != FALSE) {
+                $ingresoTotal = 0;
                 foreach ($paymenEntidades as $row_fpago){
-                    echo "'".$row_fpago['descFormaPago']."',";
+                    echo "'".$row_fpago['descTipoPago']."',";
+                    $ingresoTotal = $ingresoTotal + $row_fpago['sumPago'];
                 }
             }
             ?> 
@@ -513,21 +517,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $radius2 = 150;
         $minusRadius = 0;
         if ($paymenEntidades != FALSE) {
-            foreach ($paymenEntidades as $row_fpago){
+            foreach ($paymenEntidades as $row_forpago){
                 ?>
                 {
-                name:'<?php echo $row_fpago['descFormaPago']; ?>',
+                name:'<?php echo $row_forpago['descTipoPago']; ?>',
                 type:'pie',
                 clockWise:false,
                 radius : [<?php echo $radius1-$minusRadius; ?>, <?php echo $radius2-$minusRadius; ?>],
                 itemStyle : dataStyle,
                 data:[
                     {
-                        value:<?php echo ($row_fpago['sumPago']/$totalLiquida)*100; ?>,
-                        name:'<?php echo $row_fpago['descFormaPago']; ?>'
+                        value:<?php echo ($row_forpago['sumPago']/$ingresoTotal)*100; ?>,
+                        name:'<?php echo $row_forpago['descTipoPago']; ?>'
                     },
                     {
-                        value:<?php echo 100-(($row_fpago['sumPago']/$totalLiquida)*100); ?>,
+                        value:<?php echo 100-(($row_forpago['sumPago']/$ingresoTotal)*100); ?>,
                         name:'invisible',
                         itemStyle : placeHolderStyle
                     }

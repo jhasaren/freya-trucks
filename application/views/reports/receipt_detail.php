@@ -104,6 +104,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 ?>
                                 <hr />
                                 <?php
+                                /*Forma de Pago*/
+                                echo "<h4>Forma de Pago</h4>";
+                                if ($formaPago == NULL){
+                                    echo "--";
+                                } else {
+                                    foreach ($formaPago as $valueFormPago) {
+                                        echo $valueFormPago['descTipoPago']." -> Valor: $".number_format($valueFormPago['valorPago'],0,',','.')." | Ref: ".$valueFormPago['referenciaPago']."<br />";
+                                    }
+                                }
+                                
+                                ?>
+                                <hr />
+                                <?php
                                 /*Servicios*/
                                 echo "<h3>Servicios</h3>";
                                 if ($servicios == NULL){

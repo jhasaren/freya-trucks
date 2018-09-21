@@ -72,6 +72,13 @@ class CReport extends CI_Controller {
                     $this->load->view('reports/report_payment',$info);
 
                 }
+                
+                if ($report == 'reportPaymentForms'){
+
+                    $info['dataRow'] = 0;
+                    $this->load->view('reports/report_payment_formas',$info);
+
+                }
 
                 if ($report == 'reportFide'){
 
@@ -182,6 +189,57 @@ class CReport extends CI_Controller {
                     $info['dataRow'] = 2;
                     $info['message'] = "No existen recibos pagados en el periodo seleccionado.";
                     $this->load->view('reports/report_payment',$info);
+
+                }
+                
+            } else {
+                
+                show_404();
+                
+            }
+        } else {
+            
+            $this->index();
+            
+        }
+        
+    }
+    
+    /**************************************************************************
+     * Nombre del Metodo: paymentrecibosforms
+     * Descripcion: genera reporte recibos discriminando la forma de pago
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 20/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function paymentrecibosforms() {
+        
+        if ($this->session->userdata('validated')) {
+            
+            if ($this->MRecurso->validaRecurso(10)){
+                
+                /*Captura Variables*/
+                $date1 = new DateTime($this->input->post('fechaini')); 
+                $fechaini = $date1->format('Y-m-d'); 
+
+                $date2 = new DateTime($this->input->post('fechafin')); 
+                $fechafin = $date2->format('Y-m-d');
+
+                /*Consulta Modelo*/
+                $paymentClientForm = $this->MReport->payment_recibos_form($fechaini,$fechafin);
+
+                if ($paymentClientForm != FALSE){
+
+                    $info['fechaIni'] = $fechaini;
+                    $info['fechaFin'] = $fechafin;
+                    $info['dataRow'] = 1;
+                    $info['paymentClient'] = $paymentClientForm;
+                    $this->load->view('reports/report_payment_formas',$info);
+
+                } else {
+
+                    $info['dataRow'] = 2;
+                    $info['message'] = "No existen recibos pagados en el periodo seleccionado.";
+                    $this->load->view('reports/report_payment_formas',$info);
 
                 }
                 

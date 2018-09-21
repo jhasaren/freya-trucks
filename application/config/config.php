@@ -548,7 +548,17 @@ $config['empleados'] = 5;
 
 /*
 |--------------------------------------------------------------------------
-| Procentaje de Cobro por el Servicio al Cliente
+| Porcentaje de Cobro por el Servicio al Cliente (default)
 |--------------------------------------------------------------------------
 */
 $config['procen_servicio'] = 10;
+
+/*
+|--------------------------------------------------------------------------
+| Parametros IMPOCONSUMO
+| porcen_consumo -> Porcentaje de Cobro por Impuesto al Consumo (default)
+| impo_add_factura -> mostrar cobro impuesto en la factura 0-no, 1-si
+|--------------------------------------------------------------------------
+*/
+$config['impo_add_factura'] = 0;
+$config['porcen_consumo'] = 8;

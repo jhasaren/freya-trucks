@@ -35,7 +35,8 @@ class MSale extends CI_Model {
                                     idUsuarioLiquida,
                                     porcenDescuento,
                                     porcenServicio,
-                                    idSede
+                                    idSede,
+                                    impoconsumo
                                     ) VALUES (
                                     NOW(),
                                     0,
@@ -43,7 +44,8 @@ class MSale extends CI_Model {
                                     ".$idusuario.",
                                     0,
                                     0,
-                                    ".$this->session->userdata('sede')."
+                                    ".$this->session->userdata('sede').",
+                                    ".($this->config->item('porcen_consumo')/100)."
                                     )");
         
         $idSale = $this->db->insert_id();
@@ -1122,7 +1124,7 @@ class MSale extends CI_Model {
      * Fecha Creacion: 30/03/2017, Ultima modificacion: 
      **************************************************************************/
     public function add_porcentaje_desc($porcentaje,$porcentajeServ) {
-        
+                
         $this->db->trans_start();
         $this->db->query("UPDATE
                         venta_maestro SET

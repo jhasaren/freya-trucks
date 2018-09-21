@@ -114,6 +114,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <input type="number" class="form-control" id="pagacon" name="pagavalor" required="" placeholder="Valor Pagado" >
                                             <input type="hidden" class="form-control" id="totalPago" name="totalPago" value="<?php echo ($totalservicios+$totalproductos+$totaladicional)+(($totalservicios+$totalproductos+$totaladicional)*$this->session->userdata('sservicio')/100); ?>" >
                                             <input type="hidden" class="form-control" id="valuepagado" name="valuepagado" value="<?php echo $pagado; ?>" >
+                                            <input type="hidden" class="form-control" id="saldopay" name="saldopay" value="<?php echo $message-$pagado; ?>" >
                                             <input type="hidden" class="form-control" id="porcServiceVenta" name="porcServiceVenta" value="<?php echo $this->session->userdata('sservicio'); ?>" >
                                             <input type="hidden" class="form-control" id="recibo" name="recibo" value="<?php echo $nrorecibo; ?>" >
 
@@ -129,7 +130,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             
                                             <input type="number" class="form-control" id="ref_pago" name="ref_pago" placeholder="Referencia del Pago" >
                                             <br />
-                                            <input type="checkbox" class="flat" name="mixpayment"> Pago mixto
+                                            <input type="checkbox" class="flat" name="mixpayment"> Pago Parcial
                                             <br /><br />
                                             <center>
                                             <p class="center-block download-buttons">

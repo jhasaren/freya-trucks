@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <br />
                         <span style="color: #000; font-size: 22px;">
                             Cambio:
-                            $<?php echo number_format($pagacon-($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$porcServiceVenta/100)),0,',','.'); ?>
+                            $<?php echo number_format($cambio,0,',','.'); ?>
                         </span>
                     </div>
                     <div class="col-md-4 col-sm-4 col-xs-12">

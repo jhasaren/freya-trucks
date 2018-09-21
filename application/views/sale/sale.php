@@ -170,7 +170,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <div class="bs-glyphicons">
                                                 <ul class="bs-glyphicons-list">
                                                     <li>
-                                                        <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+                                                        <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
                                                         <span class="glyphicon-class" style="font-size: 14px;">Plato Fuerte</span>
                                                     </li>
                                                 </ul>
@@ -182,7 +182,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <div class="bs-glyphicons">
                                                 <ul class="bs-glyphicons-list">
                                                     <li>
-                                                        <span class="glyphicon glyphicon-apple" aria-hidden="true"></span>
+                                                        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                                                         <span class="glyphicon-class" style="font-size: 14px;">Producto</span>
                                                     </li>
                                                 </ul>
@@ -221,7 +221,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <div class="bs-glyphicons">
                                                 <ul class="bs-glyphicons-list">
                                                     <li>
-                                                        <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                                                        <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
                                                         <span class="glyphicon-class" style="font-size: 14px;">
                                                             Empleado
                                                             <div>-<?php echo $this->session->userdata('sempleado').'-'; ?></div>
@@ -729,10 +729,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div class="modal-body">
                             <label class="control-label" for="Porcentaje">Servicio Voluntario (%)</label>
-                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="Servicio" value="<?php if ($this->session->userdata('sservicio')){ echo $this->session->userdata('sservicio'); } else { echo $this->config->item('procen_servicio'); } ?>" required="" autocomplete="off" pattern="\d*">
+                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="Servicio" value="<?php if ($this->session->userdata('sservicio') !== NULL){ echo $this->session->userdata('sservicio'); } else { echo $this->config->item('procen_servicio'); } ?>" required="" autocomplete="off" pattern="\d*">
                             <br />
                             <label class="control-label" for="Porcentaje">Descuento (%) *Solo aplicable a Plato Fuerte</label>
-                            <input type="tel" class="form-control" id="procentaje" name="procentaje" placeholder="Descuento" value="<?php if ($this->session->userdata('sdescuento')){ echo $this->session->userdata('sdescuento'); } else { echo 0; } ?>" required="" autocomplete="off" pattern="\d*">
+                            <input type="tel" class="form-control" id="procentaje" name="procentaje" placeholder="Descuento" value="<?php if ($this->session->userdata('sdescuento') !== NULL){ echo $this->session->userdata('sdescuento'); } else { echo 0; } ?>" required="" autocomplete="off" pattern="\d*">
                             <br />
                         </div>
                         <div class="modal-footer">

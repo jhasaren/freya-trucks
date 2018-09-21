@@ -66,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="input-group">
                                 <div></div>
                                 <span class="input-group-btn">
-                                    <a class="btn btn-info btn-formas" href="<?php echo base_url().'index.php/CReport/module/reportPaymentForms'; ?>"><i class="glyphicon glyphicon-eye-open"></i> Formas de Pago</a>
+                                    <a class="btn btn-info btn-recibos" href="<?php echo base_url().'index.php/CReport/module/reportPayment'; ?>"><i class="glyphicon glyphicon-eye-open"></i> Recibos Pagados</a>
                                 </span>
                                 <span class="input-group-btn">
                                     <a class="btn btn-info btn-resoluciones" href="<?php echo base_url().'index.php/CReceipt'; ?>"><i class="glyphicon glyphicon-eye-open"></i> Resoluciones</a>
@@ -99,7 +99,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Recibos Pagados</h2>
+                                <h2>Formas de Pago</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
@@ -107,7 +107,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                <form role="form" name="form_report_pay" action="<?php echo base_url() . 'index.php/CReport/paymentrecibos'; ?>" method="post">
+                                <form role="form" name="form_report_formPay" action="<?php echo base_url() . 'index.php/CReport/paymentrecibosforms'; ?>" method="post">
                                     <div class="modal-body">
                                         <fieldset>
                                             <div class="col-md-3 xdisplay_inputx form-group has-feedback"></div>
@@ -137,12 +137,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Detalle [Pagados & Anulados]</h2>
-                            <br /><br />
-                            <B>Venta:</B> valor antes de aplicar descuento y propina |
-                            <B>Liquidado:</B> valor con descuento a servicios |
-                            <B>Ingreso en Caja:</B> Liquidado + Propina |
-                            <B>Impoconsumo:</B> Liquidado * %Impoconsumo
+                            <h2>Detalle</h2>
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                 </li>
@@ -156,13 +151,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <th>idVenta</th>
                                         <th>Fecha</th>
                                         <th>Recibo</th>
-                                        <th>Venta</th>
-                                        <th>Liquidado</th>
-                                        <th>Propina</th>
                                         <th>Forma de Pago</th>
-                                        <th>Impoconsumo</th>
-                                        <th>Estado</th>
-                                        <th>Acción</th>
+                                        <th>Valor Pago</th>
+                                        <th>Estado Recibo</th>
+                                        <th>Referencia Pago</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -173,17 +165,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td class="center green"><?php echo $row_pay['idVenta']; ?></td>
                                             <td class="center green"><small><?php echo $row_pay['fechaLiquida']; ?></small></td>
                                             <td class="center red"><?php echo $row_pay['nroRecibo']; ?></td>
-                                            <td class="center blue"><?php echo number_format($row_pay['valorVenta'],0,',','.'); ?></td>
-                                            <td class="center red"><?php echo number_format($row_pay['valorLiquida'],0,',','.'); ?></td>
-                                            <td class="center red"><?php echo number_format($row_pay['popina_servicio'],0,',','.'); ?></td>
-                                            <td class="center green"><?php echo number_format($row_pay['forma_pago'],0,',','.'); ?></td>
-                                            <td class="center red"><?php echo number_format($row_pay['impoconsumo'],0,',','.'); ?></td>
-                                            <td class="center blue"><small><?php echo $row_pay['descEstadoRecibo']; ?></small></td>
-                                            <td class="center">
-                                                <a class="label label-primary btn-detail" href="<?php echo base_url().'index.php/CReport/detallerecibo/'.$row_pay['idVenta'].'/'.$row_pay['nroRecibo']; ?>">
-                                                    Ver Detalle
-                                                </a>
-                                            </td>
+                                            <td class="center red"><?php echo $row_pay['descTipoPago']; ?></td>
+                                            <td class="center red"><?php echo number_format($row_pay['valorPago'],0,',','.'); ?></td>
+                                            <td class="center blue"><?php echo $row_pay['descEstadoRecibo']; ?></td>
+                                            <td class="center blue"><small><?php echo $row_pay['referenciaPago']; ?></small></td>
                                         </tr>
                                         <?php
                                     }

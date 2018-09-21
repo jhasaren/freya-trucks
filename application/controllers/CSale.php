@@ -225,9 +225,9 @@ class CSale extends CI_Controller {
 
                     } else {
 
-                        if (($this->session->userdata('sclient') != NULL) && ($this->session->userdata('sempleado') != NULL)){
+                        if (($this->session->userdata('sclient') !== NULL) && ($this->session->userdata('sempleado') !== NULL)){
 
-                            if (($this->session->userdata('sservicio') != NULL)){
+                            if (($this->session->userdata('sservicio') !== NULL)){
                             
                                 $valorPagoServicios = $totalServicios-$totalDescuento;
                                 $valorTotalVenta = $totalServicios+$totalProductos+$totalAdicional;
@@ -500,7 +500,7 @@ class CSale extends CI_Controller {
             
             if ($this->MRecurso->validaRecurso(9)){
             
-                if ($this->session->userdata('idSale') != NULL) {
+                if ($this->session->userdata('idSale') !== NULL) {
 
                     if (!$this->input->post()){
 
@@ -513,10 +513,11 @@ class CSale extends CI_Controller {
                         $refPago = $this->input->post('ref_pago'); /*referencia del pago*/
                         $valuePayFormas = $this->input->post('valuepagado'); /*valor ya pagado*/
                         $totalPago = $this->input->post('totalPago'); /*valor total que debe pagar*/
+                        $saldopay = $this->input->post('saldopay'); /*valor del saldo que debe pagar*/
                         $porcServiceVenta = $this->input->post('porcServiceVenta'); /*porcentaje del servicio*/
                         $recibo = $this->input->post('recibo'); /*numero de recibo*/
                         $formaPago = $this->input->post('formapago'); /*tipo de forma de pago*/
-                        $mixpayment = $this->input->post('mixpayment'); /*si el pago es mixto*/
+                        $mixpayment = $this->input->post('mixpayment'); /*si el pago es parcial (pago mixto)*/
                         
                         if ($mixpayment != 'on'){
                         
@@ -564,13 +565,13 @@ class CSale extends CI_Controller {
 
                                     }
 
-                                    if ($notificaPago == TRUE){
+                                    /*if ($notificaPago == TRUE){
 
                                         log_message("DEBUG", "-----------------------------------");
                                         log_message("DEBUG", "Email Notificacion enviada exitosamente");
                                         log_message("DEBUG", "-----------------------------------");
 
-                                    }
+                                    }*/
 
                                     /*elimina variables de sesion de la venta*/
                                     $this->session->unset_userdata('sclient'); 
@@ -582,7 +583,7 @@ class CSale extends CI_Controller {
                                     $info['totalventa'] = $totalPago;
                                     $info['porcServiceVenta'] = $porcServiceVenta;
                                     $info['pagacon'] = $pagavalor;
-                                    $info['cambio'] = (($pagavalor+$valuePayFormas)-$totalPago);
+                                    $info['cambio'] = ($pagavalor-($saldopay));
                                     $info['detalleRecibo'] = $detailRecibo; 
                                     $info['turno'] = $turno; 
                                     $info['idmessage'] = 1;
@@ -602,17 +603,27 @@ class CSale extends CI_Controller {
                             
                         } else {
                             
-                            /*Enviar al modelo para registrar pago*/
-                            $registerPay = $this->MSale->pay_register_sale($formaPago,$pagavalor,$refPago,$mixpayment);
+                            if (($pagavalor+$valuePayFormas) < $totalPago){ /*si el pago parcial es menor que la totalidad de lo que debe pagar*/
                             
-                            if ($registerPay){
-                                
-                                $this->liquidasale();
-                                
-                            } else {
+                                /*Enviar al modelo para registrar pago*/
+                                $registerPay = $this->MSale->pay_register_sale($formaPago,$pagavalor,$refPago,$mixpayment);
+
+                                if ($registerPay){
+
+                                    $this->liquidasale();
+
+                                } else {
+
+                                    $info['idmessage'] = 2;
+                                    $info['message'] = "No es posible registrar la forma de pago. Por favor intente nuevamente";
+                                    $this->module($info);
+
+                                }
+                            
+                            } else { /*si el pago parcial es igual o mayor que la totalidad de lo que debe pagar*/
                                 
                                 $info['idmessage'] = 2;
-                                $info['message'] = "No es posible registrar la forma de pago. Por favor intente nuevamente";
+                                $info['message'] = "No es posible registrar la forma de pago. La sumatoria de los pagos parciales es igual o superior al monto total de la factura";
                                 $this->module($info);
                                 
                             }
@@ -1104,13 +1115,13 @@ class CSale extends CI_Controller {
                         if ($registerData == TRUE){
 
                             $info['idmessage'] = 1;
-                            $info['message'] = "Descuento registrado exitosamente";
+                            $info['message'] = "Servicio/Descuento registrado exitosamente";
                             $this->module($info);
 
                         } else {
 
                             $info['idmessage'] = 2;
-                            $info['message'] = "No fue posible registrar Descuento";
+                            $info['message'] = "No fue posible registrar Servicio/Descuento";
                             $this->module($info);
 
                         }
