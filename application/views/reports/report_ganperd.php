@@ -194,6 +194,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 
                                         }
                                     }
+                                    
+                                    /*Impoconsumo*/
+                                    if ($impoconsumo == NULL){
+                                        $totalImpoconsumo = 0;
+                                    } else {
+                                        $totalImpoconsumo = $impoconsumo->valorimpoconsumo;
+                                    }
+                                    
                                     ?>
                                 
                                 <table class="tg">
@@ -201,10 +209,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <th class="tg-baqh" colspan="12">
                                         <?php echo $this->config->item('namebussines'); ?><br /> 
                                         Estado de Ganancias y Perdidas <br /> 
-                                        <?php echo "Desde: ".$fechaIni." Hasta: ".$fechaFin ?></th>
+                                        <?php echo "Desde: ".$fechaIni." Hasta: ".$fechaFin; ?><br />
+                                        <?php echo "<small>Generación: ".date("Y-m-d H:i:00")."</small>"; ?>
+                                    </th>
                                   </tr>
                                   <tr>
-                                    <td class="header" colspan="12">Ingresos Operativos</td>
+                                    <td class="header" colspan="12">Ingresos Operativos (sin propinas)</td>
                                   </tr>
                                   <tr>
                                     <td class="describe" colspan="8">Ventas de Platos Fuertes</td>
@@ -270,12 +280,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <td class="valueTotal" colspan="4"><?php echo "$".number_format((($valorProductos+$valorAdicional+($valorServicios-$valorDescuento))-$gastosVariablesTotal)-$gastosFijosTotal,0,',','.'); ?></td>
                                   </tr>
                                   <tr>
+                                    <td class="describe" colspan="8">Impuesto por Consumo</td>
+                                    <td class="valores" colspan="4"><?php echo "$".number_format($totalImpoconsumo,0,',','.'); ?></td>
+                                  </tr>
+                                  <tr>
                                     <td class="describe" colspan="8">Impuesto a la Renta</td>
                                     <td class="valores" colspan="4"><?php echo "$".number_format($valorRenta,0,',','.'); ?></td>
                                   </tr>
                                   <tr>
                                     <td class="describeTotal" colspan="8">Ganancias Netas</td>
-                                    <td class="valueTotal" colspan="4"><?php echo "$".number_format(((($valorProductos+$valorAdicional+($valorServicios-$valorDescuento))-$gastosVariablesTotal)-$gastosFijosTotal)-$valorRenta,0,',','.'); ?></td>
+                                    <td class="valueTotal" colspan="4"><?php echo "$".number_format(((($valorProductos+$valorAdicional+($valorServicios-$valorDescuento))-$gastosVariablesTotal)-$gastosFijosTotal)-$valorRenta-$totalImpoconsumo,0,',','.'); ?></td>
                                   </tr>
                                 </table>
                                 <br />

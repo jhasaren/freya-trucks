@@ -457,7 +457,17 @@ class MReport extends CI_Model {
                                         FROM
                                         venta_maestro v
                                         WHERE
-                                        v.idSede = ".$sede."
+                                        v.idEstadoRecibo = 5
+                                        AND v.idSede = ".$sede."
+                                        AND v.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
+        
+        $queryImpuesto = $this->db->query("SELECT
+                                        sum(v.valorLiquida*v.impoconsumo) as valorimpoconsumo
+                                        FROM
+                                        venta_maestro v
+                                        WHERE
+                                        v.idEstadoRecibo = 5
+                                        AND v.idSede = ".$sede."
                                         AND v.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
         
         if ($queryServicios->num_rows() == 0) {
@@ -472,6 +482,7 @@ class MReport extends CI_Model {
             $data['gastosVariables'] = $queryGastosVariables->result_array();
             $data['gastosFijos'] = $queryGastosFijos->result_array();
             $data['descuentos'] = $queryDescuentos->row();
+            $data['impoconsumo'] = $queryImpuesto->row();
 
             return $data;
             
