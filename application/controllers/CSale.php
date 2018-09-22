@@ -332,14 +332,14 @@ class CSale extends CI_Controller {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 26/03/2017, Ultima modificacion: 
      **************************************************************************/
-    public function deletedetailsale($id) {
+    public function deletedetailsale($id,$type) {
         
         if ($this->session->userdata('validated')) {
             
             if ($this->MRecurso->validaRecurso(9)){
                 
                 /*Consulta Modelo para eliminar el id del detalle*/
-                $delRegistro = $this->MSale->delete_detail_sale($id);
+                $delRegistro = $this->MSale->delete_detail_sale($id,$type);
 
                 if ($delRegistro == TRUE){
 

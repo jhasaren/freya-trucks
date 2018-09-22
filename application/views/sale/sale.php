@@ -294,7 +294,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 <td><?php echo $row_service_in['descServicio']; ?></td>
                                                                 <td><?php echo $row_service_in['cantidad']; ?></td>
                                                                 <td>$<?php echo number_format($row_service_in['valor'],0,',','.'); ?></td>
-                                                                <td><?php echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_service_in['idRegistroDetalle']."'><i class='glyphicon glyphicon-remove red'></i></a>"; ?></td>
+                                                                <td><?php echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_service_in['idRegistroDetalle']."/1'><i class='glyphicon glyphicon-remove red'></i></a>"; ?></td>
                                                             </tr>
                                                             <?php
                                                         }
@@ -332,7 +332,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 <td><?php echo $row_product_in['descProducto']; ?></td>
                                                                 <td><?php echo $row_product_in['cantidad']; ?></td>
                                                                 <td>$<?php echo number_format($row_product_in['valor'],0,',','.'); ?></td>
-                                                                <td><?php echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_product_in['idRegistroDetalle']."'><i class='glyphicon glyphicon-remove red'></i></a>"; ?></td>
+                                                                <td><?php echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_product_in['idRegistroDetalle']."/2'><i class='glyphicon glyphicon-remove red'></i></a>"; ?></td>
                                                             </tr>
                                                             <?php
                                                         }
@@ -368,7 +368,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 <th scope="row"><?php echo $row_adicional_in['idRegistroDetalle']; ?></th>
                                                                 <td><?php echo $row_adicional_in['cargoEspecial']; ?></td>
                                                                 <td>$<?php echo number_format($row_adicional_in['valor'],0,',','.'); ?></td>
-                                                                <td><?php echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_adicional_in['idRegistroDetalle']."'><i class='glyphicon glyphicon-remove red'></i></a>"; ?></td>
+                                                                <td><?php echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_adicional_in['idRegistroDetalle']."/3'><i class='glyphicon glyphicon-remove red'></i></a>"; ?></td>
                                                             </tr>
                                                             <?php
                                                         }

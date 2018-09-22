@@ -563,34 +563,156 @@ class MSale extends CI_Model {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 06/04/2017, Ultima modificacion: 
      **************************************************************************/
-    public function delete_detail_sale($idRegistro) {
+    public function delete_detail_sale($idRegistro,$type) {
         
         $this->db->trans_start();
         $query = $this->db->query("SELECT
-                                m.idEstadoRecibo
+                                m.idEstadoRecibo,
+                                (SELECT sum(valorPago)
+                                FROM forma_de_pago
+                                WHERE idVenta = v.idVenta) AS forma_pago
                                 FROM
                                 venta_detalle v
                                 JOIN venta_maestro m ON m.idVenta = v.idVenta
                                 WHERE idRegistroDetalle = ".$idRegistro."");
+        $this->db->trans_complete();
+        $this->db->trans_off();
         $result = $query->row();
         
-        if ($result->idEstadoRecibo != 5){
+        if (($result->idEstadoRecibo != 5) && (($result->forma_pago == NULL) || ($result->forma_pago == 0))){
             
-            $this->db->query("DELETE
-                            FROM venta_detalle 
-                            WHERE idRegistroDetalle = ".$idRegistro."
-                            and idVenta = ".$this->session->userdata('idSale')."");
-            
-            $this->db->trans_complete();
-            $this->db->trans_off();
-            
-            return TRUE;
+            if ($type == 1){ /*servicio en la venta*/
+                
+                /* 
+                * ***************************************************************
+                * Inventario de productos de la venta
+                * ***************************************************************
+                */
+               /*Recupera informacion de los producto en el servicio*/
+               $this->db->trans_start();
+               $query2 = $this->db->query("SELECT
+                                        ps.idServicio,
+                                        ps.idProducto,
+                                        p.descProducto,
+                                        (SELECT
+                                        sum(v.cantidad)
+                                        FROM venta_detalle v
+                                        WHERE v.idVenta = ".$this->session->userdata('idSale')."
+                                        AND v.idServicio = ps.idServicio
+                                        AND v.idRegistroDetalle = ".$idRegistro.") as cantidad
+                                        FROM productos_servicio ps
+                                        JOIN productos p ON p.idProducto = ps.idProducto
+                                        WHERE ps.idServicio IN (
+                                            SELECT
+                                            idServicio
+                                            FROM venta_detalle v
+                                            WHERE idVenta = ".$this->session->userdata('idSale')."
+                                            /*AND idServicio = ".$idService."*/
+                                            AND idRegistroDetalle = ".$idRegistro.")");
+               $this->db->trans_complete();
+               $this->db->trans_off();
+
+               if ($query2->num_rows() == 0) {
+
+                   return FALSE;
+
+               } else {
+
+                    /*Query2 - Productos en el servicio*/
+                    $productsService = $query2->result_array(); /*devuelve registros de productos del servicio*/
+                    if ($productsService != FALSE){
+                        foreach ($productsService as $productCantidadServ){
+
+                            /*Actualiza el stock de cada producto*/
+                            $this->stock_max($productCantidadServ['idProducto'], $productCantidadServ['cantidad']);
+
+                        }
+                    }
+
+                    $this->db->trans_start();
+                    $this->db->query("DELETE
+                                    FROM venta_detalle 
+                                    WHERE idRegistroDetalle = ".$idRegistro."
+                                    and idVenta = ".$this->session->userdata('idSale')."");
+                    $this->db->trans_complete();
+                    $this->db->trans_off();
+
+                    return TRUE;
+
+               }
+               /*****************************************************************/
+                
+            } else { 
+                
+                if ($type == 2) { /*producto en la venta*/
+                    
+                    /* 
+                    * ***************************************************************
+                    * Inventario de productos de la venta
+                    * ***************************************************************
+                    */
+                   /*Recupera informacion del producto en la lista de venta*/
+                   $this->db->trans_start();
+                   $query1 = $this->db->query("SELECT
+                                           v.idProducto,
+                                           v.cantidad
+                                           FROM
+                                           venta_detalle v
+                                           JOIN productos p ON p.idProducto = v.idProducto
+                                           WHERE
+                                           v.idVenta = ".$this->session->userdata('idSale')."
+                                           AND v.idRegistroDetalle = ".$idRegistro."");
+                   $this->db->trans_complete();
+                   $this->db->trans_off();
+                   
+                   if ($query1->num_rows() == 0) {
+
+                       return FALSE;
+
+                   } else {
+
+                        /*Query1 - Productos en la venta*/
+                        $productsSale = $query1->result_array(); /*devuelve registros de productos en la venta*/
+                        if ($productsSale != FALSE){
+                            foreach ($productsSale as $productCantidad){
+
+                                /*Actualiza el stock de cada producto*/
+                                $this->stock_max($productCantidad['idProducto'], $productCantidad['cantidad']);
+
+                            }
+                        }
+                        
+                        $this->db->trans_start();
+                        $this->db->query("DELETE
+                                        FROM venta_detalle 
+                                        WHERE idRegistroDetalle = ".$idRegistro."
+                                        and idVenta = ".$this->session->userdata('idSale')."");
+                        $this->db->trans_complete();
+                        $this->db->trans_off();
+
+                        return TRUE;
+
+                   }
+                   /*****************************************************************/
+                    
+                } else { /*adicional en la venta*/
+                    
+                    $this->db->trans_start();
+                    $this->db->query("DELETE
+                                    FROM venta_detalle 
+                                    WHERE idRegistroDetalle = ".$idRegistro."
+                                    and idVenta = ".$this->session->userdata('idSale')."");
+                    $this->db->trans_complete();
+                    $this->db->trans_off();
+
+                    return TRUE;
+
+                }
+                
+            }
             
         } else {
-            
-            $this->db->trans_complete();
-            $this->db->trans_off();
-            
+                        
             return FALSE;
             
         }
@@ -769,7 +891,8 @@ class MSale extends CI_Model {
                                     ".$cantidad."
                                     )
                                     ");
-
+        
+        $idRegistro = $this->db->insert_id();
         $this->db->trans_complete();
         $this->db->trans_off();
         
@@ -779,7 +902,53 @@ class MSale extends CI_Model {
 
         } else {
             
-            return true;
+            /*
+             * ***************************************************************
+             * Inventario de productos del servicio
+             * ***************************************************************
+             */
+            /*Recupera los productos del servicio en la lista de venta*/
+            $query2 = $this->db->query("SELECT
+                                        ps.idServicio,
+                                        ps.idProducto,
+                                        p.descProducto,
+                                        (SELECT
+                                        sum(v.cantidad)
+                                        FROM venta_detalle v
+                                        WHERE v.idVenta = ".$this->session->userdata('idSale')."
+                                        AND v.idServicio = ps.idServicio
+                                        AND v.idRegistroDetalle = ".$idRegistro.") as cantidad
+                                        FROM productos_servicio ps
+                                        JOIN productos p ON p.idProducto = ps.idProducto
+                                        WHERE ps.idServicio IN (
+                                            SELECT
+                                            idServicio
+                                            FROM venta_detalle v
+                                            WHERE idVenta = ".$this->session->userdata('idSale')."
+                                            AND idServicio = ".$idService."
+                                        )");
+            
+            if ($query2->num_rows() == 0) {
+
+                return true;
+
+            } else {
+
+                /*Query2 - Productos en el servicio*/
+                $productsService = $query2->result_array(); /*devuelve registros de productos del servicio*/
+                if ($productsService != FALSE){
+                    foreach ($productsService as $productCantidadServ){
+
+                        /*Actualiza el stock de cada producto*/
+                        $this->stock_min($productCantidadServ['idProducto'], $productCantidadServ['cantidad']);
+
+                    }
+                }
+
+                return true;
+
+            }
+            /*****************************************************************/
 
         }
         
@@ -811,6 +980,8 @@ class MSale extends CI_Model {
                         ".$valueEmpleado.",
                         ".$cantidad.",
                         'N')");
+        
+        $idRegistro = $this->db->insert_id();
         $this->db->trans_complete();
         $this->db->trans_off();
         
@@ -820,7 +991,44 @@ class MSale extends CI_Model {
 
         } else {
                         
-            return true;
+            /* 
+             * ***************************************************************
+             * Inventario de productos de la venta
+             * ***************************************************************
+             */
+            /*Recupera informacion del producto en la lista de venta*/
+            $query1 = $this->db->query("SELECT
+                                    v.idProducto,
+                                    v.cantidad
+                                    FROM
+                                    venta_detalle v
+                                    JOIN productos p ON p.idProducto = v.idProducto
+                                    WHERE
+                                    v.idVenta = ".$this->session->userdata('idSale')."
+                                    AND v.idProducto = ".$idProducto."
+                                    AND v.idRegistroDetalle = ".$idRegistro."");
+            
+            if ($query1->num_rows() == 0) {
+
+                return true;
+
+            } else {
+
+                /*Query1 - Productos en la venta*/
+                $productsSale = $query1->result_array(); /*devuelve registros de productos en la venta*/
+                if ($productsSale != FALSE){
+                    foreach ($productsSale as $productCantidad){
+
+                        /*Actualiza el stock de cada producto*/
+                        $this->stock_min($productCantidad['idProducto'], $productCantidad['cantidad']);
+
+                    }
+                }
+
+                return true;
+
+            }
+            /*****************************************************************/
             
         }
         
@@ -993,70 +1201,78 @@ class MSale extends CI_Model {
 
                 } else {
                 
-                    /*Recupera los productos en la lista de venta*/
-                    $query1 = $this->db->query("SELECT
-                                            v.idProducto,
-                                            v.cantidad
-                                            FROM
-                                            venta_detalle v
-                                            JOIN productos p ON p.idProducto = v.idProducto
-                                            WHERE
-                                            v.idVenta = ".$this->session->userdata('idSale')."");
-
-                    /*Recupera los productos de los servicios en la lista de venta*/
-                    $query2 = $this->db->query("SELECT
-                                                ps.idServicio,
-                                                ps.idProducto,
-                                                p.descProducto,
-                                                (SELECT
-                                                sum(v.cantidad)
-                                                FROM venta_detalle v
-                                                WHERE v.idVenta = ".$this->session->userdata('idSale')."
-                                                AND v.idServicio = ps.idServicio) as cantidad
-                                                FROM productos_servicio ps
-                                                JOIN productos p ON p.idProducto = ps.idProducto
-                                                WHERE ps.idServicio IN (
-                                                    SELECT
-                                                    idServicio
-                                                    FROM venta_detalle v
-                                                    WHERE idVenta = ".$this->session->userdata('idSale')."
-                                                    AND idServicio IS NOT NULL
-                                                )");
-
                     $this->cache->memcached->delete('mClientInList');
-
-                    if ($query1->num_rows() == 0 && $query2->num_rows() == 0) {
-
-                        return true;
-
-                    } else {
-
-                        /*Query1 - Productos en la venta*/
-                        $productsSale = $query1->result_array(); /*devuelve registros de productos en la venta*/
-                        if ($productsSale != FALSE){
-                            foreach ($productsSale as $productCantidad){
-
-                                /*Actualiza el stock de cada producto*/
-                                $this->stock_min($productCantidad['idProducto'], $productCantidad['cantidad']);
-
-                            }
-                        }
-
-                        /*Query2 - Productos en el servicio*/
-                        $productsService = $query2->result_array(); /*devuelve registros de productos del servicio*/
-                        if ($productsService != FALSE){
-                            foreach ($productsService as $productCantidadServ){
-
-                                /*Actualiza el stock de cada producto*/
-                                $this->stock_min($productCantidadServ['idProducto'], $productCantidadServ['cantidad']);
-
-                            }
-                        }
-
-                        $this->cache->memcached->delete('mDetailResol');
-                        return true;
-
-                    }
+                    return true;
+                    
+                    /*
+                     * ******************************************************
+                     * INVENTARIO DE PRODUCTOS
+                     * ******************************************************
+                     */
+                    /*Recupera los productos en la lista de venta*/
+//                    $query1 = $this->db->query("SELECT
+//                                            v.idProducto,
+//                                            v.cantidad
+//                                            FROM
+//                                            venta_detalle v
+//                                            JOIN productos p ON p.idProducto = v.idProducto
+//                                            WHERE
+//                                            v.idVenta = ".$this->session->userdata('idSale')."");
+//
+//                    /*Recupera los productos de los servicios en la lista de venta*/
+//                    $query2 = $this->db->query("SELECT
+//                                                ps.idServicio,
+//                                                ps.idProducto,
+//                                                p.descProducto,
+//                                                (SELECT
+//                                                sum(v.cantidad)
+//                                                FROM venta_detalle v
+//                                                WHERE v.idVenta = ".$this->session->userdata('idSale')."
+//                                                AND v.idServicio = ps.idServicio) as cantidad
+//                                                FROM productos_servicio ps
+//                                                JOIN productos p ON p.idProducto = ps.idProducto
+//                                                WHERE ps.idServicio IN (
+//                                                    SELECT
+//                                                    idServicio
+//                                                    FROM venta_detalle v
+//                                                    WHERE idVenta = ".$this->session->userdata('idSale')."
+//                                                    AND idServicio IS NOT NULL
+//                                                )");
+//
+//                    $this->cache->memcached->delete('mClientInList');
+//
+//                    if ($query1->num_rows() == 0 && $query2->num_rows() == 0) {
+//
+//                        return true;
+//
+//                    } else {
+//
+//                        /*Query1 - Productos en la venta*/
+//                        $productsSale = $query1->result_array(); /*devuelve registros de productos en la venta*/
+//                        if ($productsSale != FALSE){
+//                            foreach ($productsSale as $productCantidad){
+//
+//                                /*Actualiza el stock de cada producto*/
+//                                $this->stock_min($productCantidad['idProducto'], $productCantidad['cantidad']);
+//
+//                            }
+//                        }
+//
+//                        /*Query2 - Productos en el servicio*/
+//                        $productsService = $query2->result_array(); /*devuelve registros de productos del servicio*/
+//                        if ($productsService != FALSE){
+//                            foreach ($productsService as $productCantidadServ){
+//
+//                                /*Actualiza el stock de cada producto*/
+//                                $this->stock_min($productCantidadServ['idProducto'], $productCantidadServ['cantidad']);
+//
+//                            }
+//                        }
+//
+//                        $this->cache->memcached->delete('mDetailResol');
+//                        return true;
+//
+//                    }
                 
                 }
                 
@@ -1195,6 +1411,7 @@ class MSale extends CI_Model {
     /**************************************************************************
      * Nombre del Metodo: stock_min
      * Descripcion: Actualiza el stock de un producto segun la cantidad vendida
+     * resta la cantidad comprada al stock del producto
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 29/03/2017, Ultima modificacion: 
      **************************************************************************/
@@ -1215,6 +1432,49 @@ class MSale extends CI_Model {
                                 stock_productos 
                                 SET
                                 disponibles = ".($row['disponibles']-($cantidad*$row['uniDosis']))."
+                                WHERE
+                                idProducto = ".$idProducto."");
+
+        $this->db->trans_complete();
+        $this->db->trans_off();
+        
+        if ($this->db->trans_status() === FALSE){
+
+            return false;
+
+        } else {
+            
+            $this->cache->memcached->delete('mListproducts');
+            return true;
+
+        }
+        
+    }
+    
+    /**************************************************************************
+     * Nombre del Metodo: stock_max
+     * Descripcion: Actualiza el stock de un producto segun la cantidad devuelta
+     * suma la cantidad comprada al stock del producto
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 21/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function stock_max($idProducto,$cantidad) {
+                
+        $this->db->trans_start();
+        $query1 = $this->db->query("SELECT
+                                    s.disponibles,
+                                    p.uniDosis
+                                    FROM
+                                    stock_productos s
+                                    JOIN productos p ON p.idProducto = s.idProducto
+                                    WHERE
+                                    s.idProducto = ".$idProducto."");
+        $row = $query1->row_array();
+        
+        $query2 = $this->db->query("UPDATE
+                                stock_productos 
+                                SET
+                                disponibles = ".($row['disponibles']+($cantidad*$row['uniDosis']))."
                                 WHERE
                                 idProducto = ".$idProducto."");
 
