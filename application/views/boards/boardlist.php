@@ -66,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <a class="btn btn-success btn-board" href="#"><i class="glyphicon glyphicon-plus"></i> Agregar</a>
                                 </span>
                                 <span class="input-group-btn">
-                                    <a class="btn btn-info" href="<?php echo base_url().'index.php/CSale/boards/2'; ?>"><i class="glyphicon glyphicon-eye-open"></i> Ver Tablero</a>
+                                    <a class="btn btn-info" href="<?php echo base_url().'index.php/CSale/boards/2'; ?>"><i class="glyphicon glyphicon-th"></i> Ver Tablero</a>
                                 </span>
                             </div>
                         </div>
