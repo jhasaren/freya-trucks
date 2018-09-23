@@ -26,6 +26,7 @@ class CPrincipal extends CI_Controller {
         $this->load->model('MProduct'); /*Modelo para los Productos*/
         $this->load->model('MSale'); /*Modelo para las Ventas*/
         $this->load->model('MReport'); /*Modelo para los Reportes*/
+        $this->load->model('MBoard'); /*Modelo para los Productos*/
         
         date_default_timezone_set('America/Bogota'); /*Zona horaria*/
 
@@ -287,6 +288,7 @@ class CPrincipal extends CI_Controller {
         $this->cache->memcached->delete('mTypeGasto');
         $this->cache->memcached->delete('mCategoriaGasto');
         $this->cache->memcached->delete('mListundmedida');
+        $this->cache->memcached->delete('mListboards');
         
         /*Destruye los datos de sesion*/
         $this->session->sess_destroy();
@@ -389,6 +391,27 @@ class CPrincipal extends CI_Controller {
                         } else {
 
                             show_404();
+
+                        }
+                        
+                    } else {
+                        
+                        if ($module == 'board'){
+
+                            /*Consulta el modelo*/
+                            $dataBoard = $this->MBoard->get_board($value);
+
+                            if ($dataBoard != FALSE){
+
+                                $info['id'] = $value;
+                                $info['data_board'] = $dataBoard;
+                                $this->load->view('boards/boardget',$info);
+
+                            } else {
+
+                                show_404();
+
+                            } 
 
                         }
                         

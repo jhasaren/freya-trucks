@@ -24,8 +24,9 @@ class MSale extends CI_Model {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 26/03/2017, Ultima modificacion: 
      **************************************************************************/
-    public function create_sale($idusuario) {
+    public function create_sale($idusuario,$board) {
         
+        $this->db->trans_strict(TRUE);
         $this->db->trans_start();
         $query = $this->db->query("INSERT INTO
                                     venta_maestro (
@@ -49,6 +50,13 @@ class MSale extends CI_Model {
                                     )");
         
         $idSale = $this->db->insert_id();
+        
+        $query2 = $this->db->query("UPDATE
+                                    mesas SET
+                                    idVenta = ".$idSale."
+                                    WHERE
+                                    idMesa = ".$board."");
+        
         $this->db->trans_complete();
         $this->db->trans_off();
         
@@ -122,52 +130,30 @@ class MSale extends CI_Model {
      * Fecha Creacion: 05/04/2017, Ultima modificacion: 
      **************************************************************************/
     public function client_in_list() {
-        
-        if ($this->session->userdata('sclient') != NULL){
-            
-            $dataCache = $this->cache->memcached->get('mClientInList');
-            $dataFilter = $this->cache->memcached->get('mIdclient');
-        
-            if (($dataCache) && ($dataFilter == $this->session->userdata('sclient'))){
+                                
+        /*Recupera los usuarios creados*/
+        $query = $this->db->query("SELECT
+                                a.idUsuario,
+                                concat(a.nombre,' ',a.apellido) as nombre_usuario,
+                                a.numCelular,
+                                a.direccion,
+                                a.email
+                                FROM
+                                venta_maestro v
+                                JOIN app_usuarios a ON a.idUsuario = v.idUsuarioCliente
+                                WHERE
+                                v.idVenta = ".$this->session->userdata('idSale')."");
 
-                $this->cache->memcached->save('memcached11', 'cache', 30);
-                return $dataCache;
+        if ($query->num_rows() == 0) {
 
-            } else {
-            
-                /*Recupera los usuarios creados*/
-                $query = $this->db->query("SELECT
-                                        a.idUsuario,
-                                        concat(a.nombre,' ',a.apellido) as nombre_usuario,
-                                        a.numCelular,
-                                        a.direccion,
-                                        a.email
-                                        FROM
-                                        app_usuarios a
-                                        WHERE
-                                        a.idUsuario = ".$this->session->userdata('sclient')."");
+            return false;
 
-                $this->cache->memcached->save('mClientInList', $query->row(), 28800); /*8 horas en Memoria*/
-                $this->cache->memcached->save('mIdclient', $this->session->userdata('sclient'), 28800);
-                $this->cache->memcached->save('memcached11', 'real', 30);
-                
-                if ($query->num_rows() == 0) {
-
-                    return false;
-
-                } else {
-
-                    return $query->row();
-
-                }
-            
-            }
-            
         } else {
-            
-            return FALSE;
-            
+
+            return $query->row();
+
         }
+        
     }
     
     /**************************************************************************
@@ -395,6 +381,38 @@ class MSale extends CI_Model {
         } else {
             
             return $query->result_array();
+            
+        }
+        
+    }
+    
+    /**************************************************************************
+     * Nombre del Metodo: porcen_in_list
+     * Descripcion: Recupera los porcentajes de descuento y servicio de la venta
+     * tambien el id del empleado que atiende
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 22/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function porcen_in_list() {
+        
+        /*Recupera los Productos de la venta*/
+        $query = $this->db->query("SELECT
+                                v.porcenDescuento,
+                                v.porcenServicio,
+                                v.idEmpleadoAtiende,
+                                v.idEstadoRecibo
+                                FROM
+                                venta_maestro v
+                                WHERE
+                                v.idVenta = ".$this->session->userdata('idSale')."");
+        
+        if ($query->num_rows() == 0) {
+            
+            return false;
+            
+        } else {
+            
+            return $query->row();
             
         }
         
@@ -730,64 +748,82 @@ class MSale extends CI_Model {
         $this->db->trans_strict(TRUE);
         $this->db->trans_start();
         $query = $this->db->query("SELECT
-                                m.nroRecibo
+                                m.nroRecibo,
+                                (SELECT count(1) FROM forma_de_pago f WHERE idVenta = ".$this->session->userdata('idSale').") as forma_pago,
+                                (SELECT count(1) FROM venta_detalle WHERE idVenta = ".$this->session->userdata('idSale').") as productos
                                 FROM
                                 venta_maestro m
                                 WHERE m.idVenta = ".$this->session->userdata('idSale')."");
         $result = $query->row();
         
-        if ($result->nroRecibo != 0){
-            
-            $this->db->query("DELETE
-                            FROM venta_detalle 
-                            WHERE idVenta = ".$this->session->userdata('idSale')."");
-            
-            $this->db->query("DELETE
-                            FROM venta_maestro
-                            WHERE idVenta = ".$this->session->userdata('idSale')."");
-            
-            $this->db->query("UPDATE
-                            rango_recibos
-                            SET idEstadoRecibo = 1
-                            WHERE nroRecibo = ".$result->nroRecibo."");
-            
-            $this->db->trans_complete();
-            $this->db->trans_off();
-            
-            if ($this->db->trans_status() === FALSE){
-                
-                return FALSE;
-                
+        if ($result->forma_pago == 0 && $result->productos == 0 ) {
+        
+            if ($result->nroRecibo != 0){
+
+                $this->db->query("DELETE
+                                FROM venta_detalle 
+                                WHERE idVenta = ".$this->session->userdata('idSale')."");
+
+                $this->db->query("DELETE
+                                FROM venta_maestro
+                                WHERE idVenta = ".$this->session->userdata('idSale')."");
+
+                $this->db->query("UPDATE
+                                rango_recibos
+                                SET idEstadoRecibo = 1
+                                WHERE nroRecibo = ".$result->nroRecibo."");
+
+                $this->db->query("UPDATE mesas
+                                SET idVenta = NULL
+                                WHERE idVenta = ".$this->session->userdata('idSale')."");
+
+                $this->db->trans_complete();
+                $this->db->trans_off();
+
+                if ($this->db->trans_status() === FALSE){
+
+                    return FALSE;
+
+                } else {
+
+                    $this->cache->memcached->delete('mClientInList');
+                    return TRUE;
+
+                }
+
             } else {
-                
-                $this->cache->memcached->delete('mClientInList');
-                return TRUE;
-                
+
+                $this->db->query("DELETE
+                                FROM venta_detalle 
+                                WHERE idVenta = ".$this->session->userdata('idSale')."");
+
+                $this->db->query("DELETE
+                                FROM venta_maestro
+                                WHERE idVenta = ".$this->session->userdata('idSale')."");
+
+                $this->db->query("UPDATE mesas
+                                SET idVenta = NULL
+                                WHERE idVenta = ".$this->session->userdata('idSale')."");
+
+                $this->db->trans_complete();
+                $this->db->trans_off();
+
+                if ($this->db->trans_status() === FALSE){
+
+                    return FALSE;
+
+                } else {
+
+                    $this->cache->memcached->delete('mClientInList');
+                    return TRUE;
+
+                }
+
             }
-            
+        
         } else {
             
-            $this->db->query("DELETE
-                            FROM venta_detalle 
-                            WHERE idVenta = ".$this->session->userdata('idSale')."");
-            
-            $this->db->query("DELETE
-                            FROM venta_maestro
-                            WHERE idVenta = ".$this->session->userdata('idSale')."");
-            
-            $this->db->trans_complete();
-            $this->db->trans_off();
-            
-            if ($this->db->trans_status() === FALSE){
-                
-                return FALSE;
-                
-            } else {
-                
-                $this->cache->memcached->delete('mClientInList');
-                return TRUE;
-                
-            }
+            return FALSE;
             
         }
         
@@ -1081,7 +1117,7 @@ class MSale extends CI_Model {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 02/04/2017, Ultima modificacion: 
      **************************************************************************/
-    public function update_salemaster($total,$liquidado,$nrorecibo) {
+    public function update_salemaster($total,$liquidado,$nrorecibo,$estadoActualiza) {
         
         $this->db->trans_strict(TRUE);
         $this->db->trans_start();
@@ -1096,7 +1132,7 @@ class MSale extends CI_Model {
                         venta_maestro SET
                         valorTotalVenta = ".$total.",
                         valorLiquida = ".$liquidado.",
-                        idEstadoRecibo = 2,
+                        idEstadoRecibo = ".$estadoActualiza.",
                         nroRecibo = '".$nrorecibo."',
                         fechaLiquida = NOW()
                         WHERE
@@ -1295,7 +1331,8 @@ class MSale extends CI_Model {
     public function genera_recibo() {
         
         $queryRecibo = $this->db->query("SELECT
-                                        nroRecibo 
+                                        nroRecibo,
+                                        idEstadoRecibo
                                         FROM 
                                         venta_maestro 
                                         WHERE 
@@ -1495,6 +1532,43 @@ class MSale extends CI_Model {
     }
     
     /**************************************************************************
+     * Nombre del Metodo: cuenta_x_cobrar
+     * Descripcion: Actualiza el estado del recibo a "8-cuenta x cobrar" y libera la
+     * mesa.
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 22/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function cuenta_x_cobrar($idVenta) {
+        
+        $this->db->trans_strict(TRUE);
+        $this->db->trans_start();
+        
+        $this->db->query("UPDATE venta_maestro
+                        SET idEstadoRecibo = 8
+                        WHERE
+                        idVenta = ".$idVenta."");
+        
+        $this->db->query("UPDATE mesas
+                        SET idVenta = NULL
+                        WHERE
+                        idVenta = ".$idVenta."");
+
+        $this->db->trans_complete();
+        $this->db->trans_off();
+        
+        if ($this->db->trans_status() === FALSE){
+
+            return FALSE;
+
+        } else {
+            
+            return TRUE;
+
+        }
+        
+    }
+    
+    /**************************************************************************
      * Nombre del Metodo: sale_clean
      * Descripcion: Limpia todos los registros de venta que hayan quedado en
      * proceso liquidacion. Este es ejecutado por Proceso Automatico.
@@ -1610,6 +1684,42 @@ class MSale extends CI_Model {
             
         }
         
+    }
+    
+    /**************************************************************************
+     * Nombre del Metodo: list_board_sale
+     * Descripcion: Obtiene la disponibilidad de las mesas en la sede
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 22/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function list_board_sale() {
+                
+        /*Recupera la disponibilidad de mesas en la sede*/
+        $query = $this->db->query("SELECT
+                                m.idMesa,
+                                m.nombreMesa,
+                                m.activo,
+                                t.descTipoMesa,
+                                m.idVenta,
+                                v.idEstadoRecibo
+                                FROM mesas m
+                                JOIN tipo_mesa t ON t.idTipoMesa = m.idTipoMesa
+                                LEFT JOIN venta_maestro v ON v.idVenta = m.idVenta
+                                WHERE
+                                m.activo = 'S'
+                                AND m.idSede = ".$this->session->userdata('sede')."
+                                ORDER BY 2 ASC");
+
+        if ($query->num_rows() == 0) {
+
+            return false;
+
+        } else {
+
+            return $query->result_array();
+
+        }
+            
     }
     
 }

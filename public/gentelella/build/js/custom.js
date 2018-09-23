@@ -202,6 +202,11 @@ $(document).ready(function () {
         e.preventDefault();
         $('#myModal-producto').modal('show');
     });
+    /*Modal - Crear Mesa*/
+    $('.btn-board').click(function (e) {
+        e.preventDefault();
+        $('#myModal-board').modal('show');
+    });
     /*Modal - Crear Servicio*/
     $('.btn-service').click(function (e) {
         e.preventDefault();

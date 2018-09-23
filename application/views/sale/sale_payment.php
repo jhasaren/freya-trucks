@@ -186,7 +186,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <center>
                         <p class="center-block download-buttons">
                             <input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#myDiv')" />
-                            <a href="<?php echo base_url().'index.php/CSale/createsale'; ?>" class="btn btn-success btn-lg">
+                            <a href="<?php echo base_url().'index.php/CSale/boards/2'; ?>" class="btn btn-success btn-lg">
                                 <i class="glyphicon glyphicon-repeat glyphicon-white"></i> Nueva venta
                             </a>
                         </p>

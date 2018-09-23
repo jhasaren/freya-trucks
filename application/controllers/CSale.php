@@ -26,6 +26,7 @@ class CSale extends CI_Controller {
         $this->load->model('MPrincipal'); /*Modelo principal para consultar recibos disponibles*/
         $this->load->model('MNotify'); /*Modelo para las notificaciones*/
         $this->load->model('MReport'); /*Modelo para los reportes*/
+        $this->load->model('MBoard'); /*Modelo para las Mesas*/
         
         date_default_timezone_set('America/Bogota'); /*Zona horaria*/
 
@@ -73,7 +74,7 @@ class CSale extends CI_Controller {
                 $listServiceSale = $this->MSale->list_service_sale(); /*Consulta Modelo para obtener lista de Servicios*/
                 $listEmpleadoSale = $this->MSale->list_empleado_sale(); /*Consulta Modelo para obtener lista de Empleados*/
                 $listProductSale = $this->MSale->list_product_sale(); /*Consulta Modelo para obtener lista de Productos*/
-                $listProductInterno = $this->MSale->list_product_int(); /*Consulta Modelo para obtener lista de Productos de Consumo Interno*/
+                //$listProductInterno = $this->MSale->list_product_int(); /*Consulta Modelo para obtener lista de Productos de Consumo Interno*/
                 $receiptSale = $this->MPrincipal->rango_recibos(1);  /*Consulta el Modelo Cantidad de recibos disponibles*/
                 
                 $clientInList = $this->MSale->client_in_list(); /*datos del cliente agregados a la venta*/
@@ -81,18 +82,20 @@ class CSale extends CI_Controller {
                 $productInList = $this->MSale->product_in_list(); /*lista de productos agregados a la venta*/
                 $adicionalInList = $this->MSale->adicional_in_list(); /*lista cargos adicionales agregados a la venta*/
                 $consumoInList = $this->MSale->consumo_in_list(); /*lista consumo interno agregados a la venta*/
+                $porcenInList = $this->MSale->porcen_in_list(); /*recupera descuento, servicio y idempleado que atiende que estan agregados en la venta*/
 
                 /*Retorna a la vista con los datos obtenidos*/
                 $info['list_user'] = $listUserSale;
                 $info['list_service'] = $listServiceSale;
                 $info['list_empleado'] = $listEmpleadoSale;
                 $info['list_product'] = $listProductSale;
-                $info['list_interno'] = $listProductInterno;
+                //$info['list_interno'] = $listProductInterno;
                 $info['clientInList'] = $clientInList;
                 $info['serviceInList'] = $serviceInList;
                 $info['productInList'] = $productInList;
                 $info['adicionalInList'] = $adicionalInList;
                 $info['consumoInList'] = $consumoInList;
+                $info['porcenInList'] = $porcenInList;
                 $info['receiptSale'] = $receiptSale;
                 $this->load->view('sale/sale',$info);
             
@@ -116,21 +119,19 @@ class CSale extends CI_Controller {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 27/03/2017, Ultima modificacion: 
      **************************************************************************/
-    public function createsale() {
+    public function createsale($board,$flagBoard) {
         
         if ($this->session->userdata('validated')) {
             
             if ($this->MRecurso->validaRecurso(9)){
             
-                /*Valida si ya existe un id de venta registrado en la sesion*/
-                if ($this->session->userdata('idSale') == NULL){
-
-                    /*Consulta Modelo para crear el id de venta*/
-                    $createSale = $this->MSale->create_sale($this->session->userdata('userid'));
+                if ($flagBoard == 0){ /*mesa libre*/
                     
+                    /*Consulta Modelo para crear el id de venta*/
+                    $createSale = $this->MSale->create_sale($this->session->userdata('userid'),$board);
                     /*Envia datos al modelo para el registro del Cliente por Default*/
                     $this->MSale->add_user('999999',$this->session->userdata('idSale'));
-
+                    
                     if ($createSale == TRUE){
 
                         $this->module($info);
@@ -140,13 +141,101 @@ class CSale extends CI_Controller {
                         show_404();
 
                     }
-
+                    
                 } else {
-
+                    
+                    /*Registra el id de venta de la mesa como variable de sesion*/
+                    $datos_session = array(
+                        'idSale' => $flagBoard
+                    );
+                    $this->session->set_userdata($datos_session);
+                    
                     $this->module($info);
-
+                    
                 }
+                
+                /*Valida si ya existe un id de venta registrado en la sesion*/
+                //if ($this->session->userdata('idSale') == NULL){
+
+                    /*Consulta Modelo para crear el id de venta*/
+                    //$createSale = $this->MSale->create_sale($this->session->userdata('userid'));
+                    
+                    /*Envia datos al modelo para el registro del Cliente por Default*/
+                    //$this->MSale->add_user('999999',$this->session->userdata('idSale'));
+
+                    //if ($createSale == TRUE){
+
+                        //$this->module($info);
+
+                    //} else {
+
+                        //show_404();
+
+                    //}
+
+                //} else {
+
+                    //$this->module($info);
+
+                //}
             
+            } else {
+                
+                show_404();
+                
+            }
+            
+        } else {
+            
+            $this->module($info);
+            
+        }
+        
+    }
+    
+    /**************************************************************************
+     * Nombre del Metodo: boards
+     * Descripcion: visualiza el estado de las mesas
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 22/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function boards($type) {
+        
+        if ($this->session->userdata('validated')) {
+            
+            if ($this->MRecurso->validaRecurso(9)){
+                
+                if ($type == 2){ /*tablero de mesas*/
+                    
+                    /*Consulta Modelo para obtener listado de disponibilidad de mesas*/
+                    $listBoards = $this->MSale->list_board_sale();
+                    /*Retorna a la vista con los datos obtenidos*/
+                    $info['list_board'] = $listBoards;
+                    /*Carga el tablero de mesas*/
+                    $this->load->view('sale/boards',$info);
+                
+                } else {
+                    
+                    if ($type == 1){ /*listado*/
+                        
+                        /*Consulta Modelo para obtener listado de Mesas creadas*/
+                        $listBoards = $this->MBoard->list_boards();
+                        /*Consulta Modelo para obtener listado de Tipo de Mesas creadas*/
+                        $listTypeBoards = $this->MBoard->list_type_board();
+                        /*Retorna a la vista con los datos obtenidos*/
+                        $info['list_board'] = $listBoards;
+                        $info['list_type_board'] = $listTypeBoards;
+                        /*Carga la lista de mesas*/
+                        $this->load->view('boards/boardlist',$info);
+                        
+                    } else {
+                        
+                        show_404();
+                        
+                    }
+                    
+                }
+                
             } else {
                 
                 show_404();
@@ -245,9 +334,18 @@ class CSale extends CI_Controller {
                                 } else {
 
                                     $nroRecibo = $numeracion->nroRecibo;
-
+                                    $estadoRecibo = $numeracion->idEstadoRecibo;
+                                    
+                                    /*si recibo es cuenta x cobrar, dejar como cuenta x cobrar*/
+                                    if ($estadoRecibo == 8){
+                                        $estadoActualiza = 8;
+                                    } else { /*si no dejar como estado 2-liquidado*/
+                                        $estadoActualiza = 2;
+                                    }
+                                        
+                                        
                                     /*Consulta Modelo para actualizar la venta maestro*/
-                                    $maestroventa = $this->MSale->update_salemaster($valorTotalVenta,$valorLiquidaVenta,$nroRecibo);
+                                    $maestroventa = $this->MSale->update_salemaster($valorTotalVenta,$valorLiquidaVenta,$nroRecibo,$estadoActualiza);
 
                                     if ($maestroventa == TRUE){
 
@@ -421,14 +519,25 @@ class CSale extends CI_Controller {
             
             if ($this->MRecurso->validaRecurso(9)){
             
-                $this->session->unset_userdata('sclient');
-                $this->session->unset_userdata('sempleado');
-                $this->session->unset_userdata('idSale'); 
-                $this->session->unset_userdata('sdescuento');
-                $this->session->unset_userdata('sservicio');
+                /*Consulta Modelo para eliminar el id del detalle*/
+                $updrecibo = $this->MSale->cuenta_x_cobrar($this->session->userdata('idSale'));
+                
+                if ($updrecibo == TRUE){
+                
+                    $this->session->unset_userdata('sclient');
+                    $this->session->unset_userdata('sempleado');
+                    $this->session->unset_userdata('idSale'); 
+                    $this->session->unset_userdata('sdescuento');
+                    $this->session->unset_userdata('sservicio');
 
-                $this->createsale();
+                    $this->boards(2);
             
+                } else {
+                    
+                    show_404();
+                    
+                }
+                
             } else {
                 
                 show_404();
@@ -465,12 +574,12 @@ class CSale extends CI_Controller {
                     $this->session->unset_userdata('sdescuento');
                     $this->session->unset_userdata('sservicio');
 
-                    $this->createsale();
+                    $this->boards(2);
 
                 } else {
 
                     $info['idmessage'] = 2;
-                    $info['message'] = "No es posible cancelar la venta";
+                    $info['message'] = "No es posible cancelar la venta. Elimine primero todos los conceptos de la venta. Si la venta ya registra un Pago Parcial debe anular el recibo";
                     $this->module($info);
 
                 }
@@ -551,7 +660,7 @@ class CSale extends CI_Controller {
 
                                     }
 
-                                    /*Crea PDF del Recibo*/
+                                    /*Crea PDF del Recibo / imprime ticket*/
                                     $reciboPDF = $this->detallerecibopdf($this->session->userdata('idSale'),$recibo,$detailRecibo);
 
                                     /*Envia datos al Modelo para notificar al cliente por correo*/
@@ -1361,7 +1470,7 @@ class CSale extends CI_Controller {
                 //$turno = $this->MSale->consecutivo_turno_sale(1,$this->session->userdata('idSale'));
                 
                 /*Imprime Ticket Cliente*/
-                //$this->imprimeticket($reciboDetalle,$turno);
+                $this->imprimeticket($reciboDetalle,$turno);
 
                 if (file_exists("./files/recibos/$output")){
 
@@ -1441,14 +1550,16 @@ class CSale extends CI_Controller {
 
                         $info['idmessage'] = 1;
                         $info['message'] = "Consecutivo Turno Reiniciado Exitosamente";
-                        $this->module($info);
+                        //$this->module($info);
+                        $this->boards(2);
 
                     } else {
 
                         $info['idmessage'] = 2;
                         $info['message'] = "No fue posible reiniciar el Consecutivo Turno";
-                        $this->module($info);
-
+                        //$this->module($info);
+                        $this->boards(2);
+                        
                     }
                 
                 } else {

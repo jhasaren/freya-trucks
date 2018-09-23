@@ -70,14 +70,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h3>Freya Trucks</h3>v1.0.5 [28/02/2018]
+                    <h3>Freya Trucks</h3>v1.2.0 [21/09/2018]
                 </div>
                 <div class="modal-body">
                     Software de Administración para Restaurantes.
                     <br /><br />
                     Autor:<br />
-                    John Alexander Sanchez R.<br />
-                    Leidy J. Mendoza Yara<br />
+                    John Alexander Sanchez R. - Desarrollador<br />
+                    Leidy J. Mendoza Yara - Tester & Documentador<br /><br />
                     Amadeus Soluciones [Cali-Colombia]<br />
                     jhonalexander90@gmail.com
                 </div>

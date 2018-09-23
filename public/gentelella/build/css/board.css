@@ -1,0 +1,90 @@
+/**************
+ * Basics for this pen from
+ * https://tympanus.net/codrops/2012/08/08/circle-hover-effects-with-css-transitions/
+ * added support for bootstrap grids. extracted border-radius to use effect on rectangles as well
+ */
+
+/*
+ * separate class for round elements
+ */
+.do-circle {
+  border-radius: 50%;
+}
+
+.do-item {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.do-item-circle {
+  max-width: 181px;
+}
+
+.do-item-square {
+  max-width: 300px;
+}
+
+.do-info-wrap {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  transition: all 0.4s ease-in-out;
+  perspective: 800px;
+  box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.2), inset 0 0 3px rgba(115, 114, 115, 0.2);
+}
+
+.do-info {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: all 0.4s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.do-info > div {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.do-info .do-info-back {
+  transform: rotate3d(0, 1, 0, 180deg);
+  background: #000;
+}
+
+.do-info h3 {
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 14px;
+  margin: 0 15px;
+  padding: 40px 0 0 0;
+  height: 90px;
+  font-family: 'Open Sans', Arial, sans-serif;
+  text-shadow: 0 0 1px #fff, 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.do-info-back {
+  text-align: center;
+}
+
+.do-info-back > div {
+  color: #fff;
+  padding: 10px 5px;
+  margin: 0 30px;
+  font-size: 12px;
+  border-top: 1px solid #fff;
+}
+
+.do-item:hover .do-info-wrap {
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8), inset 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+.do-item:hover .do-info {
+  transform: rotate3d(0, 1, 0, -180deg);
+}

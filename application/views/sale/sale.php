@@ -50,12 +50,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="page-title">
                     <div class="title_left">
                         <h3>Registrar Venta</h3>
-                        <span class="label label-warning">
-                            <a href="<?php echo base_url().'index.php/CSale/pendientespago'; ?>">Ver Pendientes de Pago</a>
-                        </span>
-                        <span class="label label-info">
-                            <a href="<?php echo base_url().'index.php/CSale/resetconsecutivoturno'; ?>">Reiniciar Consecutivo Turno</a>
-                        </span>
+                        <?php 
+                        if ($porcenInList->idEstadoRecibo == 8){
+                            echo "CUENTA X COBRAR";
+                        } 
+                            
+                        ?>
                         <?php
                         /*echo "<br />Lista Usuarios Venta->".$this->cache->memcached->get('memcached10')."<br />";
                         echo "Lista Servicios->".$this->cache->memcached->get('memcached12')."<br />";
@@ -151,6 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
+                                <?php if ($porcenInList->idEstadoRecibo != 8) { ?>
                                 <div class="row">
                                     <div class="animated flipInY col-lg-2 col-md-2 col-sm-2 col-xs-6"> 
                                         <a class="btn-saleclient" href="#">
@@ -159,7 +160,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <li>
                                                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                                         <span class="glyphicon-class" style="font-size: 14px;">Cliente</span>
-                                                        <div>-<?php echo $this->session->userdata('sclient').'-'; ?></div>
+                                                        <div>-<?php echo $clientInList->idUsuario.'-'; ?></div>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -209,7 +210,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                         <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
                                                         <span class="glyphicon-class" style="font-size: 14px;">
                                                             Servicio/Descuento
-                                                            <div><?php echo $this->session->userdata('sservicio')."% / ".$this->session->userdata('sdescuento')."%"; ?></div>
+                                                            <div><?php echo ($porcenInList->porcenServicio*100)."% / ".($porcenInList->porcenDescuento*100)."%"; ?></div>
                                                         </span>
                                                     </li>
                                                 </ul>
@@ -224,7 +225,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                         <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
                                                         <span class="glyphicon-class" style="font-size: 14px;">
                                                             Empleado
-                                                            <div>-<?php echo $this->session->userdata('sempleado').'-'; ?></div>
+                                                            <div>-<?php echo $porcenInList->idEmpleadoAtiende.'-'; ?></div>
                                                         </span>
                                                     </li>
                                                 </ul>
@@ -232,8 +233,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </a>
                                     </div>
                                 </div>
+                                <?php } ?>
                                 <div class="row">
-                                    <?php if ($this->session->userdata('sclient') != NULL) { ?>
+                                    <?php //if ($this->session->userdata('sclient') != NULL) { ?>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
                                         <div class="x_panel" style="background-color: #81a4ba;">
                                             <div class="x_title" style="color: white;">
@@ -257,16 +259,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                             <a href="<?php echo base_url() . 'index.php/CSale/liquidasale'; ?>" class="btn btn-success btn-lg">
                                                                 <i class="glyphicon glyphicon-barcode glyphicon-white"></i> Liquidar
                                                             </a>
+                                                            <?php if ($porcenInList->idEstadoRecibo != 8) { ?>
                                                             <a href="<?php echo base_url() . 'index.php/CSale/canceldatasale'; ?>" class="btn btn-default btn-lg">
                                                                 <i class="glyphicon glyphicon-remove red"></i> Eliminar
                                                             </a>
+                                                            <?php } ?>
                                                         </p>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </a>
                                     </div>
-                                    <?php } ?>
+                                    <?php //} ?>
                                     <?php if ($serviceInList != NULL){ ?>
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="x_panel">
@@ -294,7 +298,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 <td><?php echo $row_service_in['descServicio']; ?></td>
                                                                 <td><?php echo $row_service_in['cantidad']; ?></td>
                                                                 <td>$<?php echo number_format($row_service_in['valor'],0,',','.'); ?></td>
-                                                                <td><?php echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_service_in['idRegistroDetalle']."/1'><i class='glyphicon glyphicon-remove red'></i></a>"; ?></td>
+                                                                <td>
+                                                                    <?php 
+                                                                    if ($porcenInList->idEstadoRecibo != 8) {
+                                                                        echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_service_in['idRegistroDetalle']."/1'><i class='glyphicon glyphicon-remove red'></i></a>";
+                                                                    } 
+                                                                    ?>
+                                                                </td>
+                                                                
                                                             </tr>
                                                             <?php
                                                         }
@@ -332,7 +343,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 <td><?php echo $row_product_in['descProducto']; ?></td>
                                                                 <td><?php echo $row_product_in['cantidad']; ?></td>
                                                                 <td>$<?php echo number_format($row_product_in['valor'],0,',','.'); ?></td>
-                                                                <td><?php echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_product_in['idRegistroDetalle']."/2'><i class='glyphicon glyphicon-remove red'></i></a>"; ?></td>
+                                                                <td>
+                                                                <?php 
+                                                                if ($porcenInList->idEstadoRecibo != 8) {
+                                                                    echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_product_in['idRegistroDetalle']."/2'><i class='glyphicon glyphicon-remove red'></i></a>";
+                                                                } 
+                                                                ?>
+                                                                </td>
                                                             </tr>
                                                             <?php
                                                         }
@@ -346,7 +363,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <?php if ($adicionalInList != NULL){ ?>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="x_panel">
-                                            <div class="x_title" style="background-color: #ef777f; color: black;">
+                                            <div class="x_title" style="background-color: #E8E792; color: black;">
                                                 <h2>Cargos Adicionales</h2>
                                                 <div class="clearfix"></div>
                                             </div>
@@ -368,7 +385,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 <th scope="row"><?php echo $row_adicional_in['idRegistroDetalle']; ?></th>
                                                                 <td><?php echo $row_adicional_in['cargoEspecial']; ?></td>
                                                                 <td>$<?php echo number_format($row_adicional_in['valor'],0,',','.'); ?></td>
-                                                                <td><?php echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_adicional_in['idRegistroDetalle']."/3'><i class='glyphicon glyphicon-remove red'></i></a>"; ?></td>
+                                                                <td>
+                                                                <?php 
+                                                                if ($porcenInList->idEstadoRecibo != 8) {
+                                                                    echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_adicional_in['idRegistroDetalle']."/3'><i class='glyphicon glyphicon-remove red'></i></a>";
+                                                                } 
+                                                                ?>
+                                                                </td>
                                                             </tr>
                                                             <?php
                                                         }
@@ -452,7 +475,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="modal-body">
                             <?php if ($this->session->userdata('sclient') != NULL) { ?>
                                 <div class="alert alert-info">
-                                    Esta venta tiene asociado el cliente Nro. Identificación: <?php echo $this->session->userdata('sclient'); ?>
+                                    Esta venta tiene asociado el cliente Nro. Identificación: <?php echo $clientInList->idUsuario; ?>
                                 </div>
                             <?php } ?>
                             <label class="control-label" for="select">Escriba parte del nombre y seleccione de la lista</label>
@@ -729,10 +752,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div class="modal-body">
                             <label class="control-label" for="Porcentaje">Servicio Voluntario (%)</label>
-                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="Servicio" value="<?php if ($this->session->userdata('sservicio') !== NULL){ echo $this->session->userdata('sservicio'); } else { echo $this->config->item('procen_servicio'); } ?>" required="" autocomplete="off" pattern="\d*">
+                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="Servicio" value="<?php if ($porcenInList->porcenServicio == 0){ echo $this->config->item('procen_servicio'); } else { echo $porcenInList->porcenServicio*100; } ?>" required="" autocomplete="off" pattern="\d*">
                             <br />
                             <label class="control-label" for="Porcentaje">Descuento (%) *Solo aplicable a Plato Fuerte</label>
-                            <input type="tel" class="form-control" id="procentaje" name="procentaje" placeholder="Descuento" value="<?php if ($this->session->userdata('sdescuento') !== NULL){ echo $this->session->userdata('sdescuento'); } else { echo 0; } ?>" required="" autocomplete="off" pattern="\d*">
+                            <input type="tel" class="form-control" id="procentaje" name="procentaje" placeholder="Descuento" value="<?php if ($porcenInList->porcenDescuento !== NULL){ echo $porcenInList->porcenDescuento*100; } else { echo 0; } ?>" required="" autocomplete="off" pattern="\d*">
                             <br />
                         </div>
                         <div class="modal-footer">

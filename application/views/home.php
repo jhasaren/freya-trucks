@@ -63,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <span class="count_bottom"><i class="green"></i> Activos</span>
                 </div>
                 <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                    <span class="count_top"><i class="fa fa-user"></i> Servicios Atendidos</span>
+                    <span class="count_top"><i class="fa fa-user"></i> Platos Vendidos</span>
                     <div class="count green"><?php echo $serviciosDia->cantidadServicios; ?></div>
                     <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>Hoy <?php echo date('D d/m'); ?></i></span>
                 </div>
@@ -78,7 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>Hoy $<?php echo number_format($recibosPagados->valor_pagado,0,',','.'); ?></i></span>
                 </div>
                 <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                    <span class="count_top"><i class="fa fa-user"></i> Recibos Pendientes</span>
+                    <span class="count_top"><i class="fa fa-user"></i> Cuentas x Cobrar</span>
                     <div class="count red"><?php echo $recibosLiquidados->cantidad; ?></div>
                     <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>$<?php echo number_format($recibosLiquidados->valor_pagado,0,',','.'); ?></i></span>
                 </div>

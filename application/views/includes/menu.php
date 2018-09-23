@@ -29,8 +29,13 @@
                 </li>
                 
                 <?php if ($this->MRecurso->validaRecurso(9)){ /*Registro de Venta*/ ?>
+                <!--<li>
+                    <a href="<?php // echo base_url().'index.php/CSale/createsale'; ?>">
+                        <i class="fa fa-usd"></i> Ventas
+                    </a>
+                </li>-->
                 <li>
-                    <a href="<?php echo base_url().'index.php/CSale/createsale'; ?>">
+                    <a href="<?php echo base_url().'index.php/CSale/boards/2'; ?>">
                         <i class="fa fa-usd"></i> Ventas
                     </a>
                 </li>

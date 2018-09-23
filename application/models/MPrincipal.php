@@ -214,7 +214,7 @@ class MPrincipal extends CI_Model {
                                 FROM venta_maestro m
                                 WHERE
                                 m.idSede = ".$this->session->userdata('sede')."
-                                AND m.idEstadoRecibo = 2");
+                                AND m.idEstadoRecibo = 8");
         
         return $query->row();
         
@@ -404,7 +404,7 @@ class MPrincipal extends CI_Model {
                                 FROM venta_maestro m
                                 JOIN app_usuarios a ON a.idUsuario = m.idUsuarioCliente
                                 WHERE
-                                m.idEstadoRecibo = 2
+                                m.idEstadoRecibo = 8
                                 AND m.idSede = ".$this->session->userdata('sede')."");
         
         if ($query->num_rows() == 0) {

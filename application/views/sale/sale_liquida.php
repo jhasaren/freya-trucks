@@ -136,7 +136,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <p class="center-block download-buttons">
                                                 <a href="<?php echo base_url().'index.php/CSale/waitdatasale'; ?>" class="btn btn-primary btn-lg">
                                                     <i class="glyphicon glyphicon-time glyphicon-white"></i> 
-                                                    Espera
+                                                    CxCobrar
                                                 </a>
                                                 <button type="submit" class="btn btn-success btn-lg">
                                                     <i class="glyphicon glyphicon-check glyphicon-white"></i>
@@ -284,6 +284,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </div>
                                         <!--Fin Ticket informacion-->
                                         
+                                        <!--Impresion por navegador-->
+                                        <!--<input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#ticketPrint')" />-->
+                                        <!--Impresion por libreria mike32-->
+<!--                                        <a href="<?php // echo base_url().'index.php/CSale/waitdatasale'; ?>" class="btn btn-primary btn-lg">
+                                            <i class="glyphicon glyphicon-time glyphicon-white"></i> 
+                                            Imprimir Ticket
+                                        </a>-->
                                         <input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#ticketPrint')" />
                                         </center>
                                         </form>
