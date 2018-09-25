@@ -18,6 +18,12 @@
                     <li>
                         <a class="btn-changepass"  href="#">Cambiar Contraseña</a>
                     </li>
+                <!--<li>
+                        <a class="btn-backup"  href="#">Generar Backup</a>
+                    </li>-->
+<!--                    <li>
+                        <a href="<?php // echo base_url().'index.php/CPrincipal/optimize'; ?>"><i class="fa fa-sign-out pull-right"></i> Optimizar BD</a>
+                    </li>-->
                     <li>
                         <a class="btn-help"  href="#">Ayuda</a>
                     </li>
@@ -63,6 +69,31 @@
         </div>
     </div>
     <!--/Modal - Cambiar Clave-->
+    
+    <!--Modal - Generar Backup-->
+    <div class="modal fade" id="myModal-cback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-cback" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form role="form" name="form_backup" action="<?php echo base_url().'index.php/CPrincipal/backup'; ?>" method="post" autocomplete="off">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h3>Generar Backup de Datos</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="contrasenaNuevaConfirma">Contraseña</label>
+                            <input type="password" class="form-control" id="pass" name="pass" placeholder="Digite su contraseña" required="">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
+                        <button type="submit" class="btn btn-success">Generar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--/Modal - Generar Backup-->
     
     <!--Modal - Ayuda-->
     <div class="modal fade" id="myModal-help" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-help" aria-hidden="true">

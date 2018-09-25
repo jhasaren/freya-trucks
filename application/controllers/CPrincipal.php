@@ -82,8 +82,8 @@ class CPrincipal extends CI_Controller {
             $info['recibosPagados'] = $this->MPrincipal->cantidad_recibos_estado(date('Y-m-d'),date('Y-m-d'),5); /*Consulta el Modelo Cantidad recibos pagados*/
             $info['recibosLiquidados'] = $this->MPrincipal->cantidad_recibos_pendientes(); /*Consulta el Modelo Cantidad recibos pendiente pago*/
             $info['clientesRegistrados'] = $this->MPrincipal->cantidad_clientes(); /*Consulta el Modelo Cantidad de clientes*/
-            $info['citasReservadas'] = $this->MPrincipal->cantidad_citas_agendadas(date('Y-m-d'),date('H:i:s')); /*Consulta el Modelo Cantidad de Citas Pendientes*/
-            $info['citasReservadasDia'] = $this->MPrincipal->cantidad_citas_agendadas(date('Y-m-d'),'00:00:00'); /*Consulta el Modelo Cantidad de Citas del Dia*/
+            //$info['citasReservadas'] = $this->MPrincipal->cantidad_citas_agendadas(date('Y-m-d'),date('H:i:s')); /*Consulta el Modelo Cantidad de Citas Pendientes*/
+            //$info['citasReservadasDia'] = $this->MPrincipal->cantidad_citas_agendadas(date('Y-m-d'),'00:00:00'); /*Consulta el Modelo Cantidad de Citas del Dia*/
             $this->load->view('home',$info);
             
         } else {
@@ -126,7 +126,7 @@ class CPrincipal extends CI_Controller {
                 if ($validateLogin != FALSE){
 
                     if ($validateLogin->activo == 'S'){
-
+                        
                         /*Consulta el Modelo Principal para obtener los recursos*/
                         $recursos = $this->MPrincipal->rol_recurso($validateLogin->idRol);
                         
@@ -420,6 +420,83 @@ class CPrincipal extends CI_Controller {
                 }
                 
             }
+            
+        }
+        
+    }
+    
+    /**************************************************************************
+     * Nombre del Metodo: backup
+     * Descripcion: Genera Backup de la Base de datos.
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 24/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function backup() {
+        
+        if ($this->session->userdata('validated')) {
+            
+            /*captura variables*/
+            $pass = $this->input->post('pass');
+            
+            $validateLogin = $this->MPrincipal->login_verify($this->session->userdata('userid'),$pass);
+            
+            if ($validateLogin != FALSE){
+                
+                // Load the DB utility class
+                $this->load->dbutil();
+                // Backup your entire database and assign it to a variable
+                $backup = $this->dbutil->backup();
+                // Load the download helper and send the file to your desktop
+                $this->load->helper('download');
+                force_download('freya-'.date('Ymd-His').'.gz', $backup);
+                
+                $info['message'] = 'Se genero el backup de datos exitosamente. Por favor elija la ubicacion en la USB y guardelo.';
+                $info['alert'] = 1;
+                $this->module($info);
+                
+            } else {
+                
+                $info['message'] = 'La contraseña ingresada no es correcta.';
+                $info['alert'] = 2;
+                $this->module($info);
+                
+            }
+            
+        } else {
+            
+            show_404();
+            
+        }
+        
+    }
+    
+    /**************************************************************************
+     * Nombre del Metodo: optimize
+     * Descripcion: Optimiza la Base de Datos
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 24/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function optimize() {
+        
+        if ($this->session->userdata('validated')) {
+                        
+            // Load the DB utility class
+            $this->load->dbutil();
+            
+            $result = $this->dbutil->optimize_database();
+
+            if ($result !== FALSE)
+            {
+                    print_r($result);
+            }
+
+//            $info['message'] = 'Se genero el backup de datos exitosamente. Por favor elija la ubicacion en la USB y guardelo.';
+//            $info['alert'] = 1;
+//            $this->module($info);
+            
+        } else {
+            
+            show_404();
             
         }
         

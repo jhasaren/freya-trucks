@@ -54,7 +54,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         if ($porcenInList->idEstadoRecibo == 8){
                             echo "CUENTA X COBRAR";
                         } 
-                            
+                        
+                        /*Setea los datos como variable de sesion*/
+                        $datos_session = array(
+                            'sdescuento' => ($porcenInList->porcenDescuento*100),
+                            'sservicio' => ($porcenInList->porcenServicio*100),
+                            'sclient' => $clientInList->idUsuario,
+                            'sempleado' => $porcenInList->idEmpleadoAtiende
+                        );
+                        $this->session->set_userdata($datos_session);
                         ?>
                         <?php
                         /*echo "<br />Lista Usuarios Venta->".$this->cache->memcached->get('memcached10')."<br />";
@@ -86,11 +94,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         }
                                     }
                                     $valorConceptos = $serviceSubtotal+$productoSubtotal+$adicionalSubtotal;
-                                    $subtotal = ($valorConceptos)-($serviceSubtotal*($this->session->userdata('sdescuento')/100));
+                                    $subtotal = ($valorConceptos)-($serviceSubtotal*(($porcenInList->porcenDescuento)));
                                     ?>
-                                    <div style="color: #000000; font-size: 16px">Descuento: <?php echo $this->session->userdata('sdescuento')."%-($".number_format($valorConceptos,0,',','.').")"; ?></div>
-                                    <div style="color: #000000; font-size: 16px">Servicio: <?php echo $this->session->userdata('sservicio')."%+($".number_format($subtotal,0,',','.').")"; ?></div>
-                                    <span style="color: #000000; font-size: 28px">Subtotal: $<?php echo number_format($subtotal+(($subtotal*$this->session->userdata('sservicio'))/100),0,',','.'); ?></span>
+                                    <div style="color: #000000; font-size: 16px">Descuento: <?php echo ($porcenInList->porcenDescuento*100)."%-($".number_format($valorConceptos,0,',','.').")"; ?></div>
+                                    <div style="color: #000000; font-size: 16px">Servicio: <?php echo ($porcenInList->porcenServicio*100)."%+($".number_format($subtotal,0,',','.').")"; ?></div>
+                                    <span style="color: #000000; font-size: 28px">Subtotal: $<?php echo number_format($subtotal+(($subtotal*($porcenInList->porcenServicio))),0,',','.'); ?></span>
                                 </span>
                             </div>
                         </div>
@@ -486,7 +494,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
-                            <button type="submit" class="btn btn-primary">Agregar</button>
+                            <button type="submit" id="btn-click-client" class="btn btn-primary">Agregar</button>
                         </div>
                     </form>
                 </div>
@@ -520,11 +528,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     ?>
                                 </select>
                             </div>
-                            <br />
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
-                            <button type="submit" class="btn btn-primary">Agregar</button>
+                            <button type="submit" id="btn-click-empl" class="btn btn-primary">Agregar</button>
                         </div>
                     </form>
                 </div>
@@ -541,17 +548,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <h3>Plato Fuerte</h3>
                         </div>
                         <div class="modal-body">
-                            <label class="control-label" for="selectError">Seleccione de la lista</label>
                             <div class="controls">
-                                <select class="select2_single form-control" id="idservice" name="idservice" data-rel="chosen">
-                                    <?php
-                                    foreach ($list_service as $row_service) {
-                                        ?>
-                                        <option value="<?php echo $row_service['idServicio'] . '|' . $row_service['valorServicio'] . '|' . $row_service['valorEmpleado']; ?>"><?php echo $row_service['descServicio'] . ' | ' . $row_service['descGrupoServicio']. ' | '.$row_service['valorServicio']; ?></option>
-                                        <?php
-                                    }
-                                    ?>
-                                </select>
+                                <label class="control-label" for="select">Escriba parte del nombre y seleccione de la lista</label>
+                                <div class="controls">
+                                    <input class="select2_single form-control" type="text" name="idservice" id="idservice" required="" />
+                                </div>
+                                <br />
                             </div>
                             <!--<label class="control-label" for="selectError">Empleado</label>-->
                             <!--<div class="controls">
@@ -580,10 +582,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </select>
                             </div>
                             <br />
+                            
+                            
+                            <br />
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
-                            <button type="submit" class="btn btn-primary">Agregar</button>
+                            <button type="submit" id="btn-click-serv" class="btn btn-primary">Agregar</button>
                         </div>
                     </form>
                 </div>
@@ -600,17 +605,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <h3>Producto</h3>
                         </div>
                         <div class="modal-body">
-                            <label class="control-label" for="selectError">Seleccione de la lista</label>
                             <div class="controls">
-                                <select class="select2_single form-control" id="idproducto" name="idproducto" data-rel="chosen">
-                                    <?php
-                                    foreach ($list_product as $row_product) {
-                                        ?>
-                                        <option value="<?php echo $row_product['idProducto'] . '|' . $row_product['valorProducto'] . '|' . $row_product['valorEmpleado']; ?>"><?php echo $row_product['descProducto'] . ' | ' . $row_product['valorProducto']; ?></option>
-                                        <?php
-                                    }
-                                    ?>
-                                </select>
+                                <label class="control-label" for="select">Escriba parte del nombre y seleccione de la lista</label>
+                                <div class="controls">
+                                    <input class="select2_single form-control" type="text" name="idproducto" id="idproducto" required="" />
+                                </div>
+                                <br />
                             </div>
                             <!--<label class="control-label" for="selectError">Empleado</label>-->
                             <!--<div class="controls">
@@ -640,7 +640,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
-                            <button type="submit" class="btn btn-primary">Agregar</button>
+                            <button type="submit" id="btn-click-prod" class="btn btn-primary">Agregar</button>
                         </div>
                     </form>
                 </div>
@@ -683,7 +683,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
-                            <button type="submit" class="btn btn-primary">Agregar</button>
+                            <button type="submit" id="btn-click-adc" class="btn btn-primary">Agregar</button>
                         </div>
                     </form>
                 </div>
@@ -760,7 +760,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
-                            <button type="submit" class="btn btn-primary">Agregar</button>
+                            <button type="submit" id="btn-click-desc" class="btn btn-primary">Agregar</button>
                         </div>
                     </form>
                 </div>
@@ -845,9 +845,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             { value: '<?php echo $row_user['nombre_usuario']." |".$row_user['idUsuario']; ?>' },
         <?php } ?>
     ];
-
     $('#idcliente').autocomplete({
         lookup: clientes
+    });
+    
+    var servicios = [
+        <?php foreach ($list_service as $row_service) { ?>
+            { value: '<?php echo $row_service['idServicio']." | ".$row_service['valorServicio']." | ".$row_service['descGrupoServicio']." | ".$row_service['descServicio']; ?>' },
+        <?php } ?>
+    ];
+    $('#idservice').autocomplete({
+        lookup: servicios
+    });
+    
+    var productos = [
+        <?php foreach ($list_product as $row_product) { ?>
+            { value: '<?php echo $row_product['idProducto']." | ".$row_product['valorProducto']." | ".$row_product['descGrupoServicio']." | ".$row_product['descProducto']; ?>' },
+        <?php } ?>
+    ];
+    $('#idproducto').autocomplete({
+        lookup: productos
     });
     </script>
     

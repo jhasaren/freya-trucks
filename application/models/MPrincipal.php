@@ -25,7 +25,7 @@ class MPrincipal extends CI_Model {
      * Fecha Creacion: 23/03/2017, Ultima modificacion: 
      **************************************************************************/
     public function login_verify($username,$password) {
-        
+                
         /*Encriptacion de la Clave de Acceso*/
         $pass = sha1($password);
         

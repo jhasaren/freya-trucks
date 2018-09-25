@@ -274,6 +274,50 @@ class MSale extends CI_Model {
     }
     
     /**************************************************************************
+     * Nombre del Metodo: validate_select_sale
+     * Descripcion: Verifica los datos del producto/servicio a agregar a la venta
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 22/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function validate_select_sale($item,$value,$type) {
+        
+        if ($type == 1){ /*servicio*/
+            
+            /*Servicio de la venta*/
+            $query = $this->db->query("SELECT
+                                    idServicio
+                                    FROM servicios
+                                    WHERE idServicio = ".$item."
+                                    AND valorServicio = '".$value."'");
+            
+        } else {
+            
+            if ($type == 2){ /*producto*/
+                
+                /*Producto de la venta*/
+                $query = $this->db->query("SELECT
+                                        idProducto
+                                        FROM productos
+                                        WHERE idProducto = ".$item."
+                                        AND valorProducto = '".$value."'");
+                
+            }
+            
+        }
+        
+        if ($query->num_rows() == 0) {
+
+            return false;
+
+        } else {
+
+            return true;
+
+        }
+        
+    }
+    
+    /**************************************************************************
      * Nombre del Metodo: adicional_in_list
      * Descripcion: Obtiene los Cargos adicionales en lista para liquidar
      * Autor: jhonalexander90@gmail.com
@@ -442,12 +486,14 @@ class MSale extends CI_Model {
                                     p.idProducto,
                                     p.descProducto,
                                     p.valorProducto,
-                                    p.distribucionProducto as valorEmpleado
+                                    p.distribucionProducto as valorEmpleado,
+                                    g.descGrupoServicio
                                     FROM productos p
+                                    JOIN grupo_servicio g ON g.idGrupoServicio = p.idGrupoServicio
                                     WHERE
-                                    activo = 'S'
-                                    AND idTipoProducto = 2
-                                    AND idSede = ".$this->session->userdata('sede')."
+                                    p.activo = 'S'
+                                    AND p.idTipoProducto = 2
+                                    AND p.idSede = ".$this->session->userdata('sede')."
                                     ORDER BY 2");
             
             $this->cache->memcached->save('mListProductSale', $query->result_array(), 28800); /*8 horas en Memoria*/
@@ -1134,7 +1180,7 @@ class MSale extends CI_Model {
                         valorLiquida = ".$liquidado.",
                         idEstadoRecibo = ".$estadoActualiza.",
                         nroRecibo = '".$nrorecibo."',
-                        fechaLiquida = NOW()
+                        fechaPideCuenta = NOW()
                         WHERE
                         idVenta = ".$this->session->userdata('idSale')."
                         ");
@@ -1702,7 +1748,8 @@ class MSale extends CI_Model {
                                 m.activo,
                                 t.descTipoMesa,
                                 m.idVenta,
-                                v.idEstadoRecibo
+                                v.idEstadoRecibo,
+                                DATE_FORMAT(fechaLiquida, '%H:%i %p') as time
                                 FROM mesas m
                                 JOIN tipo_mesa t ON t.idTipoMesa = m.idTipoMesa
                                 LEFT JOIN venta_maestro v ON v.idVenta = m.idVenta

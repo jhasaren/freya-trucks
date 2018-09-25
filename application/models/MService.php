@@ -38,16 +38,18 @@ class MService extends CI_Model {
         
             /*Recupera los servicios creados*/
             $query = $this->db->query("SELECT
-                                    idServicio,
-                                    descServicio,
-                                    tiempoAtencion,
-                                    valorServicio,
-                                    distribucion,
-                                    activo,
-                                    agenda
+                                    s.idServicio,
+                                    s.descServicio,
+                                    s.tiempoAtencion,
+                                    s.valorServicio,
+                                    s.distribucion,
+                                    s.activo,
+                                    s.agenda,
+                                    g.descGrupoServicio
                                     FROM
-                                    servicios
-                                    WHERE idSede = ".$this->session->userdata('sede')."
+                                    servicios s
+                                    JOIN grupo_servicio g ON g.idGrupoServicio = s.idGrupoServicio
+                                    WHERE s.idSede = ".$this->session->userdata('sede')."
                                     ORDER BY 2");
 
             $this->cache->memcached->save('mListservices', $query->result_array(), 28800); /*8 horas en Memoria*/

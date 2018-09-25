@@ -108,7 +108,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <th>Nombre</th>
                                         <th>Tiempo (Min)</th>
                                         <th>Valor ($)</th>
-                                        <th>Empleado (%)</th>
+                                        <th>Grupo</th>
                                         <th>Estado</th>
                                         <th>Acción</th>
                                     </thead>
@@ -120,8 +120,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <tr style="background-color: #2A3F54;">
                                                     <td class="center green"><?php echo $row_list['descServicio']; ?></td>
                                                     <td class="center red"><?php echo $this->jasr->toHours($row_list['tiempoAtencion'],''); ?> min.</td>
-                                                    <td class="center blue">$<?php echo number_format($row_list['valorServicio'],0,',','.'); ?></td>
-                                                    <td class="center"><?php echo $row_list['distribucion']*100; ?>%</td>
+                                                    <td class="center red">$<?php echo number_format($row_list['valorServicio'],0,',','.'); ?></td>
+                                                    <td class="center blue"><?php echo $row_list['descGrupoServicio']; ?></td>
                                                     <td class="center">
                                                         <?php if ($row_list['activo'] == 'S') { ?>
                                                         <span class="label label-success">Activo</span>
@@ -194,7 +194,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <input type="hidden" class="form-control" id="distributionservice" name="distributionservice" placeholder="Porcentaje" value="0">
                             <!--</div>-->
                             <div class="form-group">
-                                <label for="GrupoServicio">Tipo</label>
+                                <label for="GrupoServicio">Grupo</label>
                                 <select class="form-control" name="groupservice">
                                     <?php
                                     foreach ($group_service as $row) {

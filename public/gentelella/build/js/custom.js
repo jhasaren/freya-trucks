@@ -192,6 +192,11 @@ $(document).ready(function () {
         e.preventDefault();
         $('#myModal-cpass').modal('show');
     });
+    /*Modal - Generar Backup*/
+    $('.btn-backup').click(function (e) {
+        e.preventDefault();
+        $('#myModal-cback').modal('show');
+    });
     /*Modal - Crear Resolucion Recibo*/
     $('.btn-resol').click(function (e) {
         e.preventDefault();
@@ -235,6 +240,11 @@ $(document).ready(function () {
 
         //to open the modal when document is ready
         $("#myModal-c").modal('show');
+        
+        if (e.keyCode === 13) {
+            // Trigger the button element with a click
+            document.getElementById("btn-click-client").click();
+        }
     });
     /*Modal - Agregar Empleado Venta*/
     $('.btn-saleempleado').click(function (e) {
@@ -249,6 +259,11 @@ $(document).ready(function () {
 
         //to open the modal when document is ready
         $("#myModal-em").modal('show');
+        
+        if (e.keyCode === 13) {
+            // Trigger the button element with a click
+            document.getElementById("btn-click-empl").click();
+        }
     });
     /*Modal - Agregar Cliente Proveedor*/
     $('.btn-proveedor').click(function (e) {
@@ -258,12 +273,34 @@ $(document).ready(function () {
     /*Modal - Agregar Servicio Venta*/
     $('.btn-saleservice').click(function (e) {
         e.preventDefault();
+        
+        //to have your input focused every your modal open
+        $('#myModal-s').on("shown.bs.modal", function() {
+            $('#idservice').focus();
+        });
+        
         $('#myModal-s').modal('show');
+        
+        if (e.keyCode === 13) {
+            // Trigger the button element with a click
+            document.getElementById("btn-click-serv").click();
+        }
     });
     /*Modal - Agregar Producto Venta*/
     $('.btn-saleproduct').click(function (e) {
         e.preventDefault();
+        
+        //to have your input focused every your modal open
+        $('#myModal-p').on("shown.bs.modal", function() {
+            $('#idproducto').focus();
+        });
+        
         $('#myModal-p').modal('show');
+        
+        if (e.keyCode === 13) {
+            // Trigger the button element with a click
+            document.getElementById("btn-click-prod").click();
+        }
     });
     /*Modal - Agregar Adicional Venta*/
     $('.btn-saleespecial').click(function (e) {
@@ -275,6 +312,11 @@ $(document).ready(function () {
         });
         
         $('#myModal-esp').modal('show');
+        
+        if (e.keyCode === 13) {
+            // Trigger the button element with a click
+            document.getElementById("btn-click-adc").click();
+        }
     });
     /*Modal - Agregar Consumo Venta*/
     $('.btn-saleinterno').click(function (e) {
@@ -291,6 +333,11 @@ $(document).ready(function () {
         });
         
         $('#myModal-desc').modal('show');
+        
+        if (e.keyCode === 13) {
+            // Trigger the button element with a click
+            document.getElementById("btn-click-desc").click();
+        }
     });
     /*Modal - Agregar Gasto*/
     $('.btn-gasto').click(function (e) {

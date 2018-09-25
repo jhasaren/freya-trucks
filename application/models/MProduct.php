@@ -48,11 +48,13 @@ class MProduct extends CI_Model {
                                     t.descTipoProducto,
                                     s.unidades,
                                     s.disponibles,
-                                    u.aliasUnidad
+                                    u.aliasUnidad,
+                                    g.descGrupoServicio
                                     FROM productos p
                                     JOIN tipo_producto t ON t.idTipoProducto = p.idTipoProducto
                                     JOIN stock_productos s ON s.idProducto = p.idProducto
                                     JOIN unidad_medida u ON u.idUnidadMedida = p.idUnidadMedida
+                                    JOIN grupo_servicio g ON g.idGrupoServicio = p.idGrupoServicio 
                                     WHERE p.idSede = ".$this->session->userdata('sede')."
                                     ORDER BY t.descTipoProducto DESC");
             
@@ -198,7 +200,7 @@ class MProduct extends CI_Model {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 25/03/2017, Ultima modificacion: 
      **************************************************************************/
-    public function create_product($name,$valor,$distributionproduct,$stock,$unidosis,$typeproduct,$costo,$undmedida) {
+    public function create_product($name,$valor,$distributionproduct,$stock,$unidosis,$typeproduct,$costo,$undmedida,$groupservice) {
                     
         $this->db->trans_strict(TRUE);
         $this->db->trans_start();
@@ -212,7 +214,8 @@ class MProduct extends CI_Model {
                                     activo,
                                     idTipoProducto,
                                     idSede,
-                                    idUnidadMedida
+                                    idUnidadMedida,
+                                    idGrupoServicio
                                     ) VALUES (
                                     '".$name."',
                                     ".$costo.",
@@ -222,7 +225,8 @@ class MProduct extends CI_Model {
                                     'S',
                                     ".$typeproduct.",
                                     ".$this->session->userdata('sede').",
-                                    ".$undmedida."
+                                    ".$undmedida.",
+                                    ".$groupservice."
                                     )");
         
         $idProduct = $this->db->insert_id();

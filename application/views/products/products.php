@@ -112,6 +112,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <th>Venta</th>
                                         <th>Unidosis</th>
                                         <th>Disponible</th>
+                                        <th>Grupo</th>
                                         <th>Tipo</th>
                                         <th>Estado</th>
                                         <th>Acción</th>
@@ -127,6 +128,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <td class="center red">$<?php echo number_format($row_list['valorProducto'],0,',','.'); ?></td>
                                                     <td class="center"><?php echo $row_list['uniDosis']." ".$row_list['aliasUnidad']; ?></td>
                                                     <td class="center green"><?php echo $row_list['disponibles']; ?></td>
+                                                    <td class="center blue"><?php echo $row_list['descGrupoServicio']; ?></td>
                                                     <td class="center"><?php echo $row_list['descTipoProducto']; ?></td>
                                                     <td class="center">
                                                         <?php if ($row_list['activo'] == 'S') { ?>
@@ -212,6 +214,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     foreach ($list_type as $row) {
                                         ?>
                                         <option value="<?php echo $row['idTipoProducto']; ?>"><?php echo $row['descTipoProducto']; ?></option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="GrupoServicio">Grupo</label>
+                                <select class="form-control" name="groupservice">
+                                    <?php
+                                    foreach ($group_service as $row) {
+                                        ?>
+                                        <option value="<?php echo $row['idGrupoServicio']; ?>"><?php echo $row['descGrupoServicio']; ?></option>
                                         <?php
                                     }
                                     ?>

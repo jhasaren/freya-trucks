@@ -20,6 +20,7 @@ class CProduct extends CI_Controller {
         
         /*Carga Modelos*/
         $this->load->model('MProduct'); /*Modelo para los Productos*/
+        $this->load->model('MService'); /*Modelo para los Servicios*/
         
         date_default_timezone_set('America/Bogota'); /*Zona horaria*/
 
@@ -69,10 +70,13 @@ class CProduct extends CI_Controller {
                 $listType = $this->MProduct->list_type_product();
                 /*Consulta Modelo para obtener listado de unidades Medida*/
                 $list_und = $this->MProduct->list_und_medida();
+                /*Consulta Modelo para obtener listado de Grupos del Servicio*/
+                $listGroups = $this->MService->list_group_service();
                 /*Retorna a la vista con los datos obtenidos*/
                 $info['list_products'] = $listProducts;
                 $info['list_type'] = $listType;
                 $info['list_und'] = $list_und;
+                $info['group_service'] = $listGroups;
                 $this->load->view('products/products',$info);
             
             } else {
@@ -150,6 +154,7 @@ class CProduct extends CI_Controller {
                     $unidosis = $this->input->post('unidosis');
                     $typeproduct = $this->input->post('typeproduct');
                     $undmedida = $this->input->post('undmedida');
+                    $groupservice = $this->input->post('groupservice');
 
                     if ($this->jasr->validaTipoString($name,1)){
 
@@ -158,7 +163,7 @@ class CProduct extends CI_Controller {
                             if ($this->jasr->validaTipoString($distributionproduct,3)){
 
                                 /*Envia datos al modelo para el registro*/
-                                $registerData = $this->MProduct->create_product($name,$valor,$porcent_empleado,$stock,$unidosis,$typeproduct,$costo,$undmedida);
+                                $registerData = $this->MProduct->create_product($name,$valor,$porcent_empleado,$stock,$unidosis,$typeproduct,$costo,$undmedida,$groupservice);
 
                                 if ($registerData == TRUE){
 
