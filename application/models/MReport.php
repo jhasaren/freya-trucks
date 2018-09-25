@@ -41,7 +41,7 @@ class MReport extends CI_Model {
                                 WHERE
                                 m.idEstadoRecibo IN (5,3)
                                 AND m.idSede = ".$this->session->userdata('sede')."
-                                AND m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
+                                AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
         
         if ($query->num_rows() == 0) {
             
@@ -79,7 +79,7 @@ class MReport extends CI_Model {
                                 WHERE
                                 m.idEstadoRecibo IN (5,3)
                                 AND m.idSede = ".$this->session->userdata('sede')."
-                                AND m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
+                                AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
         
         if ($query->num_rows() == 0) {
             
@@ -112,7 +112,7 @@ class MReport extends CI_Model {
                                 WHERE
                                 v.idEstadoRecibo IN (5)
                                 AND v.idSede = ".$this->session->userdata('sede')."
-                                AND v.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                AND v.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                 GROUP BY f.idTipoPago" );
         
         if ($query->num_rows() == 0) {
@@ -185,6 +185,7 @@ class MReport extends CI_Model {
                                 vm.idVenta,
                                 vm.nroRecibo,
                                 vm.fechaLiquida,
+                                vm.fechaPideCuenta,
                                 vm.idEstadoRecibo,
                                 t.descEstadoRecibo,
                                 vm.idUsuarioLiquida,
@@ -240,7 +241,7 @@ class MReport extends CI_Model {
         
         $query = $this->db->query("SELECT
                                 m.idVenta,
-                                m.fechaLiquida,
+                                m.fechaPideCuenta,
                                 m.nroRecibo,
                                 m.valorTotalVenta as valorVenta,
                                 m.valorLiquida,
@@ -256,7 +257,7 @@ class MReport extends CI_Model {
                                 LEFT JOIN app_usuarios u ON u.idUsuario = m.idEmpleadoAtiende
                                 WHERE
                                 m.idEstadoRecibo = 5
-                                AND m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
+                                AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
         
         if ($query->num_rows() == 0) {
             
@@ -382,7 +383,7 @@ class MReport extends CI_Model {
                                     WHERE
                                     ma.idEstadoRecibo = 5
                                     and ma.idSede = m.idSede
-                                    AND ma.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                    AND ma.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                 ) as valorEmpleado,
                                 (avg(m.porcenDescuento)*100) as promDescuento,
                                 (
@@ -394,19 +395,20 @@ class MReport extends CI_Model {
                                     AND g.idSede = m.idSede
                                     AND g.fechaPago BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                 ) as valorGastos,
-                                (
+                                /*(
                                     SELECT
                                     sum(ma.valorLiquida*ma.porcenServicio) as popina_servicio
                                     FROM venta_maestro ma
                                     WHERE
                                     ma.idEstadoRecibo = 5
-                                    AND ma.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
-                                ) as propina_servicio
+                                    AND ma.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                ) as propina_servicio*/
+                                sum(m.valorLiquida*m.porcenServicio) as propina_servicio
                                 FROM venta_maestro m
                                 JOIN sede s ON s.idSede = m.idSede
                                 WHERE
                                 m.idEstadoRecibo = 5
-                                AND m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                 GROUP BY m.idSede");
         
         if ($query->num_rows() == 0) {
@@ -436,7 +438,7 @@ class MReport extends CI_Model {
                                         JOIN venta_detalle vd ON vd.idVenta = m.idVenta
                                         WHERE
                                         m.idEstadoRecibo = 5
-                                        AND m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                        AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                         AND m.idSede = ".$sede."
                                         AND vd.idServicio IS NOT NULL
                                         group by vd.idServicio");
@@ -448,7 +450,7 @@ class MReport extends CI_Model {
                                         JOIN venta_detalle vd ON vd.idVenta = m.idVenta
                                         WHERE
                                         m.idEstadoRecibo = 5
-                                        AND m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                        AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                         AND m.idSede = ".$sede."
                                         AND vd.idProducto IS NOT NULL
                                         group by vd.idProducto");
@@ -460,7 +462,7 @@ class MReport extends CI_Model {
                                         JOIN venta_detalle vd ON vd.idVenta = m.idVenta
                                         WHERE
                                         m.idEstadoRecibo = 5
-                                        AND m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                        AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                         AND m.idSede = ".$sede."
                                         AND vd.cargoEspecial IS NOT NULL
                                         group by vd.cargoEspecial");
@@ -494,7 +496,7 @@ class MReport extends CI_Model {
                                         WHERE
                                         v.idEstadoRecibo = 5
                                         AND v.idSede = ".$sede."
-                                        AND v.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
+                                        AND v.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
         
         $queryImpuesto = $this->db->query("SELECT
                                         sum(v.valorLiquida*v.impoconsumo) as valorimpoconsumo
@@ -503,7 +505,7 @@ class MReport extends CI_Model {
                                         WHERE
                                         v.idEstadoRecibo = 5
                                         AND v.idSede = ".$sede."
-                                        AND v.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
+                                        AND v.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
         
         if ($queryServicios->num_rows() == 0) {
             
@@ -522,8 +524,6 @@ class MReport extends CI_Model {
             return $data;
             
         }
-        
-        
         
     }
     
@@ -574,7 +574,7 @@ class MReport extends CI_Model {
                                 FROM venta_maestro m
                                 WHERE
                                 m.idEstadoRecibo = 5
-                                AND m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                 AND m.idSede = ".$sede."
                                 UNION ALL
                                 SELECT
@@ -758,7 +758,7 @@ class MReport extends CI_Model {
                                 JOIN app_usuarios a ON a.idUsuario = v.idEmpleado
                                 JOIN sede s ON s.idSede = m.idSede
                                 WHERE m.idEstadoRecibo = 5
-                                AND m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                 GROUP BY v.idEmpleado, m.idSede");
         
         if ($query->num_rows() == 0) {
@@ -790,7 +790,7 @@ class MReport extends CI_Model {
                                     JOIN tipo_forma_pago t ON t.idTipoPago = f.idTipoPago
                                     JOIN venta_maestro v ON v.idVenta = f.idVenta
                                     WHERE v.idEstadoRecibo = 5
-                                    AND v.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                    AND v.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                     GROUP BY f.idTipoPago");
         
         if ($querySede->num_rows() == 0) {
@@ -815,15 +815,15 @@ class MReport extends CI_Model {
     public function payment_fechadia($fechaIni,$fechaFin) {
                     
         $queryFecha = $this->db->query("SELECT
-                                        v.fechaLiquida,
-                                        DATE_FORMAT(v.fechaLiquida,'%d-%b-%y') as fecha,
+                                        v.fechaPideCuenta as fechaLiquida,
+                                        DATE_FORMAT(v.fechaPideCuenta,'%d-%b-%y') as fecha,
                                         sum(v.valorLiquida+(v.valorLiquida*v.porcenServicio)) AS sumPago
                                         FROM
                                         venta_maestro v
                                         WHERE
                                         v.idEstadoRecibo = 5
-                                        AND v.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
-                                        GROUP BY DATE_FORMAT(v.fechaLiquida,'%d-%b-%y')
+                                        AND v.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                        GROUP BY DATE_FORMAT(v.fechaPideCuenta,'%d-%b-%y')
                                         ORDER BY 1 ASC");
         
         if ($queryFecha->num_rows() == 0) {

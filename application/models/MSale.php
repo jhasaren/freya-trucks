@@ -1749,7 +1749,7 @@ class MSale extends CI_Model {
                                 t.descTipoMesa,
                                 m.idVenta,
                                 v.idEstadoRecibo,
-                                DATE_FORMAT(fechaLiquida, '%H:%i %p') as time
+                                DATE_FORMAT(v.fechaLiquida, '%H:%i %p') as time
                                 FROM mesas m
                                 JOIN tipo_mesa t ON t.idTipoMesa = m.idTipoMesa
                                 LEFT JOIN venta_maestro v ON v.idVenta = m.idVenta
@@ -1766,7 +1766,8 @@ class MSale extends CI_Model {
                                 m.activo,
                                 t.descTipoMesa,
                                 m.idVenta,
-                                v.idEstadoRecibo
+                                v.idEstadoRecibo,
+                                DATE_FORMAT(v.fechaLiquida, '%H:%i %p') as time
                                 FROM mesas m
                                 JOIN tipo_mesa t ON t.idTipoMesa = m.idTipoMesa
                                 LEFT JOIN venta_maestro v ON v.idVenta = m.idVenta
