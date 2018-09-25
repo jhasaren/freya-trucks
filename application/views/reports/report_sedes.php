@@ -266,7 +266,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 <tr style="background-color: #2A3F54;">
                                                                     <td class="center"><small><?php echo $row_sede['nombreSede']; ?></small></td>
                                                                     <td class="center green"><?php echo $row_sede['nroRecibo']; ?></td>
-                                                                    <td class="center"><small><?php echo $row_sede['fechaLiquida']; ?></small></td>
+                                                                    <td class="center"><small><?php echo $row_sede['fechaPideCuenta']; ?></small></td>
                                                                     <td class="center blue"><?php echo number_format($row_sede['valorVenta'],0,',','.'); ?></td>
                                                                     <td class="center red"><?php echo number_format(($row_sede['valorVenta']-$row_sede['valorLiquida']),0,',','.'); ?></td>
                                                                     <td class="center green"><?php echo number_format($row_sede['valorLiquida'],0,',','.'); ?></td>

@@ -92,7 +92,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="x_content">
                                 <?php 
                                 echo "Estado: ".$general->descEstadoRecibo."<br />";
-                                echo "Fecha Registro: ".$general->fechaLiquida."<br />"; 
+                                echo "Fecha Pedido: ".$general->fechaLiquida."<br />"; 
                                 echo "Fecha Pago: ".$general->fechaPideCuenta."<br />"; 
                                 echo "Liquida: ".$general->personaLiquida." [".$general->idUsuarioLiquida."]<br />";
                                 echo "Cliente: ".$general->personaCliente." [CC. ".$general->idUsuarioCliente."]<br />";
