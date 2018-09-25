@@ -66,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="input-group">
                                 <div></div>
                                 <span class="input-group-btn">
-                                    <a class="btn btn-info btn-recibos" href="<?php echo base_url().'index.php/CReport/module/reportPayment'; ?>"><i class="glyphicon glyphicon-eye-open"></i> Recibos Pagados</a>
+                                    <a class="btn btn-info btn-recibos" href="<?php echo base_url().'index.php/CReport/module/reportPayment'; ?>"><i class="glyphicon glyphicon-eye-open"></i> Recibos</a>
                                 </span>
                                 <span class="input-group-btn">
                                     <a class="btn btn-info btn-resoluciones" href="<?php echo base_url().'index.php/CReceipt'; ?>"><i class="glyphicon glyphicon-eye-open"></i> Resoluciones</a>
@@ -137,7 +137,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Detalle</h2>
+                            <h2>Consolidado<br />
+                            Recibos Pagados</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table id="datatable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Forma de Pago</th>
+                                        <th>Valor Pago</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($paymentConsol as $row_pay_con) {
+                                        ?>
+                                        <tr style="background-color: #2A3F54;">
+                                            <td class="center green"><?php echo $row_pay_con['idTipoPago']; ?></td>
+                                            <td class="center green"><?php echo $row_pay_con['descTipoPago']; ?></td>
+                                            <td class="center red"><?php echo number_format($row_pay_con['valor_pago'],0,',','.'); ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Detalle <br />
+                            Recibos Pagados y Anulados</h2>
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                 </li>

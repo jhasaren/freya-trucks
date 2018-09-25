@@ -94,6 +94,40 @@ class MReport extends CI_Model {
     }
     
     /**************************************************************************
+     * Nombre del Metodo: payment_consolida_form
+     * Descripcion: Recupera consolidado de pagos por formas de pago en un periodo 
+     * de tiempo
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 24/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function payment_consolida_form($fechaIni,$fechaFin) {
+        
+        $query = $this->db->query("SELECT
+                                f.idTipoPago,
+                                t.descTipoPago,
+                                sum(f.valorPago) as valor_pago
+                                FROM forma_de_pago f
+                                JOIN tipo_forma_pago t ON t.idTipoPago = f.idTipoPago
+                                JOIN venta_maestro v ON v.idVenta = f.idVenta
+                                WHERE
+                                v.idEstadoRecibo IN (5)
+                                AND v.idSede = ".$this->session->userdata('sede')."
+                                AND v.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                GROUP BY f.idTipoPago" );
+        
+        if ($query->num_rows() == 0) {
+            
+            return false;
+            
+        } else {
+            
+            return $query->result_array();
+            
+        }
+        
+    }
+    
+    /**************************************************************************
      * Nombre del Metodo: detalle_recibo
      * Descripcion: Recupera el detalle de un recibo pagado de la sede
      * Autor: jhonalexander90@gmail.com
@@ -453,7 +487,8 @@ class MReport extends CI_Model {
                                         AND g.idTipoGasto = 1");
         
         $queryDescuentos = $this->db->query("SELECT
-                                        sum(v.valorTotalVenta)-sum(v.valorLiquida) as valordescuento
+                                        sum(v.valorTotalVenta)-sum(v.valorLiquida) as valordescuento,
+                                        sum(v.valorLiquida*v.porcenServicio) as valorpropina
                                         FROM
                                         venta_maestro v
                                         WHERE

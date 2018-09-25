@@ -164,6 +164,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         $valorDescuento = 0;
                                     } else {
                                         $valorDescuento = $descuentos->valordescuento;
+                                        $valorPropina = $descuentos->valorpropina;
                                     }
                                     
                                     /*Productos*/
@@ -214,7 +215,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     </th>
                                   </tr>
                                   <tr>
-                                    <td class="header" colspan="12">Ingresos Operativos (sin propinas)</td>
+                                    <td class="header" colspan="12">Ingresos Operativos</td>
                                   </tr>
                                   <tr>
                                     <td class="describe" colspan="8">Ventas de Platos Fuertes</td>
@@ -229,7 +230,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <td class="valores" colspan="4"><?php echo "$".number_format($valorAdicional,0,',','.'); ?></td>
                                   </tr>
                                   <tr>
-                                    <td class="describeTotal" colspan="8">Ingresos Operativos Totales</td>
+                                    <td class="describeTotal" colspan="8">Ingresos Operativos Totales (<?php echo "Propinas $".number_format($valorPropina,0,',','.') ?>)</td>
                                     <td class="valueTotal" colspan="4"><?php echo "$".number_format($valorProductos+$valorAdicional+($valorServicios-$valorDescuento),0,',','.'); ?></td>
                                   </tr>
                                   <tr>

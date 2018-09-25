@@ -229,10 +229,13 @@ class CReport extends CI_Controller {
 
                 if ($paymentClientForm != FALSE){
 
+                    $paymentConsolForm = $this->MReport->payment_consolida_form($fechaini,$fechafin);
+                    
                     $info['fechaIni'] = $fechaini;
                     $info['fechaFin'] = $fechafin;
                     $info['dataRow'] = 1;
                     $info['paymentClient'] = $paymentClientForm;
+                    $info['paymentConsol'] = $paymentConsolForm;
                     $this->load->view('reports/report_payment_formas',$info);
 
                 } else {

@@ -496,7 +496,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             if ($paymenEntidades != FALSE) {
                 $ingresoTotal = 0;
                 foreach ($paymenEntidades as $row_fpago){
-                    echo "'".$row_fpago['descTipoPago']."',";
+                    echo "'".$row_fpago['descTipoPago']." [$".number_format($row_fpago['sumPago'],0,',','.')."]',";
                     $ingresoTotal = $ingresoTotal + $row_fpago['sumPago'];
                 }
             }
@@ -520,7 +520,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             foreach ($paymenEntidades as $row_forpago){
                 ?>
                 {
-                name:'<?php echo $row_forpago['descTipoPago']; ?>',
+                name:'<?php echo $row_forpago['descTipoPago']." [$".number_format($row_forpago['sumPago'],0,',','.')."]"; ?>',
                 type:'pie',
                 clockWise:false,
                 radius : [<?php echo $radius1-$minusRadius; ?>, <?php echo $radius2-$minusRadius; ?>],
