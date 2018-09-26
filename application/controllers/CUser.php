@@ -186,7 +186,7 @@ class CUser extends CI_Controller {
 
                                             if ($empRegistrados->cantidadEmpleados > $this->config->item('empleados')){
 
-                                                $message = 'No fue posible crear el Empleado debido que supero el máximo permitido según el Plan seleccionado. Comuniquese con el proveedor del Software.';
+                                                $message = 'No fue posible crear el Empleado debido que supero el máximo permitido según el Plan seleccionado. Comuniquese con el PROVEEDOR del Software.';
 
                                                 log_message('DEBUG', '----------------------------------');
                                                 log_message('DEBUG', '****PLAN ADQUIRIDO SUPERADO****');

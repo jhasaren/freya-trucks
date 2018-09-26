@@ -116,10 +116,10 @@
                         <li><a href="<?php // echo base_url().'index.php/CReport/module/reportGastos'; ?>">Registro de Gastos</a></li>
                         <li><a href="<?php // echo base_url().'index.php/CReport/module/reportGYP'; ?>">Estado G&P</a></li>
                         <li><a href="<?php // echo base_url().'index.php/CReport/module/reportNomina'; ?>">Liquidar Nómina</a></li>
-                        <?php } ?>
+                        <?php //} ?>
                     </ul>
                 </li>-->
-                <?php // } ?>
+                <?php } ?>
                 
                 <?php if ($this->MRecurso->validaRecurso(12)){ /*Agendas*/ ?>
                 <li><a><i class="fa fa-calendar-check-o"></i> Agendas <span class="fa fa-chevron-down"></span></a>

@@ -130,7 +130,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <input type="hidden" class="form-control" id="idboard" name="idboard" value="<?php echo $id; ?>" >
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="<?php echo base_url() . 'index.php/CBoard'; ?>" class="btn btn-default" data-dismiss="modal">Cancelar</a>
+                                        <a href="<?php echo base_url() . 'index.php/CSale/boards/1'; ?>" class="btn btn-default" data-dismiss="modal">Cancelar</a>
                                         <button type="submit" class="btn btn-success">Guardar</button>
                                     </div>
                                 </form>

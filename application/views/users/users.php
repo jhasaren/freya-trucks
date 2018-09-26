@@ -148,7 +148,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                             <i class="glyphicon glyphicon-cog"></i>
                                                             Editar
                                                         </a>
-                                                        <?php if ($row_list['idTipoUsuario'] == 1) { ?>
+                                                        <?php if (($row_list['idTipoUsuario'] == 1) && ($this->session->userdata('perfil') == 'SUPERADMIN')) { ?>
                                                         <a class="btn btn-default btn-sm" href="<?php echo base_url().'index.php/CUser/calendarempleado/'.$row_list['idUsuario']; ?>">
                                                             <i class="glyphicon glyphicon-time"></i>
                                                             Horario

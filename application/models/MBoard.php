@@ -15,6 +15,7 @@ class MBoard extends CI_Model {
         /*instancia la clase de conexion a la BD para este modelo*/
         parent::__construct();
         $this->load->driver('cache'); /*Carga cache*/
+        $this->load->model('MAuditoria'); /*Carga Modelo para Auditoria*/
         
     }
     
@@ -131,8 +132,8 @@ class MBoard extends CI_Model {
      **************************************************************************/
     public function create_board($name,$type) {
         
-        /*Setea usuario de conexion - Auditoria*/
-        $this->db = $this->db_user($this->session->userdata('userid'));
+        /*Setea usuario de conexion - Auditoria BD*/
+        $this->db = $this->MAuditoria->db_user_audit($this->session->userdata('userid'));
         
         $this->db->trans_strict(TRUE);
         $this->db->trans_start();
@@ -197,32 +198,5 @@ class MBoard extends CI_Model {
         }
 
     }
-    
-    /**************************************************************************
-     * Nombre del Metodo: db_user
-     * Descripcion: Selecciona el usuario de conexion a base de datos
-     * Autor: jhonalexander90@gmail.com
-     * Fecha Creacion: 24/09/2018, Ultima modificacion: 
-     **************************************************************************/
-    public function db_user($username) {
-                    
-        $config['hostname'] = '192.168.1.55';
-        $config['username'] = $username;
-        $config['password'] = 'Jh4s4r3n2020';
-        $config['database'] = 'freyatrucks';
-        $config['dbdriver'] = "mysqli";
-        $config['dbprefix'] = "";
-        $config['pconnect'] = FALSE;
-        $config['db_debug'] = FALSE;
-        $config['cache_on'] = FALSE;
-        $config['cachedir'] = "";
-        $config['char_set'] = "utf8";
-        $config['dbcollat'] = "utf8_general_ci";
-
-        $connect = $this->load->database($config, TRUE);
         
-        return $connect;
-        
-    }
-    
 }
