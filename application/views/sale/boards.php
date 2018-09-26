@@ -238,15 +238,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- jQuery autocomplete -->
     <script src="<?php echo base_url().'public/gentelella/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js'; ?>"></script>
     <script>
-    var clientes = [
-        <?php foreach ($list_user as $row_user) { ?>
-            { value: '<?php echo $row_user['nombre_usuario']." |".$row_user['idUsuario']; ?>' },
-        <?php } ?>
+    /*var clientes = [
+        <?php // foreach ($list_user as $row_user) { ?>
+            { value: '<?php // echo $row_user['nombre_usuario']." |".$row_user['idUsuario']; ?>' },
+        <?php // } ?>
     ];
 
     $('#idcliente').autocomplete({
         lookup: clientes
-    });
+    });*/
+    
+    /*Actualiza pagina cada 60 segundos*/
+    setTimeout(function(){
+       location.reload();
+    },60000); 
     </script>
     
   </body>
