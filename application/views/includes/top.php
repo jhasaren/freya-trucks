@@ -101,7 +101,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h3>Freya Trucks</h3>v1.2.0 [21/09/2018]
+                    <h3>Freya Restaurante</h3>v1.2.0 [21/09/2018]
                 </div>
                 <div class="modal-body">
                     Software de Administración para Restaurantes.
