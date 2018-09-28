@@ -318,10 +318,14 @@ $(document).ready(function () {
             document.getElementById("btn-click-adc").click();
         }
     });
-    /*Modal - Agregar Consumo Venta*/
-    $('.btn-saleinterno').click(function (e) {
+    /*Modal - Eliminar Item Venta*/
+    $('.btn-saleitemdel').click(function (e) {
         e.preventDefault();
-        $('#myModal-int').modal('show');
+        var idReg = $(this).attr('data-rel');
+        var type = $(this).attr('data-rel2');
+        $("#idregdetalle").val(idReg);
+        $("#typereg").val(type);
+        $('#myModal-itemdel').modal('show');
     });
     /*Modal - Agregar Descuento Venta*/
     $('.btn-saledesc').click(function (e) {

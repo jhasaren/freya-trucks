@@ -309,7 +309,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 <td>
                                                                     <?php 
                                                                     if ($porcenInList->idEstadoRecibo != 8) {
-                                                                        echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_service_in['idRegistroDetalle']."/1'><i class='glyphicon glyphicon-remove red'></i></a>";
+                                                                        echo "<a class='btn-saleitemdel' data-rel='".$row_service_in['idRegistroDetalle']."' data-rel2='1' href='#'><i class='glyphicon glyphicon-remove red'></i></a>";
                                                                     } 
                                                                     ?>
                                                                 </td>
@@ -354,7 +354,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 <td>
                                                                 <?php 
                                                                 if ($porcenInList->idEstadoRecibo != 8) {
-                                                                    echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_product_in['idRegistroDetalle']."/2'><i class='glyphicon glyphicon-remove red'></i></a>";
+                                                                    echo "<a class='btn-saleitemdel' data-rel='".$row_product_in['idRegistroDetalle']."' data-rel2='2' href='#'><i class='glyphicon glyphicon-remove red'></i></a>";
                                                                 } 
                                                                 ?>
                                                                 </td>
@@ -396,46 +396,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 <td>
                                                                 <?php 
                                                                 if ($porcenInList->idEstadoRecibo != 8) {
-                                                                    echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_adicional_in['idRegistroDetalle']."/3'><i class='glyphicon glyphicon-remove red'></i></a>";
+                                                                    echo "<a class='btn-saleitemdel' data-rel='".$row_adicional_in['idRegistroDetalle']."' data-rel2='3' href='#'><i class='glyphicon glyphicon-remove red'></i></a>";
                                                                 } 
                                                                 ?>
                                                                 </td>
-                                                            </tr>
-                                                            <?php
-                                                        }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php } ?>
-                                    <?php if ($consumoInList != NULL){ ?>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="x_panel">
-                                            <div class="x_title" style="background-color: #d0ca1a; color: black;">
-                                                <h2>Consumo Interno</h2>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                            <div class="x_content">
-                                                <table class="table table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Id</th>
-                                                            <th>Nombre</th>
-                                                            <th>Cant</th>
-                                                            <th>Acción</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        foreach ($consumoInList as $row_consumo_in){
-                                                            ?>
-                                                            <tr>
-                                                                <th scope="row"><?php echo $row_consumo_in['idRegistroDetalle']; ?></th>
-                                                                <td><?php echo $row_consumo_in['descProducto']; ?></td>
-                                                                <td><?php echo $row_consumo_in['cantidad']; ?></td>
-                                                                <td><?php echo "<a href='".base_url()."index.php/CSale/deletedetailsale/".$row_consumo_in['idRegistroDetalle']."'><i class='glyphicon glyphicon-remove red'></i></a>"; ?></td>
                                                             </tr>
                                                             <?php
                                                         }
@@ -582,9 +546,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </select>
                             </div>
                             <br />
-                            
-                            
-                            <br />
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
@@ -690,51 +651,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div>
         
-        <!--Modal - Consumo Interno-->
-        <div class="modal fade" id="myModal-int" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-int" aria-hidden="true">
+        <!--Modal - Eliminar item-->
+        <div class="modal fade" id="myModal-itemdel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-itemdel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form role="form" name="form_product_int" action="<?php echo base_url() . 'index.php/CSale/addproductint'; ?>" method="post">
+                    <form role="form" name="form_product_int" action="<?php echo base_url() . 'index.php/CSale/deletedetailsale'; ?>" method="post">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
-                            <h3>Consumo Interno</h3>
+                            <h3>Eliminar Item de la Venta</h3>
                         </div>
                         <div class="modal-body">
-                            <label class="control-label" for="Interno">Seleccione de la lista</label>
+                            <label class="control-label" for="Interno">Seleccione Motivo</label>
                             <div class="controls">
-                                <select class="select2_single form-control" id="idpinterno" name="idpinterno" data-rel="chosen">
-                                    <?php
-                                    if ($list_interno != NULL){
-                                        foreach ($list_interno as $row_interno) {
-                                            ?>
-                                            <option value="<?php echo $row_interno['idProducto']; ?>"><?php echo $row_interno['descProducto']; ?></option>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
+                                <select class="select2_single form-control" id="motivoanulaitem" name="motivoanulaitem" data-rel="chosen" style="font-size: 16px">
+                                    <option value="ERROR_DIGITACION_CAJA">Error Digitacion Cajero</option>
+                                    <option value="ERROR_PEDIDO_MESERO">Error Pedido Mesero</option>
+                                    <option value="CLIENTE_DESISTE">Cliente Desiste</option>
                                 </select>
                             </div>
                             <br />
-                            <label class="control-label" for="selectError">Empleado</label>
-                            <div class="controls">
-                                <select class="select2_single form-control" id="idempleadoint" name="idempleadoint" data-rel="chosen">
-                                    <?php
-                                    foreach ($list_empleado as $row_empleado) {
-                                        ?>
-                                        <option value="<?php echo $row_empleado['idUsuario']; ?>"><?php echo $row_empleado['idUsuario'] . ' | ' . $row_empleado['nombre_usuario']; ?></option>
-                                        <?php
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <br />
-                            <label class="control-label" for="unidosis">Unidosis Consumidas</label>
-                            <input type="tel" class="form-control" id="cantidadcons" name="cantidadcons" value="1" required="" pattern="\d*">
-                            <br />
+                            <?php if ($this->config->item('permiso_elim_item') == 1){ ?>
+                                <label class="control-label" for="pass">Contraseña Administrador</label>
+                                <input type="password" class="form-control" id="passadmin" name="passadmin" required="" style="font-size: 60px">
+                                <br />
+                            <?php } ?>
+                            <input type="hidden" class="form-control" id="idregdetalle" name="idregdetalle">
+                            <input type="hidden" class="form-control" id="typereg" name="typereg">
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
-                            <button type="submit" class="btn btn-primary">Agregar</button>
+                            <button type="submit" class="btn btn-primary">Eliminar</button>
                         </div>
                     </form>
                 </div>

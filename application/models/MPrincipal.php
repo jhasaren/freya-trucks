@@ -68,6 +68,63 @@ class MPrincipal extends CI_Model {
     }
     
     /**************************************************************************
+     * Nombre del Metodo: admin_pass_verify
+     * Descripcion: valida el password del administrador para permitir acciones
+     * en el sistema.
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 27/09/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function admin_pass_verify($password,$item) {
+                
+        /*Encriptacion de la Clave de Acceso*/
+        $pass = sha1($password);
+        
+        /*Recupera datos del usuario - SOLO EMPLEADO/CLIENTE ROL SUPERADMIN/CLIENTE/EMPLEADO*/
+        $query = $this->db->query("SELECT
+                                c.idUsuario,
+                                c.activo,
+                                u.idRol
+                                FROM
+                                app_usuarios c
+                                JOIN usuario_acceso u ON u.idUsuario = c.idUsuario
+                                WHERE u.claveAcceso = '".$pass."'
+                                AND u.idRol = 1
+                                AND c.activo = 'S'");
+        
+        $cant = $query->num_rows();
+        $data = $query->row();
+        
+        if($cant>0){
+            
+            log_message("ERROR", "-------AUTORIZA ELIMINACION ITEM [EXITOSO}--------");
+            log_message("ERROR", "idEmpleado Solicita: ".$this->session->userdata('userid'));
+            log_message("ERROR", "idUsuario Autoriza: ".$data->idUsuario);
+            log_message("ERROR", "Activo: ".$data->activo);
+            log_message("ERROR", "ROL: ".$data->idRol);
+            log_message("ERROR", "idRegistroDetalle: ".$item);
+            log_message("ERROR", "Sede: ".$this->session->userdata('sede'));
+            log_message("ERROR", "--------------------------------------------------");
+            
+            return TRUE;
+            
+        } else {
+            
+            log_message("ERROR", "-------AUTORIZA ELIMINACION ITEM [FALLIDO}--------");
+            log_message("ERROR", "idEmpleado Solicita: ".$this->session->userdata('userid'));
+            log_message("ERROR", "idUsuario Autoriza: ".$data->idUsuario);
+            log_message("ERROR", "Activo: ".$data->activo);
+            log_message("ERROR", "ROL: ".$data->idRol);
+            log_message("ERROR", "idRegistroDetalle: ".$item);
+            log_message("ERROR", "Sede: ".$this->session->userdata('sede'));
+            log_message("ERROR", "--------------------------------------------------");
+            
+            return FALSE;
+            
+        }
+        
+    }
+    
+    /**************************************************************************
      * Nombre del Metodo: change_pass
      * Descripcion: Actualiza la constraseña de un usuario
      * Autor: jhonalexander90@gmail.com

@@ -428,17 +428,50 @@ class CSale extends CI_Controller {
      * Nombre del Metodo: deletedetailsale
      * Descripcion: Elimina un concepto del detalle de venta
      * Autor: jhonalexander90@gmail.com
-     * Fecha Creacion: 26/03/2017, Ultima modificacion: 
+     * Fecha Creacion: 26/03/2017, 
+     * Ultima modificacion: 27/09/2018 eliminacion con clave admin y motivos
      **************************************************************************/
-    public function deletedetailsale($id,$type) {
+    public function deletedetailsale() {
         
         if ($this->session->userdata('validated')) {
             
             if ($this->MRecurso->validaRecurso(9)){
                 
-                /*Consulta Modelo para eliminar el id del detalle*/
-                $delRegistro = $this->MSale->delete_detail_sale($id,$type);
-
+                /*Captura Variables*/
+                $motivoDel = $this->input->post('motivoanulaitem');
+                $pass = $this->input->post('passadmin');
+                $id = $this->input->post('idregdetalle');
+                $type = $this->input->post('typereg');
+                
+                if ($this->config->item('permiso_elim_item') == 1){ /*parametro activado*/
+                    
+                    /*Consulta Modelo para validar la contraseña admin*/
+                    $passAdminValidate = $this->MPrincipal->admin_pass_verify($pass,$id);
+                    
+                    if ($passAdminValidate){
+                        
+                        /*Consulta Modelo para eliminar el id del detalle, y registrar motivo de eliminacion*/
+                        $delRegistro = $this->MSale->delete_detail_sale($id,$type,$motivoDel);
+                        
+                    }
+                    
+                } else {
+                    
+                    if ($this->config->item('permiso_elim_item') == 0){
+                        
+                        /*Consulta Modelo para eliminar el id del detalle, y registrar motivo de eliminacion*/
+                        $delRegistro = $this->MSale->delete_detail_sale($id,$type,$motivoDel);
+                        
+                    } else {
+                        
+                        $info['idmessage'] = 2;
+                        $info['message'] = "No es posible eliminar el concepto de la venta. El valor parametrizado no es valido";
+                        $this->module($info);
+                        
+                    }
+                    
+                }
+                
                 if ($delRegistro == TRUE){
 
                     $info['idmessage'] = 1;

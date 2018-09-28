@@ -628,7 +628,7 @@ class MSale extends CI_Model {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 06/04/2017, Ultima modificacion: 
      **************************************************************************/
-    public function delete_detail_sale($idRegistro,$type) {
+    public function delete_detail_sale($idRegistro,$type,$motivo) {
         
         $this->db->trans_start();
         $query = $this->db->query("SELECT
@@ -693,12 +693,25 @@ class MSale extends CI_Model {
 
                         }
                     }
-
                     
                     /*Setea usuario de conexion - Auditoria BD*/
                     $this->db = $this->MAuditoria->db_user_audit($this->session->userdata('userid'));
                     
+                    $this->db->trans_strict(TRUE);
                     $this->db->trans_start();
+                    $this->db->query("INSERT INTO item_venta_elimina(
+                                        idVenta,
+                                        idRegistroDetalle,
+                                        motivoElimina,
+                                        fechaElimina,
+                                        idEmpleadoSolicita
+                                    ) VALUES (
+                                        ".$this->session->userdata('idSale').",
+                                        ".$idRegistro.",
+                                        '".$motivo."',
+                                        NOW(),
+                                        ".$this->session->userdata('userid').")");
+                    
                     $this->db->query("DELETE
                                     FROM venta_detalle 
                                     WHERE idRegistroDetalle = ".$idRegistro."
@@ -754,7 +767,21 @@ class MSale extends CI_Model {
                         /*Setea usuario de conexion - Auditoria BD*/
                         $this->db = $this->MAuditoria->db_user_audit($this->session->userdata('userid'));
                         
+                        $this->db->trans_strict(TRUE);
                         $this->db->trans_start();
+                        $this->db->query("INSERT INTO item_venta_elimina(
+                                            idVenta,
+                                            idRegistroDetalle,
+                                            motivoElimina,
+                                            fechaElimina,
+                                            idEmpleadoSolicita
+                                        ) VALUES (
+                                            ".$this->session->userdata('idSale').",
+                                            ".$idRegistro.",
+                                            '".$motivo."',
+                                            NOW(),
+                                            ".$this->session->userdata('userid').")");
+                    
                         $this->db->query("DELETE
                                         FROM venta_detalle 
                                         WHERE idRegistroDetalle = ".$idRegistro."
@@ -769,10 +796,24 @@ class MSale extends CI_Model {
                     
                 } else { /*adicional en la venta*/
                     
-                    /*Setea usuario de conexion - Auditoria*/
-                    $this->db = $this->db_user($this->session->userdata('userid'));
+                    /*Setea usuario de conexion - Auditoria BD*/
+                    $this->db = $this->MAuditoria->db_user_audit($this->session->userdata('userid'));
                     
+                    $this->db->trans_strict(TRUE);
                     $this->db->trans_start();
+                    $this->db->query("INSERT INTO item_venta_elimina(
+                                        idVenta,
+                                        idRegistroDetalle,
+                                        motivoElimina,
+                                        fechaElimina,
+                                        idEmpleadoSolicita
+                                    ) VALUES (
+                                        ".$this->session->userdata('idSale').",
+                                        ".$idRegistro.",
+                                        '".$motivo."',
+                                        NOW(),
+                                        ".$this->session->userdata('userid').")");
+                    
                     $this->db->query("DELETE
                                     FROM venta_detalle 
                                     WHERE idRegistroDetalle = ".$idRegistro."

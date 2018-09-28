@@ -557,8 +557,16 @@ $config['procen_servicio'] = 10;
 |--------------------------------------------------------------------------
 | Parametros IMPOCONSUMO
 | porcen_consumo -> Porcentaje de Cobro por Impuesto al Consumo (default)
-| impo_add_factura -> mostrar valor del impuesto en la factura 0-no, 1-si
+| impo_add_factura -> mostrar valor del impuesto en la factura (0-no, 1-si)
 |--------------------------------------------------------------------------
 */
 $config['impo_add_factura'] = 1;
 $config['porcen_consumo'] = 8;
+
+/*
+|--------------------------------------------------------------------------
+| Validar contraseña del administrador para eliminar items en la venta. 
+| permiso_elim_item -> (0-no, 1-si)
+|--------------------------------------------------------------------------
+*/
+$config['permiso_elim_item'] = 1;
