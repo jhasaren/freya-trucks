@@ -691,17 +691,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="modal fade" id="myModal-desc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-desc" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <?php 
+                    if ($porcenInList->idEstadoRecibo == 2){
+                        $stateInput = "readonly";
+                    } else {
+                        $stateInput = "";
+                    }
+                    ?>
                     <form role="form" name="form_descuento" action="<?php echo base_url() . 'index.php/CSale/addporcentdesc'; ?>" method="post">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>Servicio/Descuento</h3>
                         </div>
                         <div class="modal-body">
+                            <?php 
+                            /*Si el recibo esta liquidado y el perfil no es superadmin, no permite el cambio*/
+                            if (($porcenInList->idEstadoRecibo == 2) && $this->session->userdata('perfil') != 'SUPERADMIN') { 
+                                $stateInput = "readonly";
+                                ?>
+                                <div class="alert alert-info">
+                                    No se puede modificar. El recibo ya se encuentra liquidado.
+                                </div>
+                                <?php 
+                            } else { 
+                                $stateInput = ""; 
+                            }
+                            ?>
                             <label class="control-label" for="Porcentaje">Servicio Voluntario (%)</label>
-                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="Servicio" value="<?php if ($porcenInList->porcenServicio == 0){ echo $this->config->item('procen_servicio'); } else { echo $porcenInList->porcenServicio*100; } ?>" required="" autocomplete="off" pattern="\d*">
+                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="Servicio" value="<?php if ($porcenInList->porcenServicio == 0){ echo $this->config->item('procen_servicio'); } else { echo $porcenInList->porcenServicio*100; } ?>" required="" autocomplete="off" <?php echo $stateInput; ?> pattern="\d*">
                             <br />
                             <label class="control-label" for="Porcentaje">Descuento (%) *Solo aplicable a Plato Fuerte</label>
-                            <input type="tel" class="form-control" id="procentaje" name="procentaje" placeholder="Descuento" value="<?php if ($porcenInList->porcenDescuento !== NULL){ echo $porcenInList->porcenDescuento*100; } else { echo 0; } ?>" required="" autocomplete="off" pattern="\d*">
+                            <input type="tel" class="form-control" id="procentaje" name="procentaje" placeholder="Descuento" value="<?php if ($porcenInList->porcenDescuento !== NULL){ echo $porcenInList->porcenDescuento*100; } else { echo 0; } ?>" required="" autocomplete="off" <?php echo $stateInput; ?> pattern="\d*">
                             <br />
                         </div>
                         <div class="modal-footer">
