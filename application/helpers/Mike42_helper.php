@@ -43,6 +43,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno){
         $printer -> graphics($logo);*/
 
         /* Nombre del Restaurante (sede) */
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
         $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
         $printer -> text($sede."\n");
         $printer -> selectPrintMode();
@@ -51,8 +52,17 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno){
 
         /* Turno */
         $printer -> setEmphasis(true);
-        $printer -> setTextSize(2, 2);
-        $printer -> text("TURNO ".$turno."\n");
+        //$printer -> setTextSize(2, 2);
+        $printer -> text("Detalle de Venta #".$detalleRecibo['general']->nroRecibo."\n");
+        $printer -> text("Lugar: ".$detalleRecibo['general']->nombreMesa."\n");
+        $printer -> setEmphasis(false);
+        $printer -> feed();
+        
+        /* Cliente */
+        $printer -> setEmphasis(true);
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> text("Cliente: ".$detalleRecibo['general']->personaCliente."\n");
+        $printer -> text("NIT/CC: ".$detalleRecibo['general']->idUsuarioCliente."\n");
         $printer -> setEmphasis(false);
 
         /* Items */
@@ -82,23 +92,30 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno){
                 $printer -> text(new item($valueAdc['cargoEspecial'],$valueAdc['valor']));
             }
         }
-        /*SubTotal*/
+        /*SubTotal 1*/
         $printer -> setEmphasis(true);
-        $printer -> text(new item('Subtotal',number_format($detalleRecibo['general']->valorTotalVenta,0,',','.')));
-        $printer -> text(new item('Descuento(%)',$detalleRecibo['general']->porcenDescuento));
+        $printer -> text(new item('Subtotal 1',number_format($detalleRecibo['general']->valorTotalVenta,0,',','.')));
+        $printer -> text(new item('Descuento('.($detalleRecibo['general']->porcenDescuento*100).'%)','-'.number_format(($detalleRecibo['general']->valorTotalVenta-$detalleRecibo['general']->valorLiquida),0,',','.')));
+        $printer -> text(new item('Subtotal 2',number_format($detalleRecibo['general']->valorLiquida,0,',','.')));
+        $printer -> text(new item('Servicio('.($detalleRecibo['atencion']).'%)',number_format(($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.')));
         $printer -> setEmphasis(false);
         $printer -> feed();
-
+        
         /* Total */
         $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-        $printer -> text(new item('Total', number_format($detalleRecibo['general']->valorLiquida,0,',','.'), true));
+        $printer -> text(new item('Total a Pagar', number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.'), true));
+        $printer -> selectPrintMode();
+        if($detalleRecibo['impuesto'] == 1){
+        $printer -> text(new item('Impoconsumo', number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100))*$detalleRecibo['general']->impoconsumo,0,',','.')));
+        }
         $printer -> selectPrintMode();
 
         /* Pie de Pagina */
         $printer -> feed(2);
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        $printer -> text("Gracias por su compra!!\n");
+        $printer -> text("Gracias por Preferirnos!!\n");
         $printer -> feed(2);
+        $printer -> text("Freya Software - Amadeus Soluciones\n");
         $printer -> text(date('d/m/Y h:i:s') . "\n");
 
         /* Corta el Papel y Finaliza */

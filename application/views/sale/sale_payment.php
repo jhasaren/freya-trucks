@@ -175,7 +175,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     ?>
                                 </table>
                                 <center style="font-size: 12px;">
-                                <br />Burger Republic agradece su compra!<br />
+                                <br />Gracias por Preferirnos!<br />
                                 <?php echo date("Y-m-d h:i:s"); ?>
                                 </center>
                             </div>
@@ -185,7 +185,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <center>
                         <p class="center-block download-buttons">
-                            <input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#myDiv')" />
+                            <!--<input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#myDiv')" />-->
                             <a href="<?php echo base_url().'index.php/CSale/boards/2'; ?>" class="btn btn-success btn-lg">
                                 <i class="glyphicon glyphicon-repeat glyphicon-white"></i> Nueva venta
                             </a>
@@ -237,10 +237,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }    
         
     //Lanzamos la llamada al evento click
-    $(document).ready(function () {
+    /*$(document).ready(function () {
             console.log("Imprimir Ticket");
             $("#btnprint").click();
-    });
+    });*/
     </script>
     <!-- Bootstrap -->
     <script src="<?php echo base_url().'public/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js'; ?>"></script>

@@ -1530,7 +1530,7 @@ class CSale extends CI_Controller {
                 //$turno = $this->MSale->consecutivo_turno_sale(1,$this->session->userdata('idSale'));
                 
                 /*Imprime Ticket Cliente*/
-                $this->imprimeticket($reciboDetalle,$turno);
+                //$this->imprimeticket($reciboDetalle,$turno);
 
                 if (file_exists("./files/recibos/$output")){
 
@@ -1573,9 +1573,52 @@ class CSale extends CI_Controller {
             
             if ($this->MRecurso->validaRecurso(9)){
                 
+                $detalleRecibo['atencion'] = $this->session->userdata('sservicio');
+                $detalleRecibo['mesa'] = $this->session->userdata('mesa');
+                
                 /*Invoca funcion de Mike42_Helper*/
                 escposticket($detalleRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('dir_sede'),$this->session->userdata('printer_sede'),$turno);
                     
+            } else {
+                
+                show_404();
+                
+            }
+            
+        } else {
+            
+            $this->index();
+            
+        }
+        
+    }
+    
+    
+    /**************************************************************************
+     * Nombre del Metodo: imprimeticketcoc
+     * Descripcion: Imprime Ticket para la Cocina
+     * Consideraciones:
+     *  - Impresora Termica Instalada
+     *  - Impresora debe estar configurada como predeterminada en Windows
+     *  - Impresora debe estar compartida en Windows
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 12/11/2018, Ultima modificacion: 
+     **************************************************************************/
+    public function imprimeticketcoc() {
+        
+        if ($this->session->userdata('validated')) {
+            
+            if ($this->MRecurso->validaRecurso(9)){
+                
+                /*Obtiene detalle del recibo*/
+                $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
+                $detailRecibo['atencion'] = $this->session->userdata('sservicio');
+                $detailRecibo['impuesto'] = $this->config->item('impo_add_factura');
+                
+                /*Invoca funcion de Mike42_Helper*/
+                escposticket($detailRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('dir_sede'),$this->session->userdata('printer_sede'),$turno);
+                $this->liquidasale();    
+                
             } else {
                 
                 show_404();

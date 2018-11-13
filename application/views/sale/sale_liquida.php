@@ -180,119 +180,122 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="x_panel">
-                                        <form role="form" name="form_pago_sale" action="<?php echo base_url().'index.php/CSale/payregistersale'; ?>" method="post">
-                                        <center>
-                                        <br />
-                                        <div class="x_title">
-                                            <h2>Resumen de Venta</h2>
-                                            <ul class="nav navbar-right panel_toolbox">
-                                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                </li>
-                                                <li></li>
-                                            </ul>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        
-                                        <!--Ticket informacion-->
-                                        <div id="ticketPrint" class="x_content">
-                                            <center style="font-size: 12px;">
-                                            <!--<img src="<?php // echo base_url().'public/img/logo.png'; ?>" style="width: 86px; height: 64px" /><br />-->
-                                            <?php echo $this->session->userdata('nombre_sede'); ?><br />
-                                            <?php echo $this->session->userdata('dir_sede'); ?><br />
-                                            <?php echo "Nro. Factura ".$detalleRecibo['general']->nroRecibo; ?>
-                                            </center>
+                                        <form role="form" name="form_pago_sale" action="<?php echo base_url().'index.php/CSale/imprimeticketcoc'; ?>" method="post">
+                                            <center>
                                             <br />
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td align="center" style="font-size: 20px; font-weight:bold;">
-                                                        TURNO <?php echo $turno; ?>
-                                                    </td>
-                                                </tr>                               
-                                            </table>
-                                            <table style="width: 100%">
-                                                <?php
-                                                /*Servicios*/
-                                                if ($detalleRecibo['servicios'] != NULL){
-                                                    foreach ($detalleRecibo['servicios']  as $valueServ){
-                                                        ?>
-                                                        <tr style="font-size: 12px;">
-                                                            <td align="left"><?php echo "(".$valueServ['cantidad'].") ".$valueServ['descServicio']; ?></td>
-                                                            <td align="right">$<?php echo number_format($valueServ['valor'],0,',','.'); ?></td>
-                                                        </tr>
-                                                        <?php
+                                            <div class="x_title">
+                                                <h2>Resumen de Venta</h2>
+                                                <ul class="nav navbar-right panel_toolbox">
+                                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                    </li>
+                                                    <li></li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+
+                                            <!--Ticket informacion-->
+                                            <div id="ticketPrint" class="x_content">
+                                                <center style="font-size: 12px;">
+                                                <!--<img src="<?php // echo base_url().'public/img/logo.png'; ?>" style="width: 86px; height: 64px" /><br />-->
+                                                <?php echo $this->session->userdata('nombre_sede'); ?><br />
+                                                <?php echo $this->session->userdata('dir_sede'); ?><br />
+                                                <?php echo "Nro. Factura ".$detalleRecibo['general']->nroRecibo; ?>
+                                                </center>
+                                                <br />
+                                                <table style="width: 100%">
+                                                    <tr>
+                                                        <td align="center" style="font-size: 20px; font-weight:bold;">
+                                                            TURNO <?php echo $turno; ?>
+                                                        </td>
+                                                    </tr>                               
+                                                </table>
+                                                <table style="width: 100%">
+                                                    <?php
+                                                    /*Servicios*/
+                                                    if ($detalleRecibo['servicios'] != NULL){
+                                                        foreach ($detalleRecibo['servicios']  as $valueServ){
+                                                            ?>
+                                                            <tr style="font-size: 12px;">
+                                                                <td align="left"><?php echo "(".$valueServ['cantidad'].") ".$valueServ['descServicio']; ?></td>
+                                                                <td align="right">$<?php echo number_format($valueServ['valor'],0,',','.'); ?></td>
+                                                            </tr>
+                                                            <?php
+                                                        }
                                                     }
-                                                }
-                                                /*Productos*/
-                                                if ($detalleRecibo['productos'] != NULL){
-                                                    foreach ($detalleRecibo['productos']  as $valueProd){
-                                                        ?>
-                                                        <tr style="font-size: 12px;">
-                                                            <td align="left"><?php echo "(".$valueProd['cantidad'].") ".$valueProd['descProducto']; ?></td>
-                                                            <td align="right">$<?php echo number_format($valueProd['valor'],0,',','.'); ?></td>
-                                                        </tr>
-                                                        <?php
+                                                    /*Productos*/
+                                                    if ($detalleRecibo['productos'] != NULL){
+                                                        foreach ($detalleRecibo['productos']  as $valueProd){
+                                                            ?>
+                                                            <tr style="font-size: 12px;">
+                                                                <td align="left"><?php echo "(".$valueProd['cantidad'].") ".$valueProd['descProducto']; ?></td>
+                                                                <td align="right">$<?php echo number_format($valueProd['valor'],0,',','.'); ?></td>
+                                                            </tr>
+                                                            <?php
+                                                        }
                                                     }
-                                                }
-                                                /*Adicionales*/
-                                                if ($detalleRecibo['adicional'] != NULL){
-                                                    foreach ($detalleRecibo['adicional']  as $valueAdc){
-                                                        ?>
-                                                        <tr style="font-size: 12px;">
-                                                            <td align="left"><?php echo $valueAdc['cargoEspecial']; ?></td>
-                                                            <td align="right">$<?php echo number_format($valueAdc['valor'],0,',','.'); ?></td>
-                                                        </tr>
-                                                        <?php
+                                                    /*Adicionales*/
+                                                    if ($detalleRecibo['adicional'] != NULL){
+                                                        foreach ($detalleRecibo['adicional']  as $valueAdc){
+                                                            ?>
+                                                            <tr style="font-size: 12px;">
+                                                                <td align="left"><?php echo $valueAdc['cargoEspecial']; ?></td>
+                                                                <td align="right">$<?php echo number_format($valueAdc['valor'],0,',','.'); ?></td>
+                                                            </tr>
+                                                            <?php
+                                                        }
                                                     }
-                                                }
-                                                ?>
-                                                <tr style="font-size: 12px; font-weight:bold;">
-                                                    <td align="left">Subtotal 1:</td>
-                                                    <td align="right">$<?php echo number_format($detalleRecibo['general']->valorTotalVenta,0,',','.'); ?></td>
-                                                </tr>   
-                                                <tr style="font-size: 12px;">
-                                                    <td align="left">Descuento(<?php echo ($detalleRecibo['general']->porcenDescuento*100); ?>%):</td>
-                                                    <td align="right">-$<?php echo number_format(($detalleRecibo['general']->valorTotalVenta-$detalleRecibo['general']->valorLiquida),0,',','.'); ?></td>
-                                                </tr>
-                                                <tr style="font-size: 12px; font-weight:bold;">
-                                                    <td align="left">Subtotal 2:</td>
-                                                    <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida,0,',','.'); ?></td>
-                                                </tr>  
-                                                <tr style="font-size: 12px;">
-                                                    <td align="left">Atención(<?php echo ($this->session->userdata('sservicio')); ?>%):</td>
-                                                    <td align="right">+$<?php echo number_format(($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100),0,',','.'); ?></td>
-                                                </tr>
-                                                <tr style="font-size: 18px; font-weight:bold;">
-                                                    <td align="left">Total a Pagar:</td>
-                                                    <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100),0,',','.'); ?></td>
-                                                </tr>  
-                                                <?php 
-                                                if ($this->config->item('impo_add_factura') == 1){
-                                                ?>
-                                                <tr style="font-size: 12px;">
-                                                    <td align="left">Impoconsumo (<?php echo $detalleRecibo['general']->impoconsumo*100; ?>%):</td>
-                                                    <td align="right">-$<?php echo number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100))*$detalleRecibo['general']->impoconsumo,0,',','.'); ?></td>
-                                                </tr>
-                                                <?php
-                                                }
-                                                ?>
-                                            </table>
-                                            <center style="font-size: 12px;">
-                                            <br />
-                                            Burger Republic agradece su compra!<br />
-                                            <?php echo date("Y-m-d h:i:s"); ?>
+                                                    ?>
+                                                    <tr style="font-size: 12px; font-weight:bold;">
+                                                        <td align="left">Subtotal 1:</td>
+                                                        <td align="right">$<?php echo number_format($detalleRecibo['general']->valorTotalVenta,0,',','.'); ?></td>
+                                                    </tr>   
+                                                    <tr style="font-size: 12px;">
+                                                        <td align="left">Descuento(<?php echo ($detalleRecibo['general']->porcenDescuento*100); ?>%):</td>
+                                                        <td align="right">-$<?php echo number_format(($detalleRecibo['general']->valorTotalVenta-$detalleRecibo['general']->valorLiquida),0,',','.'); ?></td>
+                                                    </tr>
+                                                    <tr style="font-size: 12px; font-weight:bold;">
+                                                        <td align="left">Subtotal 2:</td>
+                                                        <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida,0,',','.'); ?></td>
+                                                    </tr>  
+                                                    <tr style="font-size: 12px;">
+                                                        <td align="left">Atención(<?php echo ($this->session->userdata('sservicio')); ?>%):</td>
+                                                        <td align="right">+$<?php echo number_format(($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100),0,',','.'); ?></td>
+                                                    </tr>
+                                                    <tr style="font-size: 18px; font-weight:bold;">
+                                                        <td align="left">Total a Pagar:</td>
+                                                        <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100),0,',','.'); ?></td>
+                                                    </tr>  
+                                                    <?php 
+                                                    if ($this->config->item('impo_add_factura') == 1){
+                                                    ?>
+                                                    <tr style="font-size: 12px;">
+                                                        <td align="left">Impoconsumo (<?php echo $detalleRecibo['general']->impoconsumo*100; ?>%):</td>
+                                                        <td align="right">-$<?php echo number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100))*$detalleRecibo['general']->impoconsumo,0,',','.'); ?></td>
+                                                    </tr>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </table>
+                                                <center style="font-size: 12px;">
+                                                <br />
+                                                Gracias por Preferirnos!<br />
+                                                <?php echo date("Y-m-d h:i:s"); ?>
+                                                </center>
+                                            </div>
+                                            <!--Fin Ticket informacion-->
+
+                                            <!--Impresion por libreria mike32-->
+                                            <!--<a href="<?php //echo base_url().'index.php/CSale/imprimeticket/'.$detalleRecibo."/0"; ?>" class="btn btn-primary btn-lg">
+                                                <i class="glyphicon glyphicon-time glyphicon-white"></i> 
+                                                Imprimir Ticket
+                                            </a>-->
+                                            <button type="submit" class="btn btn-success btn-lg">
+                                                <i class="glyphicon glyphicon-check glyphicon-white"></i>
+                                                Imprimir Ticket
+                                            </button>
+                                            <!--Impresion por navegador-->
+                                            <!--<input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#ticketPrint')" />-->
                                             </center>
-                                        </div>
-                                        <!--Fin Ticket informacion-->
-                                        
-                                        <!--Impresion por navegador-->
-                                        <!--<input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#ticketPrint')" />-->
-                                        <!--Impresion por libreria mike32-->
-<!--                                        <a href="<?php // echo base_url().'index.php/CSale/waitdatasale'; ?>" class="btn btn-primary btn-lg">
-                                            <i class="glyphicon glyphicon-time glyphicon-white"></i> 
-                                            Imprimir Ticket
-                                        </a>-->
-                                        <input id="btnprint" class="btn btn-success btn-lg" type="button" value="Imprimir Ticket" onclick="PrintElem('#ticketPrint')" />
-                                        </center>
                                         </form>
                                     </div>
                                 </div>

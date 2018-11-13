@@ -38,7 +38,8 @@ class MSale extends CI_Model {
                                     porcenDescuento,
                                     porcenServicio,
                                     idSede,
-                                    impoconsumo
+                                    impoconsumo,
+                                    idMesa
                                     ) VALUES (
                                     NOW(),
                                     0,
@@ -47,7 +48,8 @@ class MSale extends CI_Model {
                                     0,
                                     0,
                                     ".$this->session->userdata('sede').",
-                                    ".($this->config->item('porcen_consumo')/100)."
+                                    ".($this->config->item('porcen_consumo')/100).",
+                                    ".$board."
                                     )");
         
         $idSale = $this->db->insert_id();

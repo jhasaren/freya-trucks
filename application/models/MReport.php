@@ -203,13 +203,15 @@ class MReport extends CI_Model {
                                 vm.idEmpleadoAtiende,
                                 CONCAT(ae.nombre,' ',ae.apellido) as personaAtiende,
                                 vm.porcenServicio,
-                                vm.impoconsumo
+                                vm.impoconsumo,
+                                m.nombreMesa
                                 FROM
                                 venta_maestro vm
                                 JOIN tipo_estado_recibo t ON t.idEstadoRecibo = vm.idEstadoRecibo
                                 JOIN app_usuarios au ON au.idUsuario = vm.idUsuarioLiquida
                                 JOIN app_usuarios ac ON ac.idUsuario = vm.idUsuarioCliente
                                 LEFT JOIN app_usuarios ae ON ae.idUsuario = vm.idEmpleadoAtiende
+                                LEFT JOIN mesas m ON m.idMesa = vm.idMesa
                                 WHERE
                                 vm.idVenta = ".$idventa."");
         
