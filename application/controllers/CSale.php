@@ -449,7 +449,7 @@ class CSale extends CI_Controller {
                     $passAdminValidate = $this->MPrincipal->admin_pass_verify($pass,$id);
                     
                     if ($passAdminValidate){
-                        
+                             
                         /*Consulta Modelo para eliminar el id del detalle, y registrar motivo de eliminacion*/
                         $delRegistro = $this->MSale->delete_detail_sale($id,$type,$motivoDel);
                         

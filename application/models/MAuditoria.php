@@ -27,7 +27,7 @@ class MAuditoria extends CI_Model {
      **************************************************************************/
     public function db_user_audit($username) {
                     
-        $config['hostname'] = '192.168.1.55';
+        $config['hostname'] = '192.168.1.65';
         $config['username'] = $username;
         $config['password'] = 'Jh4s4r3n2020';
         $config['database'] = 'freyatrucks';

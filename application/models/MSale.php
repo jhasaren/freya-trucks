@@ -676,7 +676,7 @@ class MSale extends CI_Model {
                                             AND idRegistroDetalle = ".$idRegistro.")");
                $this->db->trans_complete();
                $this->db->trans_off();
-
+                             
                if ($query2->num_rows() == 0) {
 
                    return FALSE;
