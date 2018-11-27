@@ -18,9 +18,9 @@
                     <li>
                         <a class="btn-changepass"  href="#">Cambiar Contraseña</a>
                     </li>
-                <!--<li>
+                    <li>
                         <a class="btn-backup"  href="#">Generar Backup</a>
-                    </li>-->
+                    </li>
 <!--                    <li>
                         <a href="<?php // echo base_url().'index.php/CPrincipal/optimize'; ?>"><i class="fa fa-sign-out pull-right"></i> Optimizar BD</a>
                     </li>-->
