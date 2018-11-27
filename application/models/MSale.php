@@ -183,7 +183,12 @@ class MSale extends CI_Model {
                                     g.descGrupoServicio,
                                     s.descServicio,
                                     s.valorServicio,
-                                    (s.valorServicio * s.distribucion) as valorEmpleado
+                                    (s.valorServicio * s.distribucion) as valorEmpleado,
+                                    (SELECT count(1) FROM
+                                    productos_servicio ps
+                                    JOIN stock_productos ss ON ss.idProducto = ps.idProducto
+                                    WHERE ps.idServicio = s.idServicio
+                                    AND ss.disponibles = 0) as agotado
                                     FROM
                                     servicios s
                                     JOIN grupo_servicio g ON g.idGrupoServicio = s.idGrupoServicio
@@ -191,7 +196,7 @@ class MSale extends CI_Model {
                                     s.activo = 'S'
                                     ORDER BY 3");
             
-            $this->cache->memcached->save('mListServiceSale', $query->result_array(), 28800); /*8 horas en Memoria*/
+            $this->cache->memcached->save('mListServiceSale', $query->result_array(), 180); /*3 minutos en Memoria*/
             $this->cache->memcached->save('memcached12', 'real', 30);
 
             if ($query->num_rows() == 0) {
@@ -493,13 +498,15 @@ class MSale extends CI_Model {
                                     g.descGrupoServicio
                                     FROM productos p
                                     JOIN grupo_servicio g ON g.idGrupoServicio = p.idGrupoServicio
+                                    JOIN stock_productos s ON s.idProducto = p.idProducto
                                     WHERE
                                     p.activo = 'S'
                                     AND p.idTipoProducto = 2
                                     AND p.idSede = ".$this->session->userdata('sede')."
+                                    AND s.disponibles <> 0
                                     ORDER BY 2");
             
-            $this->cache->memcached->save('mListProductSale', $query->result_array(), 28800); /*8 horas en Memoria*/
+            $this->cache->memcached->save('mListProductSale', $query->result_array(), 180); /*3 minutos en Memoria*/
             $this->cache->memcached->save('mSedeProduct', $this->session->userdata('sede'), 28800);
             $this->cache->memcached->save('memcached16', 'real', 30);
 
