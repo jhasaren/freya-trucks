@@ -1575,9 +1575,10 @@ class CSale extends CI_Controller {
                 
                 $detalleRecibo['atencion'] = $this->session->userdata('sservicio');
                 $detalleRecibo['mesa'] = $this->session->userdata('mesa');
+                $nitRecibo = $this->config->item('nit_recibo');
                 
                 /*Invoca funcion de Mike42_Helper*/
-                escposticket($detalleRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('dir_sede'),$this->session->userdata('printer_sede'),$turno);
+                escposticket($detalleRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('dir_sede'),$this->session->userdata('printer_sede'),$turno,$nitRecibo);
                     
             } else {
                 

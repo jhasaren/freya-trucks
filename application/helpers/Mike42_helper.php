@@ -23,7 +23,7 @@ use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
  * Nombre: escposticket
  * Descripcion: recibe parametros desde el controlador para imprimir ticket
  */
-function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno){
+function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo){
     
     log_message("DEBUG", "-----------------------------------");
     log_message("DEBUG", "TICKET Impresion");
@@ -48,6 +48,11 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno){
         $printer -> text($sede."\n");
         $printer -> selectPrintMode();
         $printer -> text($dirSede."\n");
+        /*Valida si el parametro de NIT esta habilitado, se muestra en Ticket*/
+        if ($nitRecibo != NULL){
+            $printer -> setTextSize(1, 1);
+            $printer -> text($nitRecibo."\n");
+        }
         $printer -> feed();
 
         /* Turno */

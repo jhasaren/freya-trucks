@@ -570,3 +570,11 @@ $config['porcen_consumo'] = 8;
 |--------------------------------------------------------------------------
 */
 $config['permiso_elim_item'] = 1;
+
+/*
+|--------------------------------------------------------------------------
+| Mostrar Nit y Datos de factura en el ticket de impresion 
+| nit_recibo -> (NULL-no, DATA-si)
+|--------------------------------------------------------------------------
+*/
+$config['nit_recibo'] = "Nit895208509 Marlen J Rodriguez (Reg Simp)";
