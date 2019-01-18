@@ -1615,9 +1615,10 @@ class CSale extends CI_Controller {
                 $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
                 $detailRecibo['atencion'] = $this->session->userdata('sservicio');
                 $detailRecibo['impuesto'] = $this->config->item('impo_add_factura');
+                $nitRecibo = $this->config->item('nit_recibo');
                 
                 /*Invoca funcion de Mike42_Helper*/
-                escposticket($detailRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('dir_sede'),$this->session->userdata('printer_sede'),$turno);
+                escposticket($detailRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('dir_sede'),$this->session->userdata('printer_sede'),$turno,$nitRecibo);
                 $this->liquidasale();    
                 
             } else {
