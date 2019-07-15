@@ -411,8 +411,8 @@ class MUser extends CI_Model {
                 /*Crea el usuario en Base De Datos*/
                 $this->db->trans_strict(TRUE);
                 $this->db->trans_start();
-                $this->db->query("CREATE USER '".$identificacion."' IDENTIFIED BY 'Jh4s4r3n2020'");
-                $this->db->query("GRANT SELECT,INSERT,UPDATE,DELETE ON freyatrucks.* TO '".$identificacion."'");
+                $this->db->query("CREATE USER '".$identificacion."'@'localhost' IDENTIFIED BY 'Jh4s4r3n2020'");
+                $this->db->query("GRANT SELECT,INSERT,UPDATE,DELETE ON freyatrucks.* TO '".$identificacion."'@'localhost'");
                 $this->db->query("FLUSH PRIVILEGES");
                 $this->db->trans_complete();
                 $this->db->trans_off();
