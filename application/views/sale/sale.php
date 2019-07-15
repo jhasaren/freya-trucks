@@ -708,6 +708,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             /*Si el recibo esta liquidado y el perfil no es superadmin, no permite el cambio*/
                             if (($porcenInList->idEstadoRecibo == 2) && $this->session->userdata('perfil') != 'SUPERADMIN') { 
                                 $stateInput = "readonly";
+								$stateButton = "disabled";
                                 ?>
                                 <div class="alert alert-info">
                                     No se puede modificar. El recibo ya se encuentra liquidado.
@@ -726,7 +727,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
-                            <button type="submit" id="btn-click-desc" class="btn btn-primary">Agregar</button>
+                            <button type="submit" id="btn-click-desc" class="btn btn-primary" <?php echo $stateButton; ?>>Agregar</button>
                         </div>
                     </form>
                 </div>
