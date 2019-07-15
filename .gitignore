@@ -18,3 +18,5 @@ application/logs/*
 application/config/config.php
 application/config/database.php
 *.pdf
+application/config/database.php
+application/models/MAuditoria.php

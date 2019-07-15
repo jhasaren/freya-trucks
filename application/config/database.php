@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.1.65',
+	'hostname' => 'localhost',
 	'username' => 'root',
-	'password' => 'Prac*lab',
+	'password' => 'root',
 	'database' => 'freyatrucks',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
