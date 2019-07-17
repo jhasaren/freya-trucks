@@ -124,6 +124,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo)
         $printer -> text(date('d/m/Y h:i:s') . "\n");
 
         /* Corta el Papel y Finaliza */
+        //$printer-> pulse(); /*Abre Caja Registradora*/
         $printer -> cut();
         $printer -> close();
         
