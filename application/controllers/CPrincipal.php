@@ -158,7 +158,8 @@ class CPrincipal extends CI_Controller {
                             log_message("DEBUG", $this->session->userdata('userid'));
                             log_message("DEBUG", "=================================");
 
-                            $this->index();
+                            //$this->index();
+                            redirect('', 'refresh');
 
                         }
                         
@@ -291,9 +292,17 @@ class CPrincipal extends CI_Controller {
         $this->cache->memcached->delete('mListProductSale');
         $this->cache->memcached->delete('mListServiceSale');
         
+        //lineas para eliminar el historico de navegacion./
+        $this->output->set_header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+        $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
+        $this->output->set_header("Cache-Control: post-check=0, pre-check=0", false);
+        $this->output->set_header("Pragma: no-cache");
+        
         /*Destruye los datos de sesion*/
+        $this->session->unset_userdata('validated');
         $this->session->sess_destroy();
-        $this->load->view('login');
+        //$this->load->view('login');
+        redirect('', 'refresh');
         
     }
     
