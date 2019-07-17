@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="description" content="Freya, Salon, Belleza, Gestion, Seguridad, Eficiencia, Calidad, Informacion">
     <meta name="author" content="Amadeus Soluciones">
     
-    <title>Freya - Trucks</title>
+    <title>Freya - Restaurante</title>
 
     <!-- Bootstrap -->
     <link href="<?php echo base_url().'public/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css'; ?>" rel="stylesheet">

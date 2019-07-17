@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="description" content="Freya, Salon, Belleza, Gestion, Seguridad, Eficiencia, Calidad, Informacion">
     <meta name="author" content="Amadeus Soluciones">
 
-    <title>Freya - Trucks</title>
+    <title>Freya - Restaurante</title>
     
     <style type="text/css">
     .tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;width: 50%;}
