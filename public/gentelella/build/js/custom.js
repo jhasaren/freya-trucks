@@ -383,6 +383,7 @@ $(function() {
     $('#sidebar-menu li ul').slideUp();
 });
 
+
 // Progressbar
 if ($(".progress .progress-bar")[0]) {
     $('.progress .progress-bar').progressbar();

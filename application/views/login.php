@@ -49,7 +49,7 @@
         ?>
         <!--<div class="animate form login_form">-->
         <section class="login_content">
-            <form class="form-horizontal" name="form_login" action="<?php echo base_url().'index.php/CPrincipal/login'; ?>" method="post">
+            <form class="form-horizontal" name="form_login" id="form_login" action="<?php echo base_url().'index.php/CPrincipal/login'; ?>" method="post">
                 <h1>
                     <img alt="Freya" src="<?php echo base_url().'public/img/logo.png'; ?>" />
                 </h1>
@@ -73,7 +73,7 @@
                   <br />
 
                   <div>
-                    <h1><i class="fa fa-leaf"></i> Freya Trucks</h1>
+                    <h1><i class="fa fa-leaf"></i> Freya Restaurante</h1>
                     <p>©<?php echo date('Y'); ?> Todos los derechos reservados<br />Amadeus Soluciones</p>
                   </div>
                 </div>
