@@ -370,17 +370,23 @@ $config['encryption_key'] = '';
 |	when auto-regenerating the session ID. When set to FALSE, the data
 |	will be later deleted by the garbage collector.
 |
+|       jasanchez: 
+|       TRUE-> destruye la sesion cuando se cumpla el tiempo del parametro sess_time_to_update 
+|       sin importar si esta en uso o no la app, no tiene en cuenta el parametro sess_expiration. 
+|       FALSE-> Si se coloca el FALSE no atiende los tiempos del parametro sess_expiration ni 
+|       sess_time_to_update, es decir, nunca expira.
+|
 | Other session cookie settings are shared with the rest of the application,
 | except for 'cookie_prefix' and 'cookie_httponly', which are ignored here.
 |
 */
-$config['sess_driver'] = 'files';
+$config['sess_driver'] = 'memcached'; /*files*/
 $config['sess_cookie_name'] = 'ci_session';
-$config['sess_expiration'] = 7200;
+$config['sess_expiration'] = 1800; /*30 minutos*/
 $config['sess_save_path'] = APPPATH . 'cache/session/';
 $config['sess_match_ip'] = FALSE;
-$config['sess_time_to_update'] = 300;
-$config['sess_regenerate_destroy'] = FALSE;
+$config['sess_time_to_update'] = 7200; /*120 minutos*/
+$config['sess_regenerate_destroy'] = TRUE; 
 
 /*
 |--------------------------------------------------------------------------
