@@ -15,6 +15,7 @@ class MService extends CI_Model {
         /*instancia la clase de conexion a la BD para este modelo*/
         parent::__construct();
         $this->load->driver('cache'); /*Carga cache*/
+        $this->load->model('MAuditoria'); /*Carga Modelo para Auditoria*/
         
     }
     
@@ -121,6 +122,9 @@ class MService extends CI_Model {
      **************************************************************************/
     public function create_service($name,$time,$value,$distribution,$group,$calendar) {
         
+        /*Setea usuario de conexion - Auditoria BD*/
+        $this->db = $this->MAuditoria->db_user_audit($this->session->userdata('userid'));
+        
         $this->db->trans_start();
         $query = $this->db->query("INSERT INTO
                                     servicios (
@@ -203,6 +207,9 @@ class MService extends CI_Model {
      * Fecha Creacion: 25/03/2017, Ultima modificacion: 
      **************************************************************************/
     public function update_service($idservice,$name,$time,$value,$distPorcent,$estado,$calendar) {
+        
+        /*Setea usuario de conexion - Auditoria BD*/
+        $this->db = $this->MAuditoria->db_user_audit($this->session->userdata('userid'));
         
         $this->db->trans_start();
         $query = $this->db->query("UPDATE
