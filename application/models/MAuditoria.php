@@ -46,4 +46,31 @@ class MAuditoria extends CI_Model {
         
     }
     
+    /**************************************************************************
+     * Nombre del Metodo: db_set_audit
+     * Descripcion: Selecciona la BD de Auditoria
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 18/07/2019, Ultima modificacion:
+     **************************************************************************/
+    public function db_set_audit() {
+                    
+        $config['hostname'] = 'localhost';
+        $config['username'] = 'root';
+        $config['password'] = 'root';
+        $config['database'] = 'auditoria_freya';
+        $config['dbdriver'] = "mysqli";
+        $config['dbprefix'] = "";
+        $config['pconnect'] = FALSE;
+        $config['db_debug'] = FALSE;
+        $config['cache_on'] = FALSE;
+        $config['cachedir'] = "";
+        $config['char_set'] = "utf8";
+        $config['dbcollat'] = "utf8_general_ci";
+
+        $connect = $this->load->database($config, TRUE);
+        
+        return $connect;
+        
+    }
+    
 }

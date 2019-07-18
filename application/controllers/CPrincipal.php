@@ -27,6 +27,7 @@ class CPrincipal extends CI_Controller {
         $this->load->model('MSale'); /*Modelo para las Ventas*/
         $this->load->model('MReport'); /*Modelo para los Reportes*/
         $this->load->model('MBoard'); /*Modelo para los Productos*/
+        $this->load->model('MAuditoria'); /*Modelo para Auditoria*/
         
         date_default_timezone_set('America/Bogota'); /*Zona horaria*/
 
@@ -447,19 +448,40 @@ class CPrincipal extends CI_Controller {
             
             /*captura variables*/
             $pass = $this->input->post('pass');
+            $typeBackup = $this->input->post('db_backup');
             
             $validateLogin = $this->MPrincipal->login_verify($this->session->userdata('userid'),$pass);
             
             if ($validateLogin != FALSE){
                 
-                // Load the DB utility class
-                $this->load->dbutil();
-                // Backup your entire database and assign it to a variable
-                $backup = $this->dbutil->backup();
-                // Load the download helper and send the file to your desktop
-                $this->load->helper('download');
-                force_download('freya-'.date('Ymd-His').'.gz', $backup);
-                
+                if ($typeBackup == 1) { /*BD Aplicacion*/
+                    
+                    // Load the DB utility class
+                    $this->load->dbutil();
+                    // Backup your entire database and assign it to a variable
+                    $backup = $this->dbutil->backup();
+                    // Load the download helper and send the file to your desktop
+                    $this->load->helper('download');
+                    force_download('freya-'.date('Ymd-His').'.gz', $backup);
+                    
+                } else {
+                    
+                    if ($typeBackup == 2){ /*BD Auditoria*/
+                        
+                        // Load the DB utility class
+                        $this->load->dbutil();
+                        /*Carga Auditoria BD*/
+                        $this->db = $this->MAuditoria->db_set_audit();
+                        // Backup your entire database and assign it to a variable
+                        $backup_aud = $this->dbutil->backup();
+                        // Load the download helper and send the file to your desktop
+                        $this->load->helper('download');
+                        force_download('auditoria_freya-'.date('Ymd-His').'.gz', $backup_aud);
+                        
+                    }
+                    
+                }
+                                             
                 $info['message'] = 'Se genero el backup de datos exitosamente. Por favor elija la ubicacion en la USB y guardelo.';
                 $info['alert'] = 1;
                 $this->module($info);

@@ -81,6 +81,12 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
+                            <label for="tipoBaseDatos">Elija la Base de Datos</label><br />
+                            <input type="radio" class="radio-inline" id="db_backup" name="db_backup" value="1" checked="">Aplicacion
+                            <input type="radio" class="radio-inline" id="db_backup" name="db_backup" value="2" >Auditoria
+                        </div>
+                        <br />
+                        <div class="form-group">
                             <label for="contrasenaNuevaConfirma">Contraseña</label>
                             <input type="password" class="form-control" id="pass" name="pass" placeholder="Digite su contraseña" required="">
                         </div>
