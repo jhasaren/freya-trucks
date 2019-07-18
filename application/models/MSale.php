@@ -688,7 +688,33 @@ class MSale extends CI_Model {
                              
                if ($query2->num_rows() == 0) {
 
-                   return FALSE;
+                   //return FALSE;
+                   /*Setea usuario de conexion - Auditoria BD*/
+                    $this->db = $this->MAuditoria->db_user_audit($this->session->userdata('userid'));
+                    
+                    $this->db->trans_strict(TRUE);
+                    $this->db->trans_start();
+                    $this->db->query("INSERT INTO item_venta_elimina(
+                                        idVenta,
+                                        idRegistroDetalle,
+                                        motivoElimina,
+                                        fechaElimina,
+                                        idEmpleadoSolicita
+                                    ) VALUES (
+                                        ".$this->session->userdata('idSale').",
+                                        ".$idRegistro.",
+                                        '".$motivo."',
+                                        NOW(),
+                                        ".$this->session->userdata('userid').")");
+                    
+                    $this->db->query("DELETE
+                                    FROM venta_detalle 
+                                    WHERE idRegistroDetalle = ".$idRegistro."
+                                    and idVenta = ".$this->session->userdata('idSale')."");
+                    $this->db->trans_complete();
+                    $this->db->trans_off();
+                    
+                    return TRUE;
 
                } else {
 
