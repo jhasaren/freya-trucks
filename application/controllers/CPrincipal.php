@@ -292,6 +292,8 @@ class CPrincipal extends CI_Controller {
         $this->cache->memcached->delete('mListboards');
         $this->cache->memcached->delete('mListProductSale');
         $this->cache->memcached->delete('mListServiceSale');
+        $this->cache->memcached->delete('mListproducts');
+        $this->cache->memcached->delete('mListservices');
         
         //lineas para eliminar el historico de navegacion./
         $this->output->set_header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
