@@ -298,6 +298,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <i class="glyphicon glyphicon-time glyphicon-white"></i> 
                                                 Imprimir Ticket
                                             </a>-->
+                                            <!--Impresion por libreria mike32-->
                                             <button type="submit" class="btn btn-success btn-lg">
                                                 <i class="glyphicon glyphicon-check glyphicon-white"></i>
                                                 Imprimir Ticket
