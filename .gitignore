@@ -20,3 +20,4 @@ application/config/database.php
 *.pdf
 application/config/database.php
 application/models/MAuditoria.php
+application/config/config.php
