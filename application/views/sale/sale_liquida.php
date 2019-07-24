@@ -201,15 +201,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <?php echo $this->session->userdata('dir_sede'); ?><br />
                                                 <?php echo $this->config->item('nit_recibo'); ?><br />
                                                 <?php echo "Detalle de Venta #".$detalleRecibo['general']->nroRecibo; ?><br />
-                                                <?php echo "Lugar: ".$detalleRecibo['general']->nombreMesa; ?><br />
-                                                <?php echo "Turno: ".$turno; ?>
+                                                <?php echo "Lugar: ".$detalleRecibo['general']->nombreMesa; ?> | <?php echo "Turno: ".$turno; ?>
                                                 </center>
                                                 <br />
                                                 <p align='left'>
-                                                <?php echo "Cliente: ".$detalleRecibo['general']->personaCliente; ?><br />
-                                                <?php echo "NIT/CC: ".$detalleRecibo['general']->idUsuarioCliente; ?>
+                                                    <?php echo "Cliente: ".$detalleRecibo['general']->personaCliente; ?><br />
+                                                    <?php echo "NIT/CC: ".$detalleRecibo['general']->idUsuarioCliente; ?>
                                                 </p>
-                                                <br />
                                                 <!--
                                                 <table style="width: 100%">
                                                     <tr>

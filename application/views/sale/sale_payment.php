@@ -97,9 +97,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <!--<img src="<?php // echo base_url().'public/img/logo.png'; ?>" style="width: 86px; height: 64px" /><br />-->
                                 <?php echo $this->session->userdata('nombre_sede'); ?><br />
                                 <?php echo $this->session->userdata('dir_sede'); ?><br />
-                                <?php echo "Nro. Factura ".$detalleRecibo['general']->nroRecibo; ?>
+                                <?php echo $this->config->item('nit_recibo'); ?><br />
+                                <?php echo "Detalle de Venta #".$detalleRecibo['general']->nroRecibo; ?><br />
+                                <?php echo "Lugar: ".$detalleRecibo['general']->nombreMesa; ?> | <?php echo "Turno: ".$turno; ?>
                                 </center>
                                 <br />
+                                <p align='left'>
+                                    <?php echo "Cliente: ".$detalleRecibo['general']->personaCliente; ?><br />
+                                    <?php echo "NIT/CC: ".$detalleRecibo['general']->idUsuarioCliente; ?>
+                                </p>
+                                <!--
                                 <table style="width: 100%">
                                     <tr>
                                         <td align="center" style="font-size: 20px; font-weight:bold;">
@@ -107,6 +114,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </td>
                                     </tr>                               
                                 </table>
+                                -->
                                 <table style="width: 100%">
                                     <?php
                                     /*Servicios*/
@@ -175,7 +183,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     ?>
                                 </table>
                                 <center style="font-size: 12px;">
-                                <br />Gracias por Preferirnos!<br />
+                                <br />
+                                Gracias por Preferirnos!<br />
+                                Freya Software - Amadeus Soluciones<br />
                                 <?php echo date("Y-m-d h:i:s"); ?>
                                 </center>
                             </div>
