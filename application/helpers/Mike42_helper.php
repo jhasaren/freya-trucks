@@ -60,6 +60,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo)
         //$printer -> setTextSize(2, 2);
         $printer -> text("Detalle de Venta #".$detalleRecibo['general']->nroRecibo."\n");
         $printer -> text("Lugar: ".$detalleRecibo['general']->nombreMesa."\n");
+        $printer -> text("Turno: ".$turno."\n");
         $printer -> setEmphasis(false);
         $printer -> feed();
         

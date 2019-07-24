@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -199,16 +199,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <!--<img src="<?php // echo base_url().'public/img/logo.png'; ?>" style="width: 86px; height: 64px" /><br />-->
                                                 <?php echo $this->session->userdata('nombre_sede'); ?><br />
                                                 <?php echo $this->session->userdata('dir_sede'); ?><br />
-                                                <?php echo "Nro. Factura ".$detalleRecibo['general']->nroRecibo; ?>
+                                                <?php echo $this->config->item('nit_recibo'); ?><br />
+                                                <?php echo "Detalle de Venta #".$detalleRecibo['general']->nroRecibo; ?><br />
+                                                <?php echo "Lugar: ".$detalleRecibo['general']->nombreMesa; ?><br />
+                                                <?php echo "Turno: ".$turno; ?>
                                                 </center>
                                                 <br />
+                                                <p align='left'>
+                                                <?php echo "Cliente: ".$detalleRecibo['general']->personaCliente; ?><br />
+                                                <?php echo "NIT/CC: ".$detalleRecibo['general']->idUsuarioCliente; ?>
+                                                </p>
+                                                <br />
+                                                <!--
                                                 <table style="width: 100%">
                                                     <tr>
                                                         <td align="center" style="font-size: 20px; font-weight:bold;">
-                                                            TURNO <?php echo $turno; ?>
+                                                            TURNO <?php //echo $turno; ?>
                                                         </td>
                                                     </tr>                               
                                                 </table>
+                                                -->
                                                 <table style="width: 100%">
                                                     <?php
                                                     /*Servicios*/
@@ -258,7 +268,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                         <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida,0,',','.'); ?></td>
                                                     </tr>  
                                                     <tr style="font-size: 12px;">
-                                                        <td align="left">Atención(<?php echo ($this->session->userdata('sservicio')); ?>%):</td>
+                                                        <td align="left">Servicio(<?php echo ($this->session->userdata('sservicio')); ?>%):</td>
                                                         <td align="right">+$<?php echo number_format(($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100),0,',','.'); ?></td>
                                                     </tr>
                                                     <tr style="font-size: 18px; font-weight:bold;">
@@ -279,6 +289,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <center style="font-size: 12px;">
                                                 <br />
                                                 Gracias por Preferirnos!<br />
+                                                Freya Software - Amadeus Soluciones<br />
                                                 <?php echo date("Y-m-d h:i:s"); ?>
                                                 </center>
                                             </div>
