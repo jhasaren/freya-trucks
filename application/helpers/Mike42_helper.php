@@ -27,7 +27,10 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo)
     
     log_message("DEBUG", "-----------------------------------");
     log_message("DEBUG", "TICKET Impresion");
-    log_message("DEBUG", "Turno: ".$turno);
+    log_message("DEBUG", "IdVenta: ".$detalleRecibo['general']->idVenta);
+    log_message("DEBUG", "Recibo: ".$detalleRecibo['general']->nroRecibo);
+    log_message("DEBUG", "Mesa: ".$detalleRecibo['general']->nombreMesa);
+    log_message("DEBUG", "Turno: ".$detalleRecibo['general']->nroTurno);
     log_message("DEBUG", "Impresora: ".$printer);
     
     try {
@@ -60,7 +63,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo)
         //$printer -> setTextSize(2, 2);
         $printer -> text("Detalle de Venta #".$detalleRecibo['general']->nroRecibo."\n");
         $printer -> text("Lugar: ".$detalleRecibo['general']->nombreMesa."\n");
-        $printer -> text("Turno: ".$turno."\n");
+        $printer -> text("Turno: ".$detalleRecibo['general']->nroTurno."\n");
         $printer -> setEmphasis(false);
         $printer -> feed();
         

@@ -16,6 +16,7 @@ class CReport extends CI_Controller {
         
         parent::__construct(); /*por defecto*/
         $this->load->helper('url'); /*Carga la url base por defecto*/
+        $this->load->helper('Mike42_helper'); /*Lib Mike42 Impresion Tickets*/
         $this->load->library('jasr'); /*Funciones Externas de Apoyo*/
         $this->load->library('pdf'); /*Libreria mPDF*/
         
@@ -363,7 +364,9 @@ class CReport extends CI_Controller {
      * Nombre del Metodo: detallerecibo
      * Descripcion: recupera el detalle de conceptop de un recibo pagado
      * Autor: jhonalexander90@gmail.com
-     * Fecha Creacion: 01/05/2017, Ultima modificacion: 
+     * Fecha Creacion: 01/05/2017, 
+     * Ultima modificacion: 25/07/2019 - Se agrego la variable idSale como sesion
+     * para que el proceso de impresion opere correctamente.
      **************************************************************************/
     public function detallerecibo($venta,$recibo) {
         
@@ -376,6 +379,12 @@ class CReport extends CI_Controller {
 
                 $reciboDetalle['venta'] = $venta;
                 $reciboDetalle['recibo'] = $recibo;
+                
+                /*Registra el id de venta como variable de sesion*/
+                $datos_session = array(
+                    'idSale' => $venta
+                );
+                $this->session->set_userdata($datos_session);
 
                 $this->load->view('reports/receipt_detail',$reciboDetalle);
                 
@@ -392,6 +401,50 @@ class CReport extends CI_Controller {
         }
         
     }
+    
+    
+    /**************************************************************************
+     * Nombre del Metodo: reimprimeticket
+     * Descripcion: Reimprime Ticket de Factura
+     * Consideraciones:
+     *  - Impresora Termica Instalada
+     *  - Impresora debe estar configurada como predeterminada en Windows
+     *  - Impresora debe estar compartida en Windows
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 25/07/2019
+     **************************************************************************/
+    public function reimprimeticket() {
+        
+        if ($this->session->userdata('validated')) {
+            
+            if ($this->MRecurso->validaRecurso(9)){
+                
+                /*Obtiene detalle del recibo*/
+                $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
+                $detailRecibo['atencion'] = $this->session->userdata('sservicio');
+                $detailRecibo['impuesto'] = $this->config->item('impo_add_factura');
+                $nitRecibo = $this->config->item('nit_recibo');
+                
+                log_message('DEBUG', '-----------------------------------');
+                log_message('DEBUG', 'Reimprime Factura');
+                /*Invoca funcion de Mike42_Helper*/
+                escposticket($detailRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('dir_sede'),$this->session->userdata('printer_sede'),$turno,$nitRecibo);
+                //$this->liquidasale();    
+                
+            } else {
+                
+                show_404();
+                
+            }
+            
+        } else {
+            
+            $this->index();
+            
+        }
+        
+    }
+    
     
     /**************************************************************************
      * Nombre del Metodo: detalleliquida
