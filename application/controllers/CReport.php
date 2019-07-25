@@ -429,7 +429,9 @@ class CReport extends CI_Controller {
                 log_message('DEBUG', 'Reimprime Factura');
                 /*Invoca funcion de Mike42_Helper*/
                 escposticket($detailRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('dir_sede'),$this->session->userdata('printer_sede'),$turno,$nitRecibo);
-                //$this->liquidasale();    
+
+                /*Redirecciona al detalle del recibo*/
+                $this->detallerecibo($detailRecibo['general']->idVenta,$detailRecibo['general']->nroRecibo);
                 
             } else {
                 
