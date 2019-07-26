@@ -133,7 +133,9 @@ class CSale extends CI_Controller {
                     $this->MSale->add_user('999999',$this->session->userdata('idSale'));
                     
                     if ($createSale == TRUE){
-
+                        
+                        /*Crea el Turno*/
+                        $this->MSale->consecutivo_turno_sale(1,$this->session->userdata('idSale'));
                         $this->module($info);
 
                     } else {
@@ -1558,28 +1560,28 @@ class CSale extends CI_Controller {
     
     
     /**************************************************************************
-     * Nombre del Metodo: imprimeticket
-     * Descripcion: Imprime Ticket
+     * Nombre del Metodo: imprimeticketco
+     * Descripcion: Imprime Ticket para Cocina
      * Consideraciones:
      *  - Impresora Termica Instalada
      *  - Impresora debe estar configurada como predeterminada en Windows
      *  - Impresora debe estar compartida en Windows
      * Autor: jhonalexander90@gmail.com
-     * Fecha Creacion: 18/02/2018, Ultima modificacion: 
+     * Fecha Creacion: 26/07/2019
      **************************************************************************/
-    public function imprimeticket($detalleRecibo,$turno) {
+    public function imprimeticketco() {
         
         if ($this->session->userdata('validated')) {
             
             if ($this->MRecurso->validaRecurso(9)){
                 
-                $detalleRecibo['atencion'] = $this->session->userdata('sservicio');
-                $detalleRecibo['mesa'] = $this->session->userdata('mesa');
-                $nitRecibo = $this->config->item('nit_recibo');
+                /*Obtiene detalle del recibo*/
+                $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
                 
-                /*Invoca funcion de Mike42_Helper*/
-                escposticket($detalleRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('dir_sede'),$this->session->userdata('printer_sede'),$turno,$nitRecibo);
-                    
+                /*Invoca funcion de Mike42_Helper (Cocina)*/
+                escposticketco($detailRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('printer_sede'));
+                $this->module($info);   
+                
             } else {
                 
                 show_404();
@@ -1596,16 +1598,18 @@ class CSale extends CI_Controller {
     
     
     /**************************************************************************
-     * Nombre del Metodo: imprimeticketcoc
-     * Descripcion: Imprime Ticket para la Cocina
+     * Nombre del Metodo: imprimeticketliq
+     * Descripcion: Imprime Ticket Liquidacion para Pago.
      * Consideraciones:
      *  - Impresora Termica Instalada
      *  - Impresora debe estar configurada como predeterminada en Windows
      *  - Impresora debe estar compartida en Windows
      * Autor: jhonalexander90@gmail.com
-     * Fecha Creacion: 12/11/2018, Ultima modificacion: 
+     * Fecha Creacion: 12/11/2018, 
+     * Ultima modificacion: 26/07/2019 se cambio el nombre del metodo imprimeticketcoc
+     * por imprimeticketliq, y se ajusto el form de la vista para llamar a este metodo.
      **************************************************************************/
-    public function imprimeticketcoc() {
+    public function imprimeticketliq() {
         
         if ($this->session->userdata('validated')) {
             
@@ -1617,7 +1621,7 @@ class CSale extends CI_Controller {
                 $detailRecibo['impuesto'] = $this->config->item('impo_add_factura');
                 $nitRecibo = $this->config->item('nit_recibo');
                 
-                /*Invoca funcion de Mike42_Helper*/
+                /*Invoca funcion de Mike42_Helper (Liquidacion para Pago)*/
                 escposticket($detailRecibo,$this->session->userdata('nombre_sede'),$this->session->userdata('dir_sede'),$this->session->userdata('printer_sede'),$turno,$nitRecibo);
                 $this->liquidasale();    
                 

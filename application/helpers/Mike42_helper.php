@@ -20,13 +20,15 @@ use Mike42\Escpos\EscposImage;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
 /*
+ * *************************************************************************************
  * Nombre: escposticket
- * Descripcion: recibe parametros desde el controlador para imprimir ticket
+ * Descripcion: recibe parametros desde el controlador para imprimir ticket (Para Pago)
+ * *************************************************************************************
  */
 function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo){
     
     log_message("DEBUG", "-----------------------------------");
-    log_message("DEBUG", "TICKET Impresion");
+    log_message("DEBUG", "TICKET Impresion [Liquidacion]");
     log_message("DEBUG", "IdVenta: ".$detalleRecibo['general']->idVenta);
     log_message("DEBUG", "Recibo: ".$detalleRecibo['general']->nroRecibo);
     log_message("DEBUG", "Mesa: ".$detalleRecibo['general']->nombreMesa);
@@ -138,6 +140,102 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo)
         
     }
 }
+
+
+/*
+ * *************************************************************************************
+ * Nombre: escposticketco
+ * Descripcion: recibe parametros desde el controlador para imprimir ticket (Para Cocina)
+ * *************************************************************************************
+ */
+function escposticketco ($detalleRecibo,$sede,$printer){
+    
+    log_message("DEBUG", "-----------------------------------");
+    log_message("DEBUG", "TICKET Impresion [Cocina]");
+    log_message("DEBUG", "IdVenta: ".$detalleRecibo['general']->idVenta);
+    log_message("DEBUG", "Recibo: ".$detalleRecibo['general']->nroRecibo);
+    log_message("DEBUG", "Mesa: ".$detalleRecibo['general']->nombreMesa);
+    log_message("DEBUG", "Turno: ".$detalleRecibo['general']->nroTurno);
+    log_message("DEBUG", "Impresora: ".$printer);
+    
+    try {
+    
+        /*Conexion a la Impresora*/
+        $nombre_impresora = $printer; 
+        $connector = new WindowsPrintConnector($nombre_impresora);
+        $printer = new Printer($connector);
+
+        /* Impresion de Logo */
+        /*$logo = EscposImage::load(APPPATH.'third_party/tickets/logo.png', false);
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> graphics($logo);*/
+
+        /* Nombre del Restaurante (sede) */
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        $printer -> text($sede."\n");
+        $printer -> text("[Ticket de Cocina]\n");
+        $printer -> selectPrintMode();
+        $printer -> feed();
+
+        /* Turno */
+        $printer -> setEmphasis(true);
+        //$printer -> setTextSize(2, 2);
+        $printer -> text("Detalle de Venta #".$detalleRecibo['general']->nroRecibo."\n");
+        $printer -> text("Lugar: ".$detalleRecibo['general']->nombreMesa."\n");
+        $printer -> text("Turno: ".$detalleRecibo['general']->nroTurno."\n");
+        $printer -> setEmphasis(false);
+        $printer -> feed();
+        
+        /* Items */
+        $printer -> selectPrintMode();
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> setEmphasis(true);
+        $printer -> text(new item('', '$'));
+        $printer -> setEmphasis(false);
+        /*Servicios*/
+        if ($detalleRecibo['servicios'] != NULL){
+            foreach ($detalleRecibo['servicios']  as $valueServ){
+                //log_message("DEBUG", $value['descServicio'].'('.$value['cantidad'].') -> '.$value['valor']);
+                $printer -> text(new item("(".$valueServ['cantidad'].") ".$valueServ['descServicio'],$valueServ['valor']));
+            }
+        }
+        /*Productos*/
+        if ($detalleRecibo['productos'] != NULL){
+            foreach ($detalleRecibo['productos']  as $valueProd){
+                //log_message("DEBUG", $value['descServicio'].'('.$value['cantidad'].') -> '.$value['valor']);
+                $printer -> text(new item("(".$valueProd['cantidad'].") ".$valueProd['descProducto'],$valueProd['valor']));
+            }
+        }
+        /*Adicionales*/
+        if ($detalleRecibo['adicional'] != NULL){
+            foreach ($detalleRecibo['adicional']  as $valueAdc){
+                //log_message("DEBUG", $value['descServicio'].'('.$value['cantidad'].') -> '.$value['valor']);
+                $printer -> text(new item($valueAdc['cargoEspecial'],$valueAdc['valor']));
+            }
+        }
+        
+        $printer -> selectPrintMode();
+
+        /* Pie de Pagina */
+        $printer -> feed(2);
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        //$printer -> text("Gracias por Preferirnos!!\n");
+        $printer -> text("Freya Software - Amadeus Soluciones\n");
+        $printer -> feed(2);
+        $printer -> text(date('d/m/Y h:i:s') . "\n");
+
+        /* Corta el Papel y Finaliza */
+        $printer -> cut();
+        $printer -> close();
+        
+    } catch (Exception $e){
+        
+        log_message("DEBUG", "TICKET COCINA ERROR -> ".$e);
+        
+    }
+}
+
 
 /* Clase para Organizar items de nombres y precios en columnas */
 class item

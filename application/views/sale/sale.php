@@ -412,6 +412,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <?php } ?>
                                 </div>
                             </div>
+                            <!--Ticket para Cocina-->
+                            <center>
+                                <?php
+                                if ($porcenInList->idEstadoRecibo != 8){
+                                    if (($serviceInList != NULL) || ($productInList != NULL) || ($adicionalInList != NULL)){
+                                    ?>
+                                    <form role="form" name="form_tick_sale" action="<?php echo base_url().'index.php/CSale/imprimeticketco'; ?>" method="post">
+                                        <button type="submit" class="btn btn-warning btn-lg">
+                                            <i class="glyphicon glyphicon-check glyphicon-white"></i>
+                                            Imprimir Ticket de Cocina
+                                        </button>
+                                    </form> 
+                                    <?php
+                                    }
+                                }
+                                ?>
+                            </center>
+                            <!--Fin: Ticket para Cocina-->    
                         </div>
                         <!--<center>
                             <p class="center-block download-buttons">

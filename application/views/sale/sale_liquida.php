@@ -180,7 +180,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="x_panel">
-                                        <form role="form" name="form_pago_sale" action="<?php echo base_url().'index.php/CSale/imprimeticketcoc'; ?>" method="post">
+                                        <form role="form" name="form_pago_sale" action="<?php echo base_url().'index.php/CSale/imprimeticketliq'; ?>" method="post">
                                             <center>
                                             <br />
                                             <div class="x_title">
