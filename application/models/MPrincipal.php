@@ -248,7 +248,8 @@ class MPrincipal extends CI_Model {
                                 sum(m.valorLiquida) as valor_pagado
                                 FROM venta_maestro m
                                 WHERE
-                                m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
+                                /*m.fechaLiquida BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'*/
+                                m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                 AND m.idSede = ".$this->session->userdata('sede')."
                                 AND m.idEstadoRecibo = ".$estado."");
         
