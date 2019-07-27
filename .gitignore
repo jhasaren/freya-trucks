@@ -21,3 +21,5 @@ application/config/database.php
 application/config/database.php
 application/models/MAuditoria.php
 application/config/config.php
+application/config/database.php
+application/models/MAuditoria.php
