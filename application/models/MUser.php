@@ -409,10 +409,15 @@ class MUser extends CI_Model {
                 $this->save_horario($identificacion, $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo);
                 
                 /*Crea el usuario en Base De Datos*/
+                /*
+                 * Cuando la conexion a BD va con host:localhost aqui se debe configurar el valor 'localhost',
+                 * cuando la conexion va con direccion ip remota se debe configurar el valor '%'
+                 */
+                $typeHost = '%';
                 $this->db->trans_strict(TRUE);
                 $this->db->trans_start();
-                $this->db->query("CREATE USER '".$identificacion."'@'localhost' IDENTIFIED BY 'Jh4s4r3n2020'");
-                $this->db->query("GRANT SELECT,INSERT,UPDATE,DELETE ON freyatrucks.* TO '".$identificacion."'@'localhost'");
+                $this->db->query("CREATE USER '".$identificacion."'@'".$typeHost."' IDENTIFIED BY 'Jh4s4r3n2020'");
+                $this->db->query("GRANT SELECT,INSERT,UPDATE,DELETE ON freyatrucks.* TO '".$identificacion."'@'".$typeHost."'");
                 $this->db->query("FLUSH PRIVILEGES");
                 $this->db->trans_complete();
                 $this->db->trans_off();
