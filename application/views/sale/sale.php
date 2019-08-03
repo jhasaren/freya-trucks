@@ -685,6 +685,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <option value="ERROR_DIGITACION_CAJA">Error Digitacion Cajero</option>
                                     <option value="ERROR_PEDIDO_MESERO">Error Pedido Mesero</option>
                                     <option value="CLIENTE_DESISTE">Cliente Desiste</option>
+                                    <option value="CUENTAS_POR_SEPARADO">Cuentas por Separado</option>
                                 </select>
                             </div>
                             <br />
