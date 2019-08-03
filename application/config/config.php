@@ -583,4 +583,4 @@ $config['permiso_elim_item'] = 1;
 | nit_recibo -> (NULL-no, DATA-si)
 |--------------------------------------------------------------------------
 */
-$config['nit_recibo'] = "Nit895208509 Marlen J Rodriguez (Reg Simp)";
+$config['nit_recibo'] = "Ricaurte Rojas Gutierrez Nit 14963369-5";
