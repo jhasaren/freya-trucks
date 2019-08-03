@@ -550,7 +550,7 @@ $config['namebussines'] = "Freya Trucks";
 | ya que esta se encuentra sujeta al contrato comercial adquirido.
 |
 */
-$config['empleados'] = 5;
+$config['empleados'] = 20;
 
 /*
 |--------------------------------------------------------------------------
