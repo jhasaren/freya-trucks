@@ -963,32 +963,42 @@ class CSale extends CI_Controller {
                     $idempleado = $this->input->post('idempleado');
                     $cantidad = $this->input->post('cantidad');
 
-                    /*Valida el servicio y valor*/
-                    $validateService = $this->MSale->validate_select_sale($idService,$valueService,1);
-                    
-                    if ($validateService){
-                    
-                        /*Envia datos al modelo para el registro*/
-                        $registerData = $this->MSale->add_service($idService,($valueService*$cantidad),$valueEmpleado,$idempleado,$cantidad);
+                    if ($valueService != NULL){
+                        
+                        /*Valida el servicio y valor*/
+                        $validateService = $this->MSale->validate_select_sale($idService,$valueService,1);
 
-                        if ($registerData == TRUE){
+                        if ($validateService){
 
-                            $info['idmessage'] = 1;
-                            $info['message'] = "Servicio Agregado Exitosamente";
-                            $this->module($info);
+                            /*Envia datos al modelo para el registro*/
+                            $registerData = $this->MSale->add_service($idService,($valueService*$cantidad),$valueEmpleado,$idempleado,$cantidad);
+
+                            if ($registerData == TRUE){
+
+                                $info['idmessage'] = 1;
+                                $info['message'] = "Servicio Agregado Exitosamente";
+                                $this->module($info);
+
+                            } else {
+
+                                $info['idmessage'] = 2;
+                                $info['message'] = "No fue posible agregar el servicio";
+                                $this->module($info);
+
+                            }
 
                         } else {
 
                             $info['idmessage'] = 2;
-                            $info['message'] = "No fue posible agregar el servicio";
+                            $info['message'] = "No fue posible agregar el Plato. Los datos no son correctos";
                             $this->module($info);
 
                         }
-
+                    
                     } else {
                         
                         $info['idmessage'] = 2;
-                        $info['message'] = "No fue posible agregar el Plato. Los datos no son correctos";
+                        $info['message'] = "No fue posible agregar a la venta. Busque y Seleccione de la lista.";
                         $this->module($info);
                         
                     }
@@ -1042,34 +1052,44 @@ class CSale extends CI_Controller {
 
                     if ($this->jasr->validaTipoString($cantidad,2)){
                         
-                        /*Valida el producto y valor*/
-                        $validateProduct = $this->MSale->validate_select_sale($idProducto,$valueProducto,2);
+                        if ($valueProducto != NULL){
                         
-                        if ($validateProduct){
-                        
-                            /*Envia datos al modelo para el registro*/
-                            $registerData = $this->MSale->add_product($idProducto,$valueTotal,$valueEmpleado,$idempleado,$cantidad);
+                            /*Valida el producto y valor*/
+                            $validateProduct = $this->MSale->validate_select_sale($idProducto,$valueProducto,2);
 
-                            if ($registerData == TRUE){
+                            if ($validateProduct){
 
-                                $info['idmessage'] = 1;
-                                $info['message'] = "Producto de Venta Agregado Exitosamente";
-                                $this->module($info);
+                                /*Envia datos al modelo para el registro*/
+                                $registerData = $this->MSale->add_product($idProducto,$valueTotal,$valueEmpleado,$idempleado,$cantidad);
+
+                                if ($registerData == TRUE){
+
+                                    $info['idmessage'] = 1;
+                                    $info['message'] = "Producto de Venta Agregado Exitosamente";
+                                    $this->module($info);
+
+                                } else {
+
+                                    $info['idmessage'] = 2;
+                                    $info['message'] = "No fue posible agegar el Producto de venta";
+                                    $this->module($info);
+
+                                }
 
                             } else {
 
                                 $info['idmessage'] = 2;
-                                $info['message'] = "No fue posible agegar el Producto de venta";
+                                $info['message'] = "No fue posible agregar el Producto. Los datos no son correctos";
                                 $this->module($info);
 
                             }
-
+                        
                         } else {
-                            
+                        
                             $info['idmessage'] = 2;
-                            $info['message'] = "No fue posible agregar el Producto. Los datos no son correctos";
+                            $info['message'] = "No fue posible agregar a la venta. Busque y Seleccione de la lista.";
                             $this->module($info);
-                            
+
                         }
                         
                     } else {
