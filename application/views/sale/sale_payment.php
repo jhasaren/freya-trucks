@@ -104,7 +104,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <br />
                                 <p align='left'>
                                     <?php echo "Cliente: ".$detalleRecibo['general']->personaCliente; ?><br />
-                                    <?php echo "NIT/CC: ".$detalleRecibo['general']->idUsuarioCliente; ?>
+                                    <?php echo "NIT/CC: ".$detalleRecibo['general']->idUsuarioCliente; ?><br />
+                                    <?php echo "DIR: ".$detalleRecibo['general']->dir_cliente." TEL:".$detalleRecibo['general']->tel_cliente; ?>
                                 </p>
                                 <!--
                                 <table style="width: 100%">

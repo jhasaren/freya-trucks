@@ -193,6 +193,8 @@ class MReport extends CI_Model {
                                 CONCAT(au.nombre,' ',au.apellido) as personaLiquida,
                                 vm.idUsuarioCliente,
                                 CONCAT(ac.nombre,' ',ac.apellido) as personaCliente,
+                                ac.numCelular as tel_cliente,
+                                ac.direccion as dir_cliente,
                                 vm.porcenDescuento,
                                 vm.valorTotalVenta,
                                 vm.valorLiquida,

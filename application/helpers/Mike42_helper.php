@@ -74,6 +74,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo)
         $printer -> setJustification(Printer::JUSTIFY_LEFT);
         $printer -> text("Cliente: ".$detalleRecibo['general']->personaCliente."\n");
         $printer -> text("NIT/CC: ".$detalleRecibo['general']->idUsuarioCliente."\n");
+        $printer -> text("DIR: ".$detalleRecibo['general']->dir_cliente." TEL:".$detalleRecibo['general']->tel_cliente."\n");
         $printer -> setEmphasis(false);
 
         /* Items */
