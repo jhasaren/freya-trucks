@@ -530,7 +530,7 @@ $config['proxy_ips'] = '';
 | Nombre del Restaurante
 |--------------------------------------------------------------------------
 */
-$config['namebussines'] = "Freya Trucks";
+$config['namebussines'] = "Parrillon Valluno";
 
 /*
 |--------------------------------------------------------------------------
