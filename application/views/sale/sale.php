@@ -684,8 +684,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <select class="select2_single form-control" id="motivoanulaitem" name="motivoanulaitem" data-rel="chosen" style="font-size: 16px">
                                     <option value="ERROR_DIGITACION_CAJA">Error Digitacion Cajero</option>
                                     <option value="ERROR_PEDIDO_MESERO">Error Pedido Mesero</option>
-                                    <option value="CLIENTE_DESISTE">Cliente Desiste</option>
+                                    <option value="CLIENTE_DESISTE_ERROR_COCINA">Cliente Desiste Error Cocina</option>
                                     <option value="CUENTAS_POR_SEPARADO">Cuentas por Separado</option>
+                                    <option value="CORTESIAS">Cortesias</option>
                                 </select>
                             </div>
                             <br />
@@ -828,7 +829,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script>
     var clientes = [
         <?php foreach ($list_user as $row_user) { ?>
-            { value: '<?php echo $row_user['nombre_usuario']." |".$row_user['idUsuario']; ?>' },
+            { value: '<?php echo $row_user['nombre_usuario']." |".$row_user['idUsuario']." |".$row_user['numCelular']; ?>' },
         <?php } ?>
     ];
     $('#idcliente').autocomplete({
