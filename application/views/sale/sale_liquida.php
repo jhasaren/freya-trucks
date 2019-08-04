@@ -289,7 +289,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <br />
                                                 Gracias por Preferirnos!<br />
                                                 Freya Software - Amadeus Soluciones<br />
-                                                <?php echo date("Y-m-d h:i:s"); ?>
+                                                <?php echo date("Y-m-d H:i:s"); ?>
                                                 </center>
                                             </div>
                                             <!--Fin Ticket informacion-->

@@ -128,7 +128,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo)
         $printer -> text("Gracias por Preferirnos!!\n");
         $printer -> feed(2);
         $printer -> text("Freya Software - Amadeus Soluciones\n");
-        $printer -> text(date('d/m/Y h:i:s') . "\n");
+        $printer -> text(date('d/m/Y H:i:s') . "\n");
 
         /* Corta el Papel y Finaliza */
         //$printer-> pulse(); /*Abre Caja Registradora*/
@@ -224,7 +224,7 @@ function escposticketco ($detalleRecibo,$sede,$printer){
         //$printer -> text("Gracias por Preferirnos!!\n");
         $printer -> text("Freya Software - Amadeus Soluciones\n");
         $printer -> feed(2);
-        $printer -> text(date('d/m/Y h:i:s') . "\n");
+        $printer -> text(date('d/m/Y H:i:s') . "\n");
 
         /* Corta el Papel y Finaliza */
         $printer -> cut();
