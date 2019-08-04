@@ -565,7 +565,8 @@ class CSale extends CI_Controller {
                     $this->session->unset_userdata('sdescuento');
                     $this->session->unset_userdata('sservicio');
 
-                    $this->boards(2);
+                    //$this->boards(2);
+                    redirect('CSale/boards/2', 'refresh');
             
                 } else {
                     
@@ -609,8 +610,9 @@ class CSale extends CI_Controller {
                     $this->session->unset_userdata('sdescuento');
                     $this->session->unset_userdata('sservicio');
 
-                    $this->boards(2);
-
+                    //$this->boards(2);
+                    redirect('CSale/boards/2', 'refresh');
+                    
                 } else {
 
                     $info['idmessage'] = 2;
