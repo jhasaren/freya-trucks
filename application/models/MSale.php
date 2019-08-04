@@ -719,14 +719,18 @@ class MSale extends CI_Model {
                } else {
 
                     /*Query2 - Productos en el servicio*/
-                    $productsService = $query2->result_array(); /*devuelve registros de productos del servicio*/
-                    if ($productsService != FALSE){
-                        foreach ($productsService as $productCantidadServ){
+                   if (($motivo != 'CORTESIAS')) { /*Devuelve el Stock si el motivo no es CORTESIAS*/
+                       
+                        $productsService = $query2->result_array(); /*devuelve registros de productos del servicio*/
+                        if ($productsService != FALSE){
+                            foreach ($productsService as $productCantidadServ){
 
-                            /*Actualiza el stock de cada producto*/
-                            $this->stock_max($productCantidadServ['idProducto'], $productCantidadServ['cantidad']);
+                                /*Actualiza el stock de cada producto*/
+                                $this->stock_max($productCantidadServ['idProducto'], $productCantidadServ['cantidad']);
 
+                            }
                         }
+                        
                     }
                     
                     /*Setea usuario de conexion - Auditoria BD*/
@@ -789,14 +793,18 @@ class MSale extends CI_Model {
                    } else {
 
                         /*Query1 - Productos en la venta*/
-                        $productsSale = $query1->result_array(); /*devuelve registros de productos en la venta*/
-                        if ($productsSale != FALSE){
-                            foreach ($productsSale as $productCantidad){
+                        if (($motivo != 'CORTESIAS')) { /*Devuelve el Stock si el motivo no es CORTESIAS*/
+                            
+                            $productsSale = $query1->result_array(); /*devuelve registros de productos en la venta*/
+                            if ($productsSale != FALSE){
+                                foreach ($productsSale as $productCantidad){
 
-                                /*Actualiza el stock de cada producto*/
-                                $this->stock_max($productCantidad['idProducto'], $productCantidad['cantidad']);
+                                    /*Actualiza el stock de cada producto*/
+                                    $this->stock_max($productCantidad['idProducto'], $productCantidad['cantidad']);
 
+                                }
                             }
+                            
                         }
                         
                         /*Setea usuario de conexion - Auditoria BD*/
