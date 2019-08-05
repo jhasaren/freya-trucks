@@ -25,7 +25,7 @@ use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
  * Descripcion: recibe parametros desde el controlador para imprimir ticket (Para Pago)
  * *************************************************************************************
  */
-function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo){
+function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$nitRecibo){
     
     log_message("DEBUG", "-----------------------------------");
     log_message("DEBUG", "TICKET Impresion [Liquidacion]");
@@ -53,6 +53,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo)
         $printer -> text($sede."\n");
         $printer -> selectPrintMode();
         $printer -> text($dirSede."\n");
+		$printer -> text("Tel: ".$telsede."\n");
         /*Valida si el parametro de NIT esta habilitado, se muestra en Ticket*/
         if ($nitRecibo != NULL){
             $printer -> setTextSize(1, 1);
@@ -114,7 +115,10 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$printer,$turno,$nitRecibo)
         $printer -> feed();
         
         /* Total */
-        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        //$printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+		$printer -> selectPrintMode();
+		$printer -> setJustification(Printer::JUSTIFY_CENTER);
+		$printer -> setTextSize(1, 2);
         $printer -> text(new item('Total a Pagar', number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.'), true));
         $printer -> selectPrintMode();
         if($detalleRecibo['impuesto'] == 1){
@@ -254,8 +258,11 @@ class item
 
     public function __toString()
     {
-        $rightCols = 10;
-        $leftCols = 38;
+		/*Tamano de Papel para la impresion ajustada de conceptos en la venta*/
+        //$rightCols = 10;
+        //$leftCols = 38;
+		$rightCols = 8;
+        $leftCols = 34;
         if ($this -> dollarSign) {
             $leftCols = $leftCols / 2 - $rightCols / 2;
         }

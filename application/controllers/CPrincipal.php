@@ -147,7 +147,8 @@ class CPrincipal extends CI_Controller {
                                 'recursos' => $recursos,
                                 'sede' => $validateLogin->idSede,
                                 'nombre_sede' => $validateLogin->nombreSede,
-                                'dir_sede' => $validateLogin->direccionSede." Tel:".$validateLogin->telefonoSede,
+                                'dir_sede' => $validateLogin->direccionSede,
+								'tel_sede' => $validateLogin->telefonoSede,
                                 'printer_sede' => $validateLogin->printer,
                                 'validated' => true
                             );
