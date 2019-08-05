@@ -122,7 +122,8 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> text(new item('Total a Pagar', number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.'), true));
         $printer -> selectPrintMode();
         if($detalleRecibo['impuesto'] == 1){
-        $printer -> text(new item('Impoconsumo', number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100))*$detalleRecibo['general']->impoconsumo,0,',','.')));
+        //$printer -> text(new item('Impoconsumo', number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100))*$detalleRecibo['general']->impoconsumo,0,',','.')));
+        $printer -> text(new item('Impoconsumo', number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*0/100))*$detalleRecibo['general']->impoconsumo,0,',','.')));
         }
         $printer -> selectPrintMode();
 

@@ -177,7 +177,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     ?>
                                     <tr style="font-size: 12px;">
                                         <td align="left">Impoconsumo (<?php echo $detalleRecibo['general']->impoconsumo*100; ?>%):</td>
-                                        <td align="right">-$<?php echo number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100))*$detalleRecibo['general']->impoconsumo,0,',','.'); ?></td>
+                                        <!--<td align="right">-$<?php //echo number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100))*$detalleRecibo['general']->impoconsumo,0,',','.'); ?></td>-->
+                                        <td align="right">-$<?php echo number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*0/100))*$detalleRecibo['general']->impoconsumo,0,',','.'); ?></td>
                                     </tr>
                                     <?php
                                     }
