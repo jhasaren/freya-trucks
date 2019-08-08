@@ -185,6 +185,14 @@ $(document).ready(function () {
 });
 // /Tooltip
 
+// Valida Ingreso Servicio - jasanchez
+$(document).ready(function () {
+    $('.value_servicio').click(function (e) {
+        e.preventDefault();
+        console.log('test test');
+    });
+});
+
 // Modal - jasanchez
 $(document).ready(function () {
     /*Modal - Cambio de Clave*/

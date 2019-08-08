@@ -728,7 +728,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             /*Si el recibo esta liquidado y el perfil no es superadmin, no permite el cambio*/
                             if (($porcenInList->idEstadoRecibo == 2) && $this->session->userdata('perfil') != 'SUPERADMIN') { 
                                 $stateInput = "readonly";
-								$stateButton = "disabled";
+                                $stateButton = "disabled";
                                 ?>
                                 <div class="alert alert-info">
                                     No se puede modificar. El recibo ya se encuentra liquidado.
@@ -738,8 +738,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 $stateInput = ""; 
                             }
                             ?>
+                            <input type="hidden" id="subtotal_venta" name="subtotal_venta" value="<?php echo $subtotal+(($subtotal*($porcenInList->porcenServicio))); ?>" >
+                            
                             <label class="control-label" for="Porcentaje">Servicio Voluntario (%)</label>
-                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="Servicio" value="<?php if ($porcenInList->porcenServicio == 0){ echo $this->config->item('procen_servicio'); } else { echo $porcenInList->porcenServicio*100; } ?>" required="" autocomplete="off" <?php echo $stateInput; ?> pattern="\d*">
+                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="% Servicio" value="<?php if ($porcenInList->porcenServicio == 0){ echo $this->config->item('procen_servicio'); } else { echo $porcenInList->porcenServicio*100; } ?>" required="" autocomplete="off" <?php echo $stateInput; ?> pattern="\d*">
+                            <br />
+                            <label class="control-label" for="Porcentaje">Servicio Voluntario ($)</label>
+                            <input type="tel" class="form-control" id="value_servicio" name="value_servicio" placeholder="$ Servicio" value="" required="" autocomplete="off" <?php echo $stateInput; ?> pattern="\d*">
                             <br />
                             <label class="control-label" for="Porcentaje">Descuento (%) *Solo aplicable a Plato Fuerte</label>
                             <input type="tel" class="form-control" id="procentaje" name="procentaje" placeholder="Descuento" value="<?php if ($porcenInList->porcenDescuento !== NULL){ echo $porcenInList->porcenDescuento*100; } else { echo 0; } ?>" required="" autocomplete="off" <?php echo $stateInput; ?> pattern="\d*">
