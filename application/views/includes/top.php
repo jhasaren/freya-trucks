@@ -82,8 +82,8 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="tipoBaseDatos">Elija la Base de Datos</label><br />
-                            <input type="radio" class="radio-inline" id="db_backup" name="db_backup" value="1" checked="">Aplicacion
-                            <input type="radio" class="radio-inline" id="db_backup" name="db_backup" value="2" >Auditoria
+                            <input type="radio" class="radio-inline" id="db_backup1" name="db_backup" value="1" checked="">Aplicacion
+                            <input type="radio" class="radio-inline" id="db_backup2" name="db_backup" value="2" >Auditoria
                         </div>
                         <br />
                         <div class="form-group">
