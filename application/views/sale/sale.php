@@ -738,7 +738,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 $stateInput = ""; 
                             }
                             ?>
-                            <input type="hidden" id="subtotal_venta" name="subtotal_venta" value="<?php echo $subtotal+(($subtotal*($porcenInList->porcenServicio))); ?>" >
+                            <input type="hidden" id="subtotal_venta" name="subtotal_venta" value="<?php echo $subtotal; ?>" >
                             
                             <label class="control-label" for="Porcentaje">Servicio Voluntario (%)</label>
                             <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="% Servicio" value="<?php if ($porcenInList->porcenServicio == 0){ echo $this->config->item('procen_servicio'); } else { echo $porcenInList->porcenServicio*100; } ?>" required="" autocomplete="off" <?php echo $stateInput; ?> pattern="\d*">

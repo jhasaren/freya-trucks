@@ -187,9 +187,23 @@ $(document).ready(function () {
 
 // Valida Ingreso Servicio - jasanchez
 $(document).ready(function () {
-    $('.value_servicio').click(function (e) {
-        e.preventDefault();
-        console.log('test test');
+    var subtotal = $('#subtotal_venta').val();
+    var porcenServ = $('#porcen_servicio').val();
+    $("#value_servicio").val(subtotal*(porcenServ/100));
+    
+    console.log('subtotal ->'+subtotal);
+    console.log('procentaje ->'+porcenServ);
+    
+    $("#value_servicio").blur(function() {
+        var valueServ = $('#value_servicio').val();
+        $("#porcen_servicio").val((valueServ/subtotal)*100);
+        console.log('valor ->'+valueServ);
+    });
+    
+    $("#porcen_servicio").blur(function() {
+        var porcenServ = $('#porcen_servicio').val();
+        $("#value_servicio").val(subtotal*(porcenServ/100));
+        console.log('porcentaje ->'+porcenServ);
     });
 });
 
