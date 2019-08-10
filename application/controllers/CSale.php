@@ -1300,7 +1300,8 @@ class CSale extends CI_Controller {
                     $servicio = $this->input->post('porcen_servicio');
                     $porcentajeServ = $servicio / 100;
 
-                    if ($this->jasr->validaTipoString($descuento,3) && $this->jasr->validaTipoString($servicio,3)){
+                    //if ($this->jasr->validaTipoString($descuento,3) && $this->jasr->validaTipoString($servicio,3)){
+                    if ($this->jasr->validaTipoString($descuento,3) ){
 
                         /*Envia datos al modelo para el registro*/
                         $registerData = $this->MSale->add_porcentaje_desc($porcentaje,$porcentajeServ);

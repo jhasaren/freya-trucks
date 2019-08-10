@@ -64,7 +64,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         /* Turno */
         $printer -> setEmphasis(true);
         //$printer -> setTextSize(2, 2);
-        $printer -> text("Detalle de Venta #".$detalleRecibo['general']->nroRecibo."\n");
+        $printer -> text("Factura de Venta #".$detalleRecibo['general']->nroRecibo."\n");
         $printer -> text("Lugar: ".$detalleRecibo['general']->nombreMesa."\n");
         $printer -> text("Turno: ".$detalleRecibo['general']->nroTurno."\n");
         $printer -> setEmphasis(false);
@@ -88,21 +88,21 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         if ($detalleRecibo['servicios'] != NULL){
             foreach ($detalleRecibo['servicios']  as $valueServ){
                 //log_message("DEBUG", $value['descServicio'].'('.$value['cantidad'].') -> '.$value['valor']);
-                $printer -> text(new item("(".$valueServ['cantidad'].") ".$valueServ['descServicio'],$valueServ['valor']));
+                $printer -> text(new item("(".$valueServ['cantidad'].") ".$valueServ['descServicio'],number_format($valueServ['valor'],0,',','.')));
             }
         }
         /*Productos*/
         if ($detalleRecibo['productos'] != NULL){
             foreach ($detalleRecibo['productos']  as $valueProd){
                 //log_message("DEBUG", $value['descServicio'].'('.$value['cantidad'].') -> '.$value['valor']);
-                $printer -> text(new item("(".$valueProd['cantidad'].") ".$valueProd['descProducto'],$valueProd['valor']));
+                $printer -> text(new item("(".$valueProd['cantidad'].") ".$valueProd['descProducto'],number_format($valueProd['valor'],0,',','.')));
             }
         }
         /*Adicionales*/
         if ($detalleRecibo['adicional'] != NULL){
             foreach ($detalleRecibo['adicional']  as $valueAdc){
                 //log_message("DEBUG", $value['descServicio'].'('.$value['cantidad'].') -> '.$value['valor']);
-                $printer -> text(new item($valueAdc['cargoEspecial'],$valueAdc['valor']));
+                $printer -> text(new item($valueAdc['cargoEspecial'],number_format($valueAdc['valor'],0,',','.')));
             }
         }
         /*SubTotal 1*/
@@ -110,7 +110,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> text(new item('Subtotal 1',number_format($detalleRecibo['general']->valorTotalVenta,0,',','.')));
         $printer -> text(new item('Descuento('.($detalleRecibo['general']->porcenDescuento*100).'%)','-'.number_format(($detalleRecibo['general']->valorTotalVenta-$detalleRecibo['general']->valorLiquida),0,',','.')));
         $printer -> text(new item('Subtotal 2',number_format($detalleRecibo['general']->valorLiquida,0,',','.')));
-        $printer -> text(new item('Servicio('.($detalleRecibo['atencion']).'%)',number_format(($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.')));
+        $printer -> text(new item('Servicio('.(round($detalleRecibo['atencion'],2)).'%)',number_format(($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.')));
         $printer -> setEmphasis(false);
         $printer -> feed();
         

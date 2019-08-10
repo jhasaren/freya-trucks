@@ -267,7 +267,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                         <td align="right">$<?php echo number_format($detalleRecibo['general']->valorLiquida,0,',','.'); ?></td>
                                                     </tr>  
                                                     <tr style="font-size: 12px;">
-                                                        <td align="left">Servicio(<?php echo ($this->session->userdata('sservicio')); ?>%):</td>
+                                                        <td align="left">Servicio(<?php echo (round($this->session->userdata('sservicio'),2)); ?>%):</td>
                                                         <td align="right">+$<?php echo number_format(($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100),0,',','.'); ?></td>
                                                     </tr>
                                                     <tr style="font-size: 18px; font-weight:bold;">

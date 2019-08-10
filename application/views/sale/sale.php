@@ -97,7 +97,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     $subtotal = ($valorConceptos)-($serviceSubtotal*(($porcenInList->porcenDescuento)));
                                     ?>
                                     <div style="color: #000000; font-size: 16px">Descuento: <?php echo ($porcenInList->porcenDescuento*100)."%-($".number_format($valorConceptos,0,',','.').")"; ?></div>
-                                    <div style="color: #000000; font-size: 16px">Servicio: <?php echo ($porcenInList->porcenServicio*100)."%+($".number_format($subtotal,0,',','.').")"; ?></div>
+                                    <div style="color: #000000; font-size: 16px">Servicio: <?php echo (round($porcenInList->porcenServicio*100,2))."%+($".number_format($subtotal,0,',','.').")"; ?></div>
                                     <span style="color: #000000; font-size: 28px">Subtotal: $<?php echo number_format($subtotal+(($subtotal*($porcenInList->porcenServicio))),0,',','.'); ?></span>
                                 </span>
                             </div>
@@ -218,7 +218,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                         <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
                                                         <span class="glyphicon-class" style="font-size: 14px;">
                                                             Servicio/Descuento
-                                                            <div><?php echo ($porcenInList->porcenServicio*100)."% / ".($porcenInList->porcenDescuento*100)."%"; ?></div>
+                                                            <div><?php echo (round($porcenInList->porcenServicio*100,2))."% / ".($porcenInList->porcenDescuento*100)."%"; ?></div>
                                                         </span>
                                                     </li>
                                                 </ul>
@@ -741,7 +741,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <input type="hidden" id="subtotal_venta" name="subtotal_venta" value="<?php echo $subtotal; ?>" >
                             
                             <label class="control-label" for="Porcentaje">Servicio Voluntario (%)</label>
-                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="% Servicio" value="<?php if ($porcenInList->porcenServicio == 0){ echo $this->config->item('procen_servicio'); } else { echo $porcenInList->porcenServicio*100; } ?>" required="" autocomplete="off" <?php echo $stateInput; ?> pattern="\d*">
+                            <input type="tel" class="form-control" id="porcen_servicio" name="porcen_servicio" placeholder="% Servicio" value="<?php if ($porcenInList->porcenServicio == 0){ echo $this->config->item('procen_servicio'); } else { echo $porcenInList->porcenServicio*100; } ?>" required="" autocomplete="off" <?php echo $stateInput; ?> >
                             <br />
                             <label class="control-label" for="Porcentaje">Servicio Voluntario ($)</label>
                             <input type="tel" class="form-control" id="value_servicio" name="value_servicio" placeholder="$ Servicio" value="" required="" autocomplete="off" <?php echo $stateInput; ?> pattern="\d*">
