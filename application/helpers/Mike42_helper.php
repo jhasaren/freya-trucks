@@ -130,6 +130,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         /* Pie de Pagina */
         $printer -> feed(2);
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text($detalleRecibo['general']->resolucionExpide."\n");
         $printer -> text("Gracias por Preferirnos!!\n");
         $printer -> feed(2);
         $printer -> text("Freya Software - Amadeus Soluciones\n");

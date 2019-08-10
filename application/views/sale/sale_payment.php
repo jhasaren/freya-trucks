@@ -98,7 +98,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <?php echo $this->session->userdata('nombre_sede'); ?><br />
                                 <?php echo $this->session->userdata('dir_sede'); ?><br />
                                 <?php echo $this->config->item('nit_recibo'); ?><br />
-                                <?php echo "Detalle de Venta #".$detalleRecibo['general']->nroRecibo; ?><br />
+                                <?php echo "Factura de Venta #".$detalleRecibo['general']->nroRecibo; ?><br />
                                 <?php echo "Lugar: ".$detalleRecibo['general']->nombreMesa; ?> | <?php echo "Turno: ".$turno; ?>
                                 </center>
                                 <br />
@@ -186,6 +186,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </table>
                                 <center style="font-size: 12px;">
                                 <br />
+                                <?php echo $detalleRecibo['general']->resolucionExpide; ?><br />
                                 Gracias por Preferirnos!<br />
                                 Freya Software - Amadeus Soluciones<br />
                                 <?php echo date("Y-m-d H:i:s"); ?>

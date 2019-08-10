@@ -185,6 +185,7 @@ class MReport extends CI_Model {
         $queryGeneral = $this->db->query("SELECT
                                 vm.idVenta,
                                 vm.nroRecibo,
+                                rr.resolucionExpide,
                                 vm.fechaLiquida,
                                 vm.fechaPideCuenta,
                                 vm.idEstadoRecibo,
@@ -212,6 +213,7 @@ class MReport extends CI_Model {
                                 JOIN tipo_estado_recibo t ON t.idEstadoRecibo = vm.idEstadoRecibo
                                 JOIN app_usuarios au ON au.idUsuario = vm.idUsuarioLiquida
                                 JOIN app_usuarios ac ON ac.idUsuario = vm.idUsuarioCliente
+                                JOIN rango_recibos rr ON rr.nroRecibo = vm.nroRecibo
                                 LEFT JOIN app_usuarios ae ON ae.idUsuario = vm.idEmpleadoAtiende
                                 LEFT JOIN mesas m ON m.idMesa = vm.idMesa
                                 WHERE
