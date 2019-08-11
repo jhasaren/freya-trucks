@@ -101,7 +101,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 echo "Descuento: ".($general->porcenDescuento*100)."% *Solo aplica a servicios<br />";
                                 echo "Subtotal 2: $".number_format($general->valorLiquida,0,',','.')."<br />";
                                 echo "Atención: $".number_format(($general->valorLiquida*$general->porcenServicio),0,',','.')."<br />";
-                                echo "Valor Pagado: $".number_format($general->valorLiquida+($general->valorLiquida*$general->porcenServicio),0,',','.')."<br />";
+                                echo "<B>Valor Pagado: $".number_format($general->valorLiquida+($general->valorLiquida*$general->porcenServicio),0,',','.')."</B><br />";
+                                echo "Base: $".number_format(($general->valorLiquida/($general->impoconsumo+1)),0,',','.')."<br />";
+                                echo "Impoconsumo (%".($general->impoconsumo*100)."): $".number_format(($general->valorLiquida/($general->impoconsumo+1))*$general->impoconsumo,0,',','.')."<br />";
                                 ?>
                                 <hr />
                                 <?php

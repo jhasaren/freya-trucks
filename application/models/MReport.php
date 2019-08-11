@@ -36,7 +36,8 @@ class MReport extends CI_Model {
                                 (m.valorLiquida*m.porcenServicio) as popina_servicio,
                                 (select sum(valorPago) from forma_de_pago where idVenta = m.idVenta) as forma_pago,
                                 t.descEstadoRecibo,
-                                (m.valorLiquida*m.impoconsumo) as impoconsumo
+                                /*(m.valorLiquida*m.impoconsumo) as impoconsumo*/
+                                ((m.valorLiquida/(m.impoconsumo+1))*m.impoconsumo) as impoconsumo
                                 FROM venta_maestro m
                                 JOIN tipo_estado_recibo t ON t.idEstadoRecibo = m.idEstadoRecibo
                                 WHERE
