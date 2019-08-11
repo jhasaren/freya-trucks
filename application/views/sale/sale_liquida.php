@@ -277,10 +277,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <?php 
                                                     if ($this->config->item('impo_add_factura') == 1){
                                                     ?>
+                                                    <!--Base-->
+                                                    <tr style="font-size: 12px;">
+                                                        <td align="left">Base:</td>
+                                                        <td align="right">$<?php echo number_format((($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*0/100))/($detalleRecibo['general']->impoconsumo+1)),0,',','.'); ?></td>
+                                                    </tr>
+                                                    <!--Impuesto-->
                                                     <tr style="font-size: 12px;">
                                                         <td align="left">Impoconsumo (<?php echo $detalleRecibo['general']->impoconsumo*100; ?>%):</td>
                                                         <!--<td align="right">-$<?php //echo number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$this->session->userdata('sservicio')/100))*$detalleRecibo['general']->impoconsumo,0,',','.'); ?></td>-->
-                                                        <td align="right">-$<?php echo number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*0/100))*$detalleRecibo['general']->impoconsumo,0,',','.'); ?></td>
+                                                        <td align="right">$<?php echo number_format(((($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*0/100))/($detalleRecibo['general']->impoconsumo+1))*$detalleRecibo['general']->impoconsumo),0,',','.'); ?></td>
                                                     </tr>
                                                     <?php
                                                     }
