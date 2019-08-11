@@ -53,7 +53,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> text($sede."\n");
         $printer -> selectPrintMode();
         $printer -> text($dirSede."\n");
-		$printer -> text("Tel: ".$telsede."\n");
+        $printer -> text("Tel: ".$telsede."\n");
         /*Valida si el parametro de NIT esta habilitado, se muestra en Ticket*/
         if ($nitRecibo != NULL){
             $printer -> setTextSize(1, 1);
