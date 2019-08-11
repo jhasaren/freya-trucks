@@ -141,8 +141,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <br /><br />
                             <B>Venta:</B> valor antes de aplicar descuento y propina |
                             <B>Liquidado:</B> valor con descuento a servicios |
-                            <B>Ingreso en Caja:</B> Liquidado + Propina |
-                            <B>Impoconsumo:</B> Liquidado * %Impoconsumo
+                            <B>Ingreso en Caja:</B> Liquidado + Propina <br />
+                            <B>Impoconsumo:</B> (Liquidado / %Impoconsumo+1)*%Impoconsumo
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                 </li>

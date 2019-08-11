@@ -500,7 +500,8 @@ class MReport extends CI_Model {
                                         AND v.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
         
         $queryImpuesto = $this->db->query("SELECT
-                                        sum(v.valorLiquida*v.impoconsumo) as valorimpoconsumo
+                                        /*sum(v.valorLiquida*v.impoconsumo) as valorimpoconsumo*/
+                                        sum((v.valorLiquida/(v.impoconsumo+1))*v.impoconsumo) as valorimpoconsumo
                                         FROM
                                         venta_maestro v
                                         WHERE
