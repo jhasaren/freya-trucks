@@ -111,7 +111,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="x_panel">
                                         <form role="form" name="form_pago_sale" action="<?php echo base_url().'index.php/CSale/payregistersale'; ?>" method="post">
                                             <label class="control-label" for="pagavalor">Valor ($)</label>
-                                            <input type="number" class="form-control" id="pagacon" name="pagavalor" required="" placeholder="Valor Pagado" >
+                                            <input type="text" style="font-family: Arial; font-size: 18pt; background-color: #E0DD70; color: #000" class="form-control" id="pagacon" name="pagavalor" required="" placeholder="Valor Pagado" autocomplete="off" >
                                             <input type="hidden" class="form-control" id="totalPago" name="totalPago" value="<?php echo ($totalservicios+$totalproductos+$totaladicional)+(($totalservicios+$totalproductos+$totaladicional)*$this->session->userdata('sservicio')/100); ?>" >
                                             <input type="hidden" class="form-control" id="valuepagado" name="valuepagado" value="<?php echo $pagado; ?>" >
                                             <input type="hidden" class="form-control" id="saldopay" name="saldopay" value="<?php echo $message-$pagado; ?>" >
@@ -373,6 +373,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?php echo base_url().'public/gentelella/build/js/custom.js'; ?>"></script><!--Minificar-->  
     <!-- iCheck -->
     <script src="<?php echo base_url().'public/gentelella/vendors/iCheck/icheck.min.js'; ?>"></script>
-    
+    <!-- Autonumeric -->
+    <!--<script src="<?php //echo base_url().'public/gentelella/vendors/autonumeric/AutoNumeric.js'; ?>"></script>-->
+    <script src="https://cdn.jsdelivr.net/autonumeric/2.0.0/autoNumeric.min.js"></script>
+    <script>
+    /*AutoNumeric*/
+    $("#pagacon").autoNumeric('init',{
+        allowDecimalPadding : "false",
+        decimalCharacter : ',',
+        digitGroupSeparator : '.',
+    });
+    </script>
   </body>
 </html>

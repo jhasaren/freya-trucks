@@ -655,7 +655,10 @@ class CSale extends CI_Controller {
                     } else {
 
                         /*captura variables*/
-                        $pagavalor = $this->input->post('pagavalor'); /*valor que paga*/
+                        $pagavalor = str_replace(".", "", $this->input->post('pagavalor')); /*valor que paga*/
+                        log_message("debug", "*****************************");
+                        log_message("debug", $pagavalor);
+                        log_message("debug", "*****************************");
                         $refPago = $this->input->post('ref_pago'); /*referencia del pago*/
                         $valuePayFormas = $this->input->post('valuepagado'); /*valor ya pagado*/
                         $totalPago = $this->input->post('totalPago'); /*valor total que debe pagar*/
