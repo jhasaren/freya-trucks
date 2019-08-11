@@ -122,8 +122,9 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> text(new item('Total a Pagar', number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.'), true));
         $printer -> selectPrintMode();
         if($detalleRecibo['impuesto'] == 1){
-        //$printer -> text(new item('Impoconsumo', number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100))*$detalleRecibo['general']->impoconsumo,0,',','.')));
-        $printer -> text(new item('Impoconsumo', number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*0/100))*$detalleRecibo['general']->impoconsumo,0,',','.')));
+            //$printer -> text(new item('Impoconsumo', number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100))*$detalleRecibo['general']->impoconsumo,0,',','.')));
+            $printer -> text(new item('Base:', number_format(((($detalleRecibo['general']->valorLiquida)/($detalleRecibo['general']->impoconsumo + 1))*$detalleRecibo['general']->impoconsumo),0,',','.')));
+            $printer -> text(new item('Impoconsumo ('.($detalleRecibo['general']->impoconsumo*100).'%):', number_format((($detalleRecibo['general']->valorLiquida)*$detalleRecibo['general']->impoconsumo),0,',','.')));
         }
         $printer -> selectPrintMode();
 
@@ -260,10 +261,13 @@ class item
 
     public function __toString()
     {
-		/*Tamano de Papel para la impresion ajustada de conceptos en la venta*/
+	/*
+         * Tamano de Papel para la impresion ajustada de conceptos en la venta
+         * Parrillon Valluno: $rightCols = 8; $leftCols = 34;
+         */
         //$rightCols = 10;
         //$leftCols = 38;
-		$rightCols = 8;
+	$rightCols = 8;
         $leftCols = 34;
         if ($this -> dollarSign) {
             $leftCols = $leftCols / 2 - $rightCols / 2;
