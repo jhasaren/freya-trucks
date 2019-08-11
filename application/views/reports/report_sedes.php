@@ -233,8 +233,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <br /><br />
                                                 <B>Venta:</B> valor antes de aplicar descuento y propina |
                                                 <B>Liquidado:</B> valor con descuento a servicios |
-                                                <B>Ingreso en Caja:</B> Liquidado + Propina |
-                                                <B>Impoconsumo:</B> Liquidado * %Impoconsumo
+                                                <B>Ingreso en Caja:</B> Liquidado + Propina <br />
+                                                <B>Impoconsumo:</B> (Liquidado / %Impoconsumo+1)*%Impoconsumo
                                                 <ul class="nav navbar-right panel_toolbox">
                                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                                     </li>
@@ -271,7 +271,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                     <td class="center red"><?php echo number_format(($row_sede['valorVenta']-$row_sede['valorLiquida']),0,',','.'); ?></td>
                                                                     <td class="center green"><?php echo number_format($row_sede['valorLiquida'],0,',','.'); ?></td>
                                                                     <td class="center green"><?php echo number_format($row_sede['popina_servicio'],0,',','.'); ?></td>
-                                                                    <td class="center red"><?php echo number_format(($row_sede['valorLiquida']*$row_sede['impoconsumo']),0,',','.'); ?></td>
+                                                                    <td class="center red"><?php echo number_format((($row_sede['valorLiquida']/($row_sede['impoconsumo']+1))*$row_sede['impoconsumo']),0,',','.'); ?></td>
                                                                     <td class="center"><small><?php echo $row_sede['empleado']; ?></small></td>
                                                                     <td class="center">
                                                                         <a class="label label-primary btn-detail" href="<?php echo base_url().'index.php/CReport/detallerecibo/'.$row_sede['idVenta'].'/'.$row_sede['nroRecibo']; ?>">

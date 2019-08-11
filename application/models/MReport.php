@@ -381,7 +381,8 @@ class MReport extends CI_Model {
                                 s.nombreSede,
                                 sum(m.valorTotalVenta) as valorVenta,
                                 sum(m.valorLiquida) as valorLiquida,
-                                sum(m.valorLiquida*m.impoconsumo) as impoconsumo,
+                                /*sum(m.valorLiquida*m.impoconsumo) as impoconsumo,*/
+                                sum((m.valorLiquida/(m.impoconsumo+1))*m.impoconsumo) as impoconsumo,
                                 (sum(m.valorTotalVenta)-sum(m.valorLiquida)) as valorDesctoServ,
                                 (
                                     SELECT
@@ -403,14 +404,6 @@ class MReport extends CI_Model {
                                     AND g.idSede = m.idSede
                                     AND g.fechaPago BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
                                 ) as valorGastos,
-                                /*(
-                                    SELECT
-                                    sum(ma.valorLiquida*ma.porcenServicio) as popina_servicio
-                                    FROM venta_maestro ma
-                                    WHERE
-                                    ma.idEstadoRecibo = 5
-                                    AND ma.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'
-                                ) as propina_servicio*/
                                 sum(m.valorLiquida*m.porcenServicio) as propina_servicio
                                 FROM venta_maestro m
                                 JOIN sede s ON s.idSede = m.idSede
