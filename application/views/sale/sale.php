@@ -504,7 +504,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <?php
                                     foreach ($list_empleado as $row_empleado) {
                                         ?>
-                                        <option value="<?php echo $row_empleado['idUsuario']; ?>" <?php if ($row_empleado['idUsuario'] == $this->session->userdata('sempleado')){ echo "selected"; }  ?>><?php echo $row_empleado['idUsuario'] . ' | ' . $row_empleado['nombre_usuario']; ?></option>
+                                        <option style="font-family: Arial; font-size: 16pt; background-color: #E0DD70; color: #000" value="<?php echo $row_empleado['idUsuario']; ?>" <?php if ($row_empleado['idUsuario'] == $this->session->userdata('sempleado')){ echo "selected"; }  ?>><?php echo $row_empleado['nombre_usuario'] . ' | ' . $row_empleado['idUsuario']; ?></option>
                                         <?php
                                     }
                                     ?>
@@ -863,6 +863,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     ];
     $('#idproducto').autocomplete({
         lookup: productos
+    });
+    
+     
+
+    $(function() {
+
+        var lastModal = '<?php echo $loadModal; ?>';
+        if (lastModal == 1){ /*Modal de Servicio/Plato Fuerte*/
+            $('#myModal-s').on("shown.bs.modal", function() {
+                $('#idservice').focus();
+            });
+
+            $( "#myModal-s" ).modal('show');
+        } 
+
+        if (lastModal == 2) { /*Modal de Producto*/
+            $('#myModal-p').on("shown.bs.modal", function() {
+                $('#idproducto').focus();
+            });
+
+            $( "#myModal-p" ).modal('show');
+        }
     });
     </script>
     

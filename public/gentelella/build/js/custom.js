@@ -208,7 +208,7 @@ $(document).ready(function () {
 });
 
 // Modal - jasanchez
-$(document).ready(function () {
+$(document).ready(function () {    
     /*Modal - Cambio de Clave*/
     $('.btn-changepass').click(function (e) {
         e.preventDefault();

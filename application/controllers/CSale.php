@@ -981,6 +981,7 @@ class CSale extends CI_Controller {
                             if ($registerData == TRUE){
 
                                 $info['idmessage'] = 1;
+                                $info['loadModal'] = 1;
                                 $info['message'] = "Servicio Agregado Exitosamente";
                                 $this->module($info);
 
@@ -1070,6 +1071,7 @@ class CSale extends CI_Controller {
                                 if ($registerData == TRUE){
 
                                     $info['idmessage'] = 1;
+                                    $info['loadModal'] = 2;
                                     $info['message'] = "Producto de Venta Agregado Exitosamente";
                                     $this->module($info);
 
