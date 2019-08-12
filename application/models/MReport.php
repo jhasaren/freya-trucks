@@ -43,7 +43,7 @@ class MReport extends CI_Model {
                                 WHERE
                                 m.idEstadoRecibo IN (5,3)
                                 AND m.idSede = ".$this->session->userdata('sede')."
-                                AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
+                                AND m.fechaPideCuenta BETWEEN '".$fechaIni."' AND '".$fechaFin."'");
         
         if ($query->num_rows() == 0) {
             

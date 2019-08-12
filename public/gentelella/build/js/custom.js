@@ -2005,8 +2005,14 @@ function init_daterangepicker_single_call() {
     console.log('init_daterangepicker_single_call');
 
     $('#single_cal1').daterangepicker({
-        singleDatePicker: true,
-        singleClasses: "picker_1"
+        //singleDatePicker: true,
+        timePicker: true,
+        timePicker24Hour: true,
+        singleClasses: "picker_1",
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss',
+            "separator": "|",
+        }
     }, function (start, end, label) {
         console.log(start.toISOString(), end.toISOString(), label);
     });
