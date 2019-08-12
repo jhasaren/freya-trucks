@@ -712,10 +712,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="modal-dialog">
                 <div class="modal-content">
                     <?php 
-                    if ($porcenInList->idEstadoRecibo == 2){
-                        $stateInput = "readonly";
-                    } else {
-                        $stateInput = "";
+                    /*12/08/2019: Se agrego parametro para permitir modificaciones al rol Empleado cuando recibo ya este liquidado*/
+                    if ($this->config->item('permiso_modif_recibo') == 0){
+                        if ($porcenInList->idEstadoRecibo == 2){ 
+                            $stateInput = "readonly";
+                        } else {
+                            $stateInput = "";
+                        }
                     }
                     ?>
                     <form role="form" name="form_descuento" action="<?php echo base_url() . 'index.php/CSale/addporcentdesc'; ?>" method="post">
@@ -726,16 +729,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="modal-body">
                             <?php 
                             /*Si el recibo esta liquidado y el perfil no es superadmin, no permite el cambio*/
-                            if (($porcenInList->idEstadoRecibo == 2) && $this->session->userdata('perfil') != 'SUPERADMIN') { 
-                                $stateInput = "readonly";
-                                $stateButton = "disabled";
-                                ?>
-                                <div class="alert alert-info">
-                                    No se puede modificar. El recibo ya se encuentra liquidado.
-                                </div>
-                                <?php 
-                            } else { 
-                                $stateInput = ""; 
+                            /*
+                             * 12/08/2019: Se agrego parametro para permitir modificaciones al rol Empleado cuando recibo ya este liquidado
+                             */
+                            if ($this->config->item('permiso_modif_recibo') == 0){
+                                if (($porcenInList->idEstadoRecibo == 2) && $this->session->userdata('perfil') != 'SUPERADMIN') { 
+                                    $stateInput = "readonly";
+                                    $stateButton = "disabled";
+                                    ?>
+                                    <div class="alert alert-info">
+                                        No se puede modificar. El recibo ya se encuentra liquidado.
+                                    </div>
+                                    <?php 
+                                } else { 
+                                    $stateInput = ""; 
+                                }
                             }
                             ?>
                             <input type="hidden" id="subtotal_venta" name="subtotal_venta" value="<?php echo $subtotal; ?>" >
