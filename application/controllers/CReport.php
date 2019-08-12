@@ -613,13 +613,6 @@ class CReport extends CI_Controller {
                 log_message("DEBUG", $fechafin);
                 log_message("DEBUG", "*********************************");
                 
-                
-//                $date1 = new DateTime($this->input->post('fechaini')); 
-//                $fechaini = $date1->format('Y-m-d'); 
-//
-//                $date2 = new DateTime($this->input->post('fechafin')); 
-//                $fechafin = $date2->format('Y-m-d');
-
                 /*Consulta Modelo detalle pagos por sede*/
                 $paymentDataSedes = $this->MReport->payment_sedes($fechaini,$fechafin);
 
