@@ -66,8 +66,8 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> setEmphasis(true);
         //$printer -> setTextSize(2, 2);
         $printer -> text("Factura de Venta #".$detalleRecibo['general']->nroRecibo."\n");
-        $printer -> text("Lugar: ".$detalleRecibo['general']->nombreMesa."\n");
-        $printer -> text("Turno: ".$detalleRecibo['general']->nroTurno."\n");
+        $printer -> text("Turno: ".$detalleRecibo['general']->nroTurno." | Lugar: ".$detalleRecibo['general']->nombreMesa."\n");
+        //$printer -> text("Turno: ".$detalleRecibo['general']->nroTurno."\n");
         $printer -> setEmphasis(false);
         $printer -> feed();
         
@@ -133,6 +133,8 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> feed(2);
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
         $printer -> text($detalleRecibo['general']->resolucionExpide."\n");
+        /*Texto Propina Voluntaria*/
+        $printer -> text("Este establecimiento de comercio le sugiere una propina voluntaria del 10% del valor de la cuenta antes de impuestos, el cual podrá ser aceptado, rechazado o modificado por usted, de acuerdo a la valoración del servicio prestado. Al momento de solicitar la cuenta, indíquele a la persona que lo atiende si quiere que dicho valor sea o no incluido en la factura o indíquele el valor que quiere dar como propina.\n");
         $printer -> text("Gracias por Preferirnos!!\n");
         $printer -> feed(2);
         $printer -> text("Freya Software - Amadeus Soluciones\n");
