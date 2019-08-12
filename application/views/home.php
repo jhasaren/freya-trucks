@@ -119,7 +119,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="row">
                                     <div class="col-md-4 col-sm-12 col-xs-12">
                                         <div class="bs-example" data-example-id="simple-jumbotron">
-                                            <div class="jumbotron">
+                                            <div class="jumbotron" style="background-color:#FFFFFF">
                                                 <!--<h1>Freya!</h1>-->
                                                 <!--<p>Software para la Administración Integral de Restaurantes</p>-->
                                                 <center>
