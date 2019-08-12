@@ -124,10 +124,18 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> selectPrintMode();
         if($detalleRecibo['impuesto'] == 1){
             //$printer -> text(new item('Impoconsumo', number_format(($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100))*$detalleRecibo['general']->impoconsumo,0,',','.')));
-            $printer -> text(new item('Base:', number_format(((($detalleRecibo['general']->valorLiquida)/($detalleRecibo['general']->impoconsumo + 1))*$detalleRecibo['general']->impoconsumo),0,',','.')));
-            $printer -> text(new item('Impoconsumo ('.($detalleRecibo['general']->impoconsumo*100).'%):', number_format((($detalleRecibo['general']->valorLiquida)*$detalleRecibo['general']->impoconsumo),0,',','.')));
+            $printer -> text(new item('Base:', number_format($detalleRecibo['general']->valorLiquida/($detalleRecibo['general']->impoconsumo + 1),0,',','.') ));
+            $printer -> text(new item('Impoconsumo ('.($detalleRecibo['general']->impoconsumo*100).'%):', number_format(($detalleRecibo['general']->valorLiquida/($detalleRecibo['general']->impoconsumo + 1))*$detalleRecibo['general']->impoconsumo,0,',','.') ));
         }
         $printer -> selectPrintMode();
+        
+        log_message("DEBUG", "*************************************************************");
+        log_message("DEBUG", "valor liquida:".$detalleRecibo['general']->valorLiquida);
+        log_message("DEBUG", "sobre:".($detalleRecibo['general']->impoconsumo + 1));
+        log_message("DEBUG", "impuesto:".$detalleRecibo['general']->impoconsumo);
+        log_message("DEBUG", "operacion1_base:".number_format($detalleRecibo['general']->valorLiquida/($detalleRecibo['general']->impoconsumo + 1),0,',','.'));
+        log_message("DEBUG", "operacion2_impo:".number_format(($detalleRecibo['general']->valorLiquida/($detalleRecibo['general']->impoconsumo + 1))*$detalleRecibo['general']->impoconsumo,0,',','.'));
+        log_message("DEBUG", "*************************************************************");
 
         /* Pie de Pagina */
         $printer -> feed(2);
