@@ -104,13 +104,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="modal-body">
                                         <fieldset>
                                             <div class="col-md-3 xdisplay_inputx form-group has-feedback"></div>
-                                            <div class="col-md-3 xdisplay_inputx form-group has-feedback">
+                                            <!--<div class="col-md-3 xdisplay_inputx form-group has-feedback">
                                                 <input type="text" name="fechaini" required="" class="form-control has-feedback-left" id="single_cal1" value="<?php echo $fechaIni; ?>" placeholder="Fecha Inicio" aria-describedby="inputSuccess2Status" readonly="">
                                                 <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                                                 <span id="inputSuccess2Status" class="sr-only">(success)</span>
                                             </div>
                                             <div class="col-md-3 xdisplay_inputx form-group has-feedback">
                                                 <input type="text" name="fechafin" required="" class="form-control has-feedback-left" id="single_cal3" value="<?php echo $fechaFin; ?>" placeholder="Fecha Fin" aria-describedby="inputSuccess2Status" readonly="">
+                                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>-->
+                                            <div class="col-md-6 xdisplay_inputx form-group has-feedback">
+                                                <input type="text" name="dateRangeInput" required="" class="form-control has-feedback-left" id="single_cal1" value="" placeholder="Fecha Inicio" aria-describedby="inputSuccess2Status" readonly="">
                                                 <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                                                 <span id="inputSuccess2Status" class="sr-only">(success)</span>
                                             </div>

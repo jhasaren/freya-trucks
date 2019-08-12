@@ -599,11 +599,26 @@ class CReport extends CI_Controller {
             if ($this->MRecurso->validaRecurso(10)){
                 
                 /*Captura Variables*/
-                $date1 = new DateTime($this->input->post('fechaini')); 
-                $fechaini = $date1->format('Y-m-d'); 
-
-                $date2 = new DateTime($this->input->post('fechafin')); 
-                $fechafin = $date2->format('Y-m-d');
+                $dateRange = explode("|",$this->input->post('dateRangeInput'));
+                                
+                $date1 = new DateTime($dateRange[0]); 
+                $fechaini = $date1->format('Y-m-d H:i:s'); 
+                
+                $date2 = new DateTime($dateRange[1]); 
+                $fechafin = $date2->format('Y-m-d H:i:s');
+                
+                log_message("DEBUG", "----------------------------------");
+                log_message("DEBUG", "***Reporte Consolidado General***");
+                log_message("DEBUG", $fechaini);
+                log_message("DEBUG", $fechafin);
+                log_message("DEBUG", "*********************************");
+                
+                
+//                $date1 = new DateTime($this->input->post('fechaini')); 
+//                $fechaini = $date1->format('Y-m-d'); 
+//
+//                $date2 = new DateTime($this->input->post('fechafin')); 
+//                $fechafin = $date2->format('Y-m-d');
 
                 /*Consulta Modelo detalle pagos por sede*/
                 $paymentDataSedes = $this->MReport->payment_sedes($fechaini,$fechafin);

@@ -265,7 +265,7 @@ class MReport extends CI_Model {
                                 LEFT JOIN app_usuarios u ON u.idUsuario = m.idEmpleadoAtiende
                                 WHERE
                                 m.idEstadoRecibo = 5
-                                AND m.fechaPideCuenta BETWEEN '".$fechaIni." 00:00:00' AND '".$fechaFin." 23:59:59'");
+                                AND m.fechaPideCuenta BETWEEN '".$fechaIni."' AND '".$fechaFin."'");
         
         if ($query->num_rows() == 0) {
             

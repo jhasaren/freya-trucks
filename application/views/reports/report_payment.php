@@ -112,7 +112,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <fieldset>
                                             <div class="col-md-3 xdisplay_inputx form-group has-feedback"></div>
                                             <div class="col-md-6 xdisplay_inputx form-group has-feedback">
-                                                <input type="text" name="dateRangeInput" required="" class="form-control has-feedback-left" id="single_cal1" value="<?php //echo $dateRange; ?>" placeholder="Fecha Inicio" aria-describedby="inputSuccess2Status" readonly="">
+                                                <input type="text" name="dateRangeInput" required="" class="form-control has-feedback-left" id="single_cal1" value="" placeholder="Fecha Inicio" aria-describedby="inputSuccess2Status" readonly="">
                                                 <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                                                 <span id="inputSuccess2Status" class="sr-only">(success)</span>
                                             </div>
