@@ -421,7 +421,7 @@ class CReport extends CI_Controller {
                 
                 /*Obtiene detalle del recibo*/
                 $detailRecibo = $this->MReport->detalle_recibo($this->session->userdata('idSale'));
-                $detailRecibo['atencion'] = $this->session->userdata('sservicio');
+                $detailRecibo['atencion'] = ($detailRecibo['general']->porcenServicio*100);
                 $detailRecibo['impuesto'] = $this->config->item('impo_add_factura');
                 $nitRecibo = $this->config->item('nit_recibo');
                 
