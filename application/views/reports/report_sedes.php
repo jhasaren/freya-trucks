@@ -115,7 +115,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <span id="inputSuccess2Status" class="sr-only">(success)</span>
                                             </div>-->
                                             <div class="col-md-6 xdisplay_inputx form-group has-feedback">
-                                                <input type="text" name="dateRangeInput" required="" class="form-control has-feedback-left" id="single_cal1" value="" placeholder="Fecha Inicio" aria-describedby="inputSuccess2Status" readonly="">
+                                                <input type="text" name="dateRangeInput" required="" class="form-control has-feedback-left" id="single_cal_all" value="" placeholder="Fecha Inicio" aria-describedby="inputSuccess2Status" readonly="">
                                                 <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                                                 <span id="inputSuccess2Status" class="sr-only">(success)</span>
                                             </div>
