@@ -116,10 +116,10 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> feed();
         
         /* Total */
-        //$printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-        $printer -> selectPrintMode();
+        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        //$printer -> selectPrintMode();
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        $printer -> setTextSize(1, 2);
+        //$printer -> setTextSize(1, 2);
         $printer -> text(new item('Total a Pagar', number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.'), true));
         $printer -> selectPrintMode();
         if($detalleRecibo['impuesto'] == 1){
