@@ -87,7 +87,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> setEmphasis(false);
         /*Servicios*/
         if ($detalleRecibo['servicios'] != NULL){
-			$printer -> setTextSize(1, 2);
+            $printer -> setTextSize(1, 2);
             foreach ($detalleRecibo['servicios']  as $valueServ){
                 //log_message("DEBUG", $value['descServicio'].'('.$value['cantidad'].') -> '.$value['valor']);
                 $printer -> text(new item("(".$valueServ['cantidad'].") ".$valueServ['descServicio'],number_format($valueServ['valor'],0,',','.')));
@@ -95,7 +95,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         }
         /*Productos*/
         if ($detalleRecibo['productos'] != NULL){
-			$printer -> setTextSize(1, 2);
+            $printer -> setTextSize(1, 2);
             foreach ($detalleRecibo['productos']  as $valueProd){
                 //log_message("DEBUG", $value['descServicio'].'('.$value['cantidad'].') -> '.$value['valor']);
                 $printer -> text(new item("(".$valueProd['cantidad'].") ".$valueProd['descProducto'],number_format($valueProd['valor'],0,',','.')));
@@ -103,7 +103,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         }
         /*Adicionales*/
         if ($detalleRecibo['adicional'] != NULL){
-			$printer -> setTextSize(1, 2);
+            $printer -> setTextSize(1, 2);
             foreach ($detalleRecibo['adicional']  as $valueAdc){
                 //log_message("DEBUG", $value['descServicio'].'('.$value['cantidad'].') -> '.$value['valor']);
                 $printer -> text(new item($valueAdc['cargoEspecial'],number_format($valueAdc['valor'],0,',','.')));
@@ -123,8 +123,8 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> selectPrintMode();
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
         $printer -> setTextSize(3, 2);
-		$printer -> text("Total a Pagar\n");
-		$printer -> text("$".number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.')."\n");
+        $printer -> text("Total a Pagar\n");
+        $printer -> text("$".number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.')."\n");
         //$printer -> text(new item('', number_format($detalleRecibo['general']->valorLiquida+($detalleRecibo['general']->valorLiquida*$detalleRecibo['atencion']/100),0,',','.'), true));
         $printer -> selectPrintMode();
         if($detalleRecibo['impuesto'] == 1){
