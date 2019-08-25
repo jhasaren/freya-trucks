@@ -2,11 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/G:/xampp/htdocs/freya-trucks/application/views/sale/sale_liquida.php</file>
             <file>file:/G:/xampp/htdocs/freya-trucks/application/controllers/CSale.php</file>
             <file>file:/G:/xampp/htdocs/freya-trucks/application/views/sale/sale.php</file>
             <file>file:/G:/xampp/htdocs/freya-trucks/public/gentelella/build/js/custom.js</file>
         </group>
+=======
+        <group/>
+>>>>>>> 5fe8f13c9e241ef6fadd61d5ad7a8fd9f52224f7
     </open-files>
 </project-private>
