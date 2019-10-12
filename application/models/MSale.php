@@ -1745,6 +1745,40 @@ class MSale extends CI_Model {
         
     }
     
+    
+    /**************************************************************************
+     * Nombre del Metodo: sale_printlog
+     * Descripcion: Permite grabar el registro de impresion de tickets en la venta.
+     * Autor: jhonalexander90@gmail.com
+     * Fecha Creacion: 12/10/2019, Ultima modificacion: 
+     **************************************************************************/
+    public function sale_printlog($nro_recibo) {
+        
+        $this->db->trans_strict(TRUE);
+        $this->db->trans_start();
+        
+        $this->db->query("INSERT INTO 
+                          log_impresion 
+                          (nroRecibo,usuarioImpresion,fechaImpresion) 
+                          VALUES
+                          (".$nro_recibo.",'".$this->session->userdata('userid')."',now())");
+
+        $this->db->trans_complete();
+        $this->db->trans_off();
+        
+        if ($this->db->trans_status() === FALSE){
+
+            return FALSE;
+
+        } else {
+            
+            return TRUE;
+
+        }
+        
+    }
+    
+    
     /**************************************************************************
      * Nombre del Metodo: consecutivo_turno_sale
      * Descripcion: Obtiene consecutivo del turno en la venta
