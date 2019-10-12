@@ -107,7 +107,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h3>Freya Restaurante</h3>v1.2.2 [20/07/2019]<br /><?php echo "CI-".CI_VERSION; ?>
+                    <h3>Freya Restaurante</h3>v1.2.3 [12/10/2019]<br /><?php echo "CI-".CI_VERSION; ?>
                 </div>
                 <div class="modal-body">
                     Software de Administración para Restaurantes.
