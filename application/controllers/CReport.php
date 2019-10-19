@@ -24,6 +24,7 @@ class CReport extends CI_Controller {
         $this->load->model('MReport'); /*Modelo para las Ventas*/
         $this->load->model('MNotify'); /*Modelo para las Notificaciones*/
         $this->load->model('MUser'); /*Modelo para los Usuarios*/
+        $this->load->model('MSale'); /*Modelo para los Usuarios*/
         
         date_default_timezone_set('America/Bogota'); /*Zona horaria*/
 
@@ -430,6 +431,9 @@ class CReport extends CI_Controller {
                 $detailRecibo['atencion'] = ($detailRecibo['general']->porcenServicio*100);
                 $detailRecibo['impuesto'] = $this->config->item('impo_add_factura');
                 $nitRecibo = $this->config->item('nit_recibo');
+                
+                /*Log de Impresion*/
+                $this->MSale->sale_printlog($detailRecibo['general']->nroRecibo);
                 
                 log_message('DEBUG', '-----------------------------------');
                 log_message('DEBUG', 'Reimprime Factura');
