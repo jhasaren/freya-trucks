@@ -698,6 +698,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <option value="CUENTAS_POR_SEPARADO">Cuentas por Separado</option>
                                     <option value="CAMBIO_DE_MESA">Cambio de Mesa</option>
                                     <option value="CORTESIAS">Cortesias</option>
+                                    <option value="ERROR_SISTEMA">Error Sistema</option>
                                 </select>
                             </div>
                             <br />
