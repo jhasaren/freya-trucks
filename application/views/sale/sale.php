@@ -451,7 +451,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="modal fade" id="myModal-c" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-c" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form role="form" name="form_client_sale" action="<?php echo base_url() . 'index.php/CSale/addusersale'; ?>" method="post">
+                    <form role="form" name="form_client_sale" action="<?php echo base_url() . 'index.php/CSale/addusersale'; ?>" method="post" onsubmit="document.getElementById('btn-click-client').disabled=true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>Cliente</h3>
@@ -487,7 +487,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="modal fade" id="myModal-em" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-em" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form role="form" name="form_empleado_sale" action="<?php echo base_url() . 'index.php/CSale/addempleadosale'; ?>" method="post">
+                    <form role="form" name="form_empleado_sale" action="<?php echo base_url() . 'index.php/CSale/addempleadosale'; ?>" method="post" onsubmit="document.getElementById('btn-click-empl').disabled=true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>Empleado</h3>
@@ -524,7 +524,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="modal fade" id="myModal-s" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-s" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form role="form" name="form_service_sale" action="<?php echo base_url() . 'index.php/CSale/addservicesale'; ?>" method="post">
+                    <form role="form" name="form_service_sale" action="<?php echo base_url() . 'index.php/CSale/addservicesale'; ?>" method="post" onsubmit="document.getElementById('btn-click-serv').disabled=true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>Plato Fuerte</h3>
@@ -583,7 +583,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="modal fade" id="myModal-p" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-p" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form role="form" name="form_product_sale" action="<?php echo base_url() . 'index.php/CSale/addproductsale'; ?>" method="post">
+                    <form role="form" name="form_product_sale" action="<?php echo base_url() . 'index.php/CSale/addproductsale'; ?>" method="post" onsubmit="document.getElementById('btn-click-prod').disabled=true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>Producto</h3>
@@ -640,7 +640,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="modal fade" id="myModal-esp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-esp" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form role="form" name="form_cargo_adc" action="<?php echo base_url() . 'index.php/CSale/addcargoadc'; ?>" method="post">
+                    <form role="form" name="form_cargo_adc" action="<?php echo base_url() . 'index.php/CSale/addcargoadc'; ?>" method="post" onsubmit="document.getElementById('btn-click-adc').disabled=true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>Cargo Adicional</h3>
@@ -734,7 +734,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         }
                     }
                     ?>
-                    <form role="form" name="form_descuento" action="<?php echo base_url() . 'index.php/CSale/addporcentdesc'; ?>" method="post">
+                    <form role="form" name="form_descuento" action="<?php echo base_url() . 'index.php/CSale/addporcentdesc'; ?>" method="post" onsubmit="document.getElementById('btn-click-desc').disabled=true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>Servicio/Descuento</h3>
@@ -784,7 +784,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="modal fade" id="myModal-nc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-nc" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form role="form" name="form_user_cliente" action="<?php echo base_url() . 'index.php/CSale/adduser/cliente'; ?>" method="post">
+                    <form role="form" name="form_user_cliente" action="<?php echo base_url() . 'index.php/CSale/adduser/cliente'; ?>" method="post" onsubmit="document.getElementById('btn-click-usu').disabled=true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>Agregar Cliente</h3>
@@ -823,7 +823,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-default" data-dismiss="modal">Cerrar</a>
-                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <button type="submit" id="btn-click-usu" class="btn btn-success">Guardar</button>
                         </div>
                     </form>
                 </div>

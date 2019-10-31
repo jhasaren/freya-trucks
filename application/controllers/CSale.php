@@ -958,7 +958,7 @@ class CSale extends CI_Controller {
             } else {
 
                 if ($this->MRecurso->validaRecurso(9)){
-                
+                                        
                     /*Captura Variables*/
                     $servicio = $this->input->post('idservice');
                     $varserv = explode('|', $servicio);
@@ -969,12 +969,12 @@ class CSale extends CI_Controller {
                     $cantidad = $this->input->post('cantidad');
 
                     if ($valueService != NULL){
-                        
+
                         /*Valida el servicio y valor*/
                         $validateService = $this->MSale->validate_select_sale($idService,$valueService,1);
 
-                        if ($validateService){
-
+                        if ($validateService){            
+                            
                             /*Envia datos al modelo para el registro*/
                             $registerData = $this->MSale->add_service($idService,($valueService*$cantidad),$valueEmpleado,$idempleado,$cantidad);
 
@@ -1000,13 +1000,13 @@ class CSale extends CI_Controller {
                             $this->module($info);
 
                         }
-                    
+
                     } else {
-                        
+
                         $info['idmessage'] = 2;
                         $info['message'] = "No fue posible agregar a la venta. Busque y Seleccione de la lista.";
                         $this->module($info);
-                        
+
                     }
                     
                 } else {

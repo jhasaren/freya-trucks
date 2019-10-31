@@ -1049,7 +1049,7 @@ class MSale extends CI_Model {
      * Fecha Creacion: 27/03/2017, Ultima modificacion: 
      **************************************************************************/
     public function add_service($idService,$valueService,$valueEmpleado,$idempleado,$cantidad) {
-        
+                
         $this->db->trans_start();
         $query = $this->db->query("INSERT INTO
                                     venta_detalle (
