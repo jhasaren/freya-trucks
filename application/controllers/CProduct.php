@@ -107,8 +107,11 @@ class CProduct extends CI_Controller {
 
                 /*Consulta Modelo para obtener listado de Productos creados*/
                 $listProducts = $this->MProduct->list_products();
+                /*Consulta Modelo para obtener listado de Grupos creados*/
+                $listGroups = $this->MService->list_group_service();
                 /*Retorna a la vista con los datos obtenidos*/
                 $info['list_products'] = $listProducts;
+                $info['list_groups'] = $listGroups;
                 $this->load->view('products/stock',$info);
             
             } else {
@@ -248,6 +251,8 @@ class CProduct extends CI_Controller {
                     $unidosis = $this->input->post('unidosis');
                     $estado = $this->input->post('estado');
                     if ($estado == 'on'){ $valueState = 'S'; } else $valueState = 'N';
+                    $inventario = $this->input->post('inventario');
+                    if ($inventario == 'on'){ $valueInvent = 'S'; } else $valueInvent = 'N';
                     $idproduct = $this->input->post('idproduct'); 
 
                     if ($this->jasr->validaTipoString($name,1)){
@@ -257,7 +262,7 @@ class CProduct extends CI_Controller {
                             if ($this->jasr->validaTipoString($distributionproduct,3)){
 
                                 /*Envia datos al modelo para la actualizacion del producto*/
-                                $updateData = $this->MProduct->update_product($idproduct,$name,$valor,$porcent_empleado,$stock,$unidosis,$valueState,$costo);
+                                $updateData = $this->MProduct->update_product($idproduct,$name,$valor,$porcent_empleado,$stock,$unidosis,$valueState,$costo,$valueInvent);
 
                                 if ($updateData == TRUE){
 

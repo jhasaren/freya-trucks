@@ -148,6 +148,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 Activo
                                               <input type="checkbox" class="flat" name="estado" <?php echo $check; ?> >
                                             </label>
+                                            <?php
+                                            if ($data_product->inventario == 'S') {
+                                                $check2 = 'checked';
+                                            } else {
+                                                $check2 = '';
+                                            }
+                                            ?>
+                                            <label>
+                                                Ver en Inventario
+                                              <input type="checkbox" class="flat" name="inventario" <?php echo $check2; ?> >
+                                            </label>
                                         <input type="hidden" class="form-control" id="idproduct" name="idproduct" value="<?php echo $id; ?>" >
                                     </div>
                                     <div class="modal-footer">

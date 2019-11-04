@@ -50,14 +50,15 @@ class MProduct extends CI_Model {
                                     s.unidades,
                                     s.disponibles,
                                     u.aliasUnidad,
-                                    g.descGrupoServicio
+                                    g.descGrupoServicio,
+                                    p.inventario
                                     FROM productos p
                                     JOIN tipo_producto t ON t.idTipoProducto = p.idTipoProducto
                                     JOIN stock_productos s ON s.idProducto = p.idProducto
                                     JOIN unidad_medida u ON u.idUnidadMedida = p.idUnidadMedida
                                     JOIN grupo_servicio g ON g.idGrupoServicio = p.idGrupoServicio 
                                     WHERE p.idSede = ".$this->session->userdata('sede')."
-                                    ORDER BY t.descTipoProducto DESC");
+                                    ORDER BY g.descGrupoServicio,t.descTipoProducto DESC");
             
             $this->cache->memcached->save('mListproducts', $query->result_array(), 28800); /*8 horas en Memoria*/
             $this->cache->memcached->save('mIdsede', $this->session->userdata('sede'), 28800);
@@ -96,7 +97,8 @@ class MProduct extends CI_Model {
                                 s.disponibles,
                                 p.idUnidadMedida,
                                 u.nombreUnidad,
-                                u.aliasUnidad
+                                u.aliasUnidad,
+                                p.inventario
                                 FROM productos p
                                 JOIN tipo_producto t ON t.idTipoProducto = p.idTipoProducto
                                 JOIN stock_productos s ON s.idProducto = p.idProducto
@@ -219,7 +221,8 @@ class MProduct extends CI_Model {
                                     idTipoProducto,
                                     idSede,
                                     idUnidadMedida,
-                                    idGrupoServicio
+                                    idGrupoServicio,
+                                    inventario
                                     ) VALUES (
                                     '".$name."',
                                     ".$costo.",
@@ -230,7 +233,8 @@ class MProduct extends CI_Model {
                                     ".$typeproduct.",
                                     ".$this->session->userdata('sede').",
                                     ".$undmedida.",
-                                    ".$groupservice."
+                                    ".$groupservice.",
+                                    'N'
                                     )");
         
         $idProduct = $this->db->insert_id();
@@ -271,7 +275,7 @@ class MProduct extends CI_Model {
      * Autor: jhonalexander90@gmail.com
      * Fecha Creacion: 25/03/2017, Ultima modificacion: 
      **************************************************************************/
-    public function update_product($idproduct,$name,$valor,$procent_empleado,$stock,$unidosis,$valueState,$costo) {
+    public function update_product($idproduct,$name,$valor,$procent_empleado,$stock,$unidosis,$valueState,$costo,$inventario) {
         
         /*Setea usuario de conexion - Auditoria BD*/
         $this->db = $this->MAuditoria->db_user_audit($this->session->userdata('userid'));
@@ -285,7 +289,8 @@ class MProduct extends CI_Model {
                                     valorProducto = ".$valor.",
                                     distribucionProducto = ".$procent_empleado.",
                                     uniDosis = ".$unidosis.",
-                                    activo = '".$valueState."'
+                                    activo = '".$valueState."',
+                                    inventario = '".$inventario."'
                                     WHERE
                                     idProducto = ".$idproduct."");
 

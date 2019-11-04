@@ -106,77 +106,98 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 
                                 <?php
                                 if ($list_products != FALSE) {
-                                    foreach ($list_products as $row_list) {
+                                    
+                                    foreach ($list_groups as $row_group) {
                                         
-                                        /*Calcula Porcentaje de Consumo de Productos*/
-                                        $percent = ($row_list['disponibles']/$row_list['unidades'])*100;
+                                        //echo $row_group['descGrupoServicio']."<br />";
+                                        ?><div class="clearfix"></div><?php
                                         
-                                        ?>
-                                        <!--Widget Grafico-->
-                                        <div class="col-md-3 col-xs-12 widget widget_tally_box">
-                                            <div class="x_panel">
-                                                <div class="x_title">
-                                                    <?php
-                                                    if ($percent >= 70 && $percent <= 100){ 
-                                                        $color = '#A5F19D'; 
-                                                        
-                                                    } else if ($percent >= 40 && $percent < 70){
-                                                        $color = '#ECF6A1'; 
-                                                        
-                                                    } else if ($percent >= 20 && $percent < 40){
-                                                        $color = '#FACB4D'; 
-                                                        
-                                                    } else {
-                                                        $color = '#FA6C4D';
-                                                        
-                                                    }
-                                                    ?>
-                                                    <center>
-                                                    <a class="btn btn-default btn-sm" style="background-color:<?php echo $color; ?>;" href="<?php echo base_url().'index.php/CPrincipal/dataedit/product/'.$row_list['idProducto']; ?>">
-                                                        <?php echo substr($row_list['descProducto'], 0, 25); ?>
-                                                    </a>
-                                                    <div class="clearfix"></div>
-                                                    </center>
-                                                </div>
-                                                <div class="x_content">
-                                                    <?php 
-                                                    if ($percent < 30){ $color = 'red'; } else $color ='';
-                                                    ?>
-                                                    <div style="text-align: center; margin-bottom: 17px;">
-                                                        <span class="chart <?php echo $color; ?>" data-percent="<?php echo $percent; ?>">
-                                                            <span class="percent"></span>
-                                                        </span>
-                                                    </div>
+                                        foreach ($list_products as $row_list) {
+                                            
+                                            /*valida el grupo*/
+                                            if ($row_list['descGrupoServicio'] == $row_group['descGrupoServicio']){
 
-                                                    <div style="text-align: center; overflow: hidden; margin: 10px 5px 3px;">
+                                                /*valida que el producto este visible para el inventario*/
+                                                if ($row_list['inventario'] == 'S'){
+
+                                                    /*Calcula Porcentaje de Consumo de Productos*/
+                                                    $percent = ($row_list['disponibles']/$row_list['unidades'])*100;
+
+                                                    ?>
+                                                    <!--Widget Grafico-->
+                                                    <div class="col-md-3 col-xs-12 widget widget_tally_box">
+                                                        
+                                                        <div class="x_panel">
+                                                            <center><?php echo $row_group['descGrupoServicio']; ?></center>
+                                                            <div class="x_title">
+                                                                <?php
+                                                                if ($percent >= 70 && $percent <= 100){ 
+                                                                    $color = '#A5F19D'; 
+
+                                                                } else if ($percent >= 40 && $percent < 70){
+                                                                    $color = '#ECF6A1'; 
+
+                                                                } else if ($percent >= 20 && $percent < 40){
+                                                                    $color = '#FACB4D'; 
+
+                                                                } else {
+                                                                    $color = '#FA6C4D';
+
+                                                                }
+                                                                ?>
+                                                                <center>
+                                                                <a class="btn btn-default btn-sm" style="background-color:<?php echo $color; ?>;" href="<?php echo base_url().'index.php/CPrincipal/dataedit/product/'.$row_list['idProducto']; ?>">
+                                                                    <?php echo substr($row_list['descProducto'], 0, 25); ?>
+                                                                </a>
+                                                                <div class="clearfix"></div>
+                                                                </center>
+                                                            </div>
+                                                            <div class="x_content">
+                                                                <?php 
+                                                                if ($percent < 30){ $color = 'red'; } else $color ='';
+                                                                ?>
+                                                                <div style="text-align: center; margin-bottom: 17px;">
+                                                                    <span class="chart <?php echo $color; ?>" data-percent="<?php echo $percent; ?>">
+                                                                        <span class="percent"></span>
+                                                                    </span>
+                                                                </div>
+
+                                                                <div style="text-align: center; overflow: hidden; margin: 10px 5px 3px;">
+                                                                </div>
+                                                                <div>
+                                                                    <ul class="list-inline widget_tally">
+                                                                        <li>
+                                                                            <p>
+                                                                                <span class="month">Disponibles </span>
+                                                                                <span class="count"><?php echo $row_list['disponibles']; ?></span>
+                                                                            </p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <p>
+                                                                                <span class="month">Total </span>
+                                                                                <span class="count"><?php echo $row_list['unidades']; ?></span>
+                                                                            </p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <p>
+                                                                                <?php echo $row_list['descTipoProducto']; ?>
+                                                                            </p>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <ul class="list-inline widget_tally">
-                                                            <li>
-                                                                <p>
-                                                                    <span class="month">Disponibles </span>
-                                                                    <span class="count"><?php echo $row_list['disponibles']; ?></span>
-                                                                </p>
-                                                            </li>
-                                                            <li>
-                                                                <p>
-                                                                    <span class="month">Total </span>
-                                                                    <span class="count"><?php echo $row_list['unidades']; ?></span>
-                                                                </p>
-                                                            </li>
-                                                            <li>
-                                                                <p>
-                                                                    <?php echo $row_list['descTipoProducto']; ?>
-                                                                </p>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/Widget Grafico-->
-                                        <?php
+                                                    <!--/Widget Grafico-->
+                                                <?php
+                                                }
+                                            
+                                            }
+                                            
+                                        }
+                                        
                                     }
+                                        
                                 }
                                 ?>
                             </div>
