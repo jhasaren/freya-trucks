@@ -32021,7 +32021,7 @@ function ConvertSize($size=5,$maxsize=0,$fontsize=false,$usefontsize=true){
 	if ($fontsize) { $size *= $fontsize*2; }
 	else { $size *= $maxsize*2; }
   }
-  else $size *= (25.4/$this->dpi); //nothing == px
+  else (double)$size *= (double)((double)25.4/(double)$this->dpi); //nothing == px
   
   return $size;
 }
