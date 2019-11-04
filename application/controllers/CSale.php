@@ -657,7 +657,7 @@ class CSale extends CI_Controller {
                         /*captura variables*/
                         $pagavalor = str_replace(".", "", $this->input->post('pagavalor')); /*valor que paga*/
                         log_message("debug", "*****************************");
-                        log_message("debug", $pagavalor);
+                        log_message("debug", "Valor Pagado: ".$pagavalor);
                         log_message("debug", "*****************************");
                         $refPago = $this->input->post('ref_pago'); /*referencia del pago*/
                         $valuePayFormas = $this->input->post('valuepagado'); /*valor ya pagado*/
@@ -670,7 +670,11 @@ class CSale extends CI_Controller {
                         
                         if ($mixpayment != 'on'){
                         
-                            if (($pagavalor+$valuePayFormas) < $totalPago){
+                            log_message("debug", "*****************************");
+                            log_message("debug", "Valor a Pagar: ".$totalPago);
+                            log_message("debug", "*****************************");
+                            
+                            if (((int)$pagavalor+(int)$valuePayFormas) < (int)$totalPago){
 
                                 $info['idmessage'] = 2;
                                 $info['message'] = "No es posible registrar pago de la venta. El valor recibido es menor que el total a pagar";
@@ -679,7 +683,7 @@ class CSale extends CI_Controller {
                             } else {
 
                                 /*Enviar al modelo para registrar pago*/
-                                $registerPay = $this->MSale->pay_register_sale($formaPago,($totalPago-$valuePayFormas),$refPago,$mixpayment);
+                                $registerPay = $this->MSale->pay_register_sale($formaPago,((int)$totalPago-(int)$valuePayFormas),$refPago,$mixpayment);
 
                                 if ($registerPay == TRUE){
 
