@@ -66,6 +66,7 @@ function escposticket ($detalleRecibo,$sede,$dirSede,$telsede,$printer,$turno,$n
         $printer -> setEmphasis(true);
         //$printer -> setTextSize(2, 2);
         $printer -> text("Factura de Venta #".$detalleRecibo['general']->nroRecibo."\n");
+        $printer -> text("Fecha Liquida: ".$detalleRecibo['general']->fechaLiquida."\n");
         $printer -> text("Turno: ".$detalleRecibo['general']->nroTurno." | Lugar: ".$detalleRecibo['general']->nombreMesa."\n");
         //$printer -> text("Turno: ".$detalleRecibo['general']->nroTurno."\n");
         $printer -> setEmphasis(false);
