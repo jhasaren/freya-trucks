@@ -786,19 +786,28 @@ class CSale extends CI_Controller {
                     }
 
                 } else {
-
+                    
+                    log_message("DEBUG",'*****************************************************');
+                    log_message("DEBUG",'404 por userdata(idSale) es NULL');
+                    log_message("DEBUG",'*****************************************************');
                     show_404();
 
                 }
             
             } else {
                 
+                log_message("DEBUG",'*****************************************************');
+                log_message("DEBUG",'404 por validaRecurso 9');
+                log_message("DEBUG",'*****************************************************');
                 show_404();
                 
             }
             
         } else {
             
+            log_message("DEBUG",'*****************************************************');
+            log_message("DEBUG",'404 por userdata validate');
+            log_message("DEBUG",'*****************************************************');
             show_404();
             
         }
